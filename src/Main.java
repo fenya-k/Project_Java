@@ -10,6 +10,7 @@ public class Main {
 
          Car car=new Car("ΙΚΥ1234","Porche","Macan","Corolla","2019","Ασημί","Διαθέσιμο");
 
+        System.out.println("hello");
 
     }
 }
