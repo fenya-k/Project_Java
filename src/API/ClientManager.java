@@ -3,50 +3,64 @@ package API;
 import java.io.*;
 import java.util.ArrayList;
 
-public class ClientManager {
-    private ArrayList<Client> clients;
+public class ClientManager implements Manager<Client> {
+    private final ArrayList<Client> clients;
 
     public ClientManager() {
         clients = new ArrayList<>();
     }
 
-    public boolean addClient(Client client) {
-        if (!clients.contains(client)) {
-            clients.add(client);
-            return true;
+    @Override
+    public boolean add(Client client) {
+        for (Client c : clients) {
+            if (c.getAFM().equals(client.getAFM())) {
+                System.out.println("Υπάρχει ήδη πελάτης με το ΑΦΜ " + client.getAFM());
+                return false;
+            }
         }
+        clients.add(client);
+        System.out.println("Ο πελάτης προστέθηκε");
+        return true;
+    }
+
+    @Override
+    public boolean remove(Client client) {
+        for (int i = 0; i < clients.size(); i++) {
+            if (clients.get(i).getAFM().equals(client.getAFM())) {
+                clients.remove(i);
+                System.out.println("Ο πελάτης διαγράφηκε");
+                return true;
+            }
+        }
+        System.out.println("Δεν βρέθηκε κάποιος πελάτης με το ΑΦΜ " + client.getAFM());
         return false;
     }
 
-    public boolean removeCar(Client client) {
-        if (clients.contains(client)) {
-            clients.remove(client);
-            return true;
-        }
-        return false;
-    }
-
-    public ArrayList<Client> getClients() {
+    @Override
+    public ArrayList<Client> getAll() {
         return clients;
     }
 
+    @Override
     public int getSize() {
         return clients.size();
     }
 
-    public void printClients() {
+    @Override
+    public void print() {
         for (Client client : clients) {
             System.out.println(client.toString());
         }
     }
 
+    @Override
     public void readCSV() {
         String filename = "clients.csv";
         String line;
         String delimiter = ",";
 
         try (BufferedReader in = new BufferedReader(new FileReader(filename))) {
-            in.readLine(); //skips the first line
+            in.readLine(); //skips the first line because it's a header
 
             while ((line = in.readLine()) != null) {
                 String[] data = line.split(delimiter);
@@ -67,21 +81,24 @@ public class ClientManager {
         }
     }
 
+    @Override
     public void writeCSV() {
         String filename = "clients.csv";
         String line;
 
         try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
 
-            String header="name,AFM,phone,email";
+            String header = "name,surname,AFM,phone,email";
             out.write(header);
+            out.newLine();
 
-            for (Client client: clients){
+            for (Client client : clients) {
 
                 line = client.getName() + "," +
+                        client.getSurname() + "," +
                         client.getAFM() + "," +
                         client.getPhone() + "," +
-                        client.getEmail() ;
+                        client.getEmail();
 
                 out.write(line);
                 out.newLine();
@@ -94,16 +111,20 @@ public class ClientManager {
     }
 
 
-    public Client searchClient(String AFM, String name, String phone, String email) {
-        Client clientFound = null;
+    public Client search(String name, String surname, String AFM, String phone, String email) {
         for (Client client : clients) {
-            if (AFM != null && !AFM.isEmpty()) {
-                if (!client.getAFM().equalsIgnoreCase(AFM)) {
+            if (name != null && !name.isEmpty()) {
+                if (!client.getName().equalsIgnoreCase(name)) {
                     continue;
                 }
             }
-            if (name != null && !name.isEmpty()) {
-                if (!client.getName().equalsIgnoreCase(name)) {
+            if (surname != null && !surname.isEmpty()) {
+                if (!client.getSurname().equalsIgnoreCase(surname)) {
+                    continue;
+                }
+            }
+            if (AFM != null && !AFM.isEmpty()) {
+                if (!client.getAFM().equalsIgnoreCase(AFM)) {
                     continue;
                 }
             }
@@ -117,8 +138,15 @@ public class ClientManager {
                     continue;
                 }
             }
-            break;
+            return client;
         }
-        return clientFound;
+        return null;
+    }
+
+    public Client findByAFM(String AFM) {
+        for (Client c : clients) {
+            if (c.getAFM().equalsIgnoreCase(AFM)) return c;
+        }
+        return null;
     }
 }
