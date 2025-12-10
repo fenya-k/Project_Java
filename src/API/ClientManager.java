@@ -26,7 +26,11 @@ public class ClientManager implements Manager<Client> {
 
     @Override
     public boolean remove(Client client) {
-        for (int i = 0; i < clients.size(); i++) {
+        int clientsSize = clients.size();
+        //η μεταβλητή clientsSize χρησιμοποιείται για να μην υπολογίζεται επανειλημμένα στη for (int i = 0; i < clients.size(); i++)
+        //από τη στιγμή που γίνεται return μετά τη διαγραφή δε θα εμφανίσει IndexOutOfBoundsException
+        //σε περίπτωση που θέλαμε να διαγράψουμε πολλαπλούς πελάτες με το ίδιο ΑΦΜ θα ήταν λάθος
+        for (int i = 0; i < clientsSize; i++) { //χρήση αυτής της for για αποθήκευση της θέσης στο i
             if (clients.get(i).getAFM().equals(client.getAFM())) {
                 clients.remove(i);
                 System.out.println("Ο πελάτης διαγράφηκε");
@@ -56,7 +60,7 @@ public class ClientManager implements Manager<Client> {
 
     @Override
     public void readCSV() {
-        String filename = "clients.csv";
+        String filename = "DataBase/ManagerFiles/clients.csv";
         String line;
         String delimiter = ",";
 
@@ -84,7 +88,7 @@ public class ClientManager implements Manager<Client> {
 
     @Override
     public void writeCSV() {
-        String filename = "clients.csv";
+        String filename = "DataBase/ManagerFiles/clients.csv";
         String line;
 
         try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
@@ -113,6 +117,13 @@ public class ClientManager implements Manager<Client> {
 
 
     public Client search(String name, String surname, String AFM, String phone, String email) {
+
+        /* Οι πελάτες μπαίνουν στη for με τη σειρά, έπειτα γίνεται έλεγχος σε κάθε if αν έχει δοθεί τιμή για σύγκριση
+         αν δεν έχει δοθεί τιμή (null) τότε προχωράει στην επόμενη if χωρίς να μπει στο σώμα της
+         αν έχει δοθεί τιμή τότε τη συγκρίνει με αυτή του εκάστοτε αυτοκινήτου και
+         -αν είναι ίση τότε προχωράει στην επόμενη if χωρίς να μπει στο σώμα της
+         -αν δεν είναι ίση τότε μπαίνει στο σώμα της, κάνει continue και έρχεται ο επόμενος πελάτης */
+
         for (Client client : clients) {
             if (name != null && !name.isEmpty()) {
                 if (!client.getName().equalsIgnoreCase(name)) {
