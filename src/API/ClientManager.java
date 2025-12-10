@@ -4,11 +4,12 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class ClientManager implements Manager<Client> {
+
+    private final String filename = "DataBase/ManagerFiles/clients.csv";
     private final ArrayList<Client> clients;
 
     public ClientManager() {
         clients = new ArrayList<>();
-        readCSV();
     }
 
     @Override
@@ -42,7 +43,7 @@ public class ClientManager implements Manager<Client> {
     }
 
     @Override
-    public ArrayList<Client> getAll() {
+    public ArrayList<Client> getList() {
         return clients;
     }
 
@@ -58,9 +59,7 @@ public class ClientManager implements Manager<Client> {
         }
     }
 
-    @Override
     public void readCSV() {
-        String filename = "DataBase/ManagerFiles/clients.csv";
         String line;
         String delimiter = ",";
 
@@ -88,7 +87,6 @@ public class ClientManager implements Manager<Client> {
 
     @Override
     public void writeCSV() {
-        String filename = "DataBase/ManagerFiles/clients.csv";
         String line;
 
         try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {

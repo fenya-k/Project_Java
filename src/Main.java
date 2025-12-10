@@ -69,54 +69,52 @@ public class Main {
 
         System.out.println("Initializing managers");
         //CAR MANAGER
-        CarManager carManager=new CarManager();
+        CarManager carManager = new CarManager();
         carManager.readCSV();
-        System.out.println("Cars loaded: "+carManager.getSize());
+        System.out.println("Cars loaded: " + carManager.getSize());
 
         //CLIENT MANAGER
-        ClientManager clientManager=new ClientManager();
+        ClientManager clientManager = new ClientManager();
         clientManager.readCSV();
-        System.out.println("Clients loaded: "+clientManager.getSize());
+        System.out.println("Clients loaded: " + clientManager.getSize());
 
         //EMPLOYEE MANAGER
-        EmployeeManager employeeManager=new EmployeeManager();
-        System.out.println("Employees loaded: "+employeeManager.getEmployees().size());
+        EmployeeManager employeeManager = new EmployeeManager();
+        System.out.println("Employees loaded: " + employeeManager.getEmployees().size());
 
         //RENTAL MANAGER
-        RentalManager rentalManager=new RentalManager(carManager,clientManager,employeeManager);
+        RentalManager rentalManager = new RentalManager();
         rentalManager.readCSV();
-        System.out.println("Rentals loaded: "+rentalManager.getSize());
+        System.out.println("Rentals loaded: " + rentalManager.getSize());
 
         System.out.println("Test data(creating)");
         //test car
-        Car testCar=new Car("test1", "Kia","Sport","Rio","2025","White");
+        Car testCar = new Car("test1", "Kia", "Sport", "Rio", "2025", "White");
         carManager.add(testCar);
 
         //client test
-        Client testClient=new Client("George","Takis","afm12345","9876543","george@mail");
+        Client testClient = new Client("George", "Takis", "afm12345", "9876543", "george@mail");
         clientManager.add(testClient);
 
-        Employee testEmployee=employeeManager.login("jsmith","password1");
-        if(testEmployee==null){
+        Employee testEmployee = employeeManager.login("jsmith", "password1");
+        if (testEmployee == null) {
             System.out.println("Error(login failed).Using the first employee from list");
-            testEmployee=employeeManager.getEmployees().get(0);
-        }
-        else {
-            System.out.println("Success. Logged in!(as "+testEmployee.getUsername()+")");
+            testEmployee = employeeManager.getEmployees().get(0);
+        } else {
+            System.out.println("Success. Logged in!(as " + testEmployee.getUsername() + ")");
         }
 
         System.out.println("Rental process(test)");
-        LocalDate dateOut=LocalDate.now();
-        LocalDate dateIn=LocalDate.now().plusDays(5);
+        LocalDate dateOut = LocalDate.now();
+        LocalDate dateIn = LocalDate.now().plusDays(5);
 
-        Rental newRental=new Rental(testCar,testClient,dateOut,dateIn,testEmployee);
+        Rental newRental = new Rental(testCar, testClient, dateOut, dateIn, testEmployee);
 
         System.out.println("Attempt to add rental");
-        boolean added= rentalManager.add(newRental);
-        if(added){
-            System.out.println("Rental added. Car status: "+testCar.getCarStatus());
-        }
-        else {
+        boolean added = rentalManager.add(newRental);
+        if (added) {
+            System.out.println("Rental added. Car status: " + testCar.getCarStatus());
+        } else {
             System.out.println("Error.Rental not added");
         }
 

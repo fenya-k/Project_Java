@@ -6,15 +6,16 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class EmployeeManager {
-    private final String filename="DataBase/ManagerFiles/users.csv";
+public class EmployeeManager implements Manager<Employee> {
+    private final String filename = "DataBase/ManagerFiles/users.csv";
     private ArrayList<Employee> employees;
 
-    public EmployeeManager(){
-        employees=new ArrayList<>();
+    public EmployeeManager() {
+        employees = new ArrayList<>();
         readCSV();
     }
-    public Employee login(String username,String password) {
+
+    public Employee login(String username, String password) {
         for (Employee employee : employees) {
             if (employee.getUsername().equals(username) && employee.getPassword().equals(password)) {
                 return employee; //success
@@ -23,7 +24,32 @@ public class EmployeeManager {
         return null; //fail
     }
 
-    public void readCSV(){
+    @Override
+    public boolean add(Employee object) {
+        return false;
+    }
+
+    @Override
+    public boolean remove(Employee object) {
+        return false;
+    }
+
+    @Override
+    public void print() {
+
+    }
+
+    @Override
+    public ArrayList<Employee> getList() {
+        return employees;
+    }
+
+    @Override
+    public int getSize() {
+        return employees.size();
+    }
+
+    public void readCSV() {
         String line;
         String delimiter = ",";
         employees.clear();
@@ -33,7 +59,7 @@ public class EmployeeManager {
 
             while ((line = in.readLine()) != null) {
                 String[] data = line.split(delimiter);
-                if(data.length>=5) {
+                if (data.length >= 5) {
                     String name = data[0].trim();
                     String surname = data[1].trim();
                     String username = data[2].trim();
@@ -49,13 +75,15 @@ public class EmployeeManager {
             System.out.println("Error: File not read!");
         }
     }
-    public ArrayList<Employee> getEmployees(){
-        return employees;
+
+    @Override
+    public void writeCSV() {
+
     }
 
-    public Employee findByUsername(String username){
-        for (Employee employee: employees){
-            if(employee.getUsername().equalsIgnoreCase(username)){
+    public Employee findByUsername(String username) {
+        for (Employee employee : employees) {
+            if (employee.getUsername().equalsIgnoreCase(username)) {
                 return employee;
             }
         }

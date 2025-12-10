@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class CarManager implements Manager<Car> {
+
+    private final String filename = "DataBase/ManagerFiles/vehicles.csv";
     private final ArrayList<Car> cars;
 
     public CarManager() {
@@ -42,7 +44,7 @@ public class CarManager implements Manager<Car> {
     }
 
     @Override
-    public ArrayList<Car> getAll() {
+    public ArrayList<Car> getList() {
         ArrayList<Car> temp = this.cars; //encapsulation - defensive copying
         return temp;
     }
@@ -59,9 +61,7 @@ public class CarManager implements Manager<Car> {
         }
     }
 
-    @Override
     public void readCSV() {
-        String filename = "DataBase/ManagerFiles/vehicles.csv";
         String line;
         String delimiter = ",";
 
@@ -99,7 +99,6 @@ public class CarManager implements Manager<Car> {
 
     @Override
     public void writeCSV() {
-        String filename = "DataBase/ManagerFiles/vehicles.csv";
 
         try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
 

@@ -4,7 +4,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Car implements History{
+public class Car implements History {
     private static int counter = 1;
 
     private final int id;
@@ -110,7 +110,7 @@ public class Car implements History{
     }
 
     @Override
-    public boolean addRentalTo(Rental rental){
+    public boolean addRental(Rental rental){
         if(!carRentals.contains(rental)){
             carRentals.add(rental);
             return true;

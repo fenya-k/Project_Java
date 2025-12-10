@@ -35,7 +35,7 @@ public class Client extends Person implements History {
     }
 
     @Override
-    public boolean addRentalTo(Rental rental) {
+    public boolean addRental(Rental rental) {
         if (!clientRentals.contains(rental)) {
             clientRentals.add(rental);
             return true;

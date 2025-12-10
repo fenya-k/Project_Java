@@ -1,4 +1,12 @@
-import API.Rental;
+package API;
 
-public boolean addRentalTo(Rental rental);
+public interface History {
 
+    boolean addRental(Rental rental);
+
+    void printRentals();
+
+    void writeCSVofRentals();
+
+    void readCSVofRentals();
+}

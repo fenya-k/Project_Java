@@ -8,14 +8,13 @@ public interface Manager<T> {
 
     boolean remove(T object);
 
-    ArrayList<T> getAll();
+    ArrayList<T> getList();
 
     int getSize();
 
     void print();
 
-    void readCSV();
+    //void readCSV();
 
     void writeCSV();
-
 }

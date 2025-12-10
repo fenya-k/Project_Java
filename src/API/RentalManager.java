@@ -6,48 +6,51 @@ import java.util.ArrayList;
 
 public class RentalManager implements Manager<Rental> {
 
+    private final String filename = "DataBase/ManagerFiles/rentals.csv";
     private final ArrayList<Rental> rentals;
 
-    private final CarManager carManager;
-    private final ClientManager clientManager;
-    private final EmployeeManager employeeManager;
-
-    public RentalManager(CarManager carManager, ClientManager clientManager, EmployeeManager employeeManager) {
+    public RentalManager() {
         rentals = new ArrayList<>();
-        this.carManager = carManager;
-        this.clientManager = clientManager;
-        this.employeeManager = employeeManager;
-        readCSV();
     }
 
     @Override
     public boolean add(Rental rental) {
-        if (rentals.contains(rental)) {
-            System.out.println("Υπάρχει ήδη ενοικίαση με κωδικό " + rental.getRentCode());
-            return false;
+        for(Rental r : rentals){
+            if(r.getRentCode() == rental.getRentCode()){
+                System.out.println("Υπάρχει ήδη ενοικίαση με κωδικό " + rental.getRentCode());
+                return false;
+            }
         }
-        if(!rental.getRentCar().isAvailable()){
-            System.out.println("Car "+ rental.getRentCar()+" is not available");
+        if (!rental.getRentCar().isAvailable()) {
+            System.out.println(rental.getRentCar().toString() + " is not available");
             return false;
         }
         rentals.add(rental);
         rental.getRentCar().setCarStatus(CarStatus.RENTED);
+        System.out.println("Η ενοικίαση έγινε");
         return true;
     }
 
     @Override
     public boolean remove(Rental rental) {
-        if (rentals.contains(rental)) {
-            rentals.remove(rental);
-            rental.getRentCar().setCarStatus(CarStatus.AVAILABLE);
-            return true;
+        int rentalsSize = rentals.size();
+        //η μεταβλητή rentalsSize χρησιμοποιείται για να μην υπολογίζεται επανειλημμένα στη for (int i = 0; i < rentals.size(); i++)
+        //από τη στιγμή που γίνεται return μετά τη διαγραφή δε θα εμφανίσει IndexOutOfBoundsException
+        //σε περίπτωση που θέλαμε να διαγράψουμε πολλαπλές ενοικιάσεις με τον ίδιο κωδικό
+        for (int i = 0; i < rentalsSize; i++) { //χρήση αυτής της for για αποθήκευση της θέσης στο i
+            if (rentals.get(i).getRentCode() == rental.getRentCode()) {
+                rentals.get(i).getRentCar().setCarStatus(CarStatus.AVAILABLE);
+                rentals.remove(i);
+                System.out.println("Η ενοικίαση διαγράφηκε");
+                return true;
+            }
         }
-        System.out.println("Δεν υπάρχει ενοικίαση με κωδικό " + rental.getRentCode());
+        System.out.println("Δεν βρέθηκε κάποια ενοικίαση με τον κωδικό " + rental.getRentCode());
         return false;
     }
 
     @Override
-    public ArrayList<Rental> getAll() {
+    public ArrayList<Rental> getList() {
         return rentals;
     }
 
@@ -63,9 +66,7 @@ public class RentalManager implements Manager<Rental> {
         }
     }
 
-    @Override
-    public void readCSV() {
-        String filename = "rentals.csv";
+    public void readCSV(CarManager carManager, ClientManager clientManager, EmployeeManager employeeManager) {
         String line;
         String delimiter = ",";
 
@@ -87,14 +88,12 @@ public class RentalManager implements Manager<Rental> {
 
                 Client client = clientManager.findByAFM(clientAFM);
                 Car rentCar = carManager.findByPlate(plate);
-                Employee employee=employeeManager.findByUsername(employeeUsername);
+                Employee employee = employeeManager.findByUsername(employeeUsername);
 
-                if (client != null && rentCar != null && employee!=null) {
-                    //Employee employee = new Employee(employeeUsername, "", "", "", "");
-                    //employeeManager.findByUsername(username);
+                if (client != null && rentCar != null && employee != null) {
                     Rental rental = new Rental(rentCode, rentCar, client, startDate, endDate, employee);
                     rentals.add(rental);
-                    if (endDate.isAfter(LocalDate.now())){
+                    if (endDate.isAfter(LocalDate.now())) {
                         rentCar.setCarStatus(CarStatus.RENTED);
                     }
                 } else {
@@ -112,7 +111,6 @@ public class RentalManager implements Manager<Rental> {
 
     @Override
     public void writeCSV() {
-        String filename = "rentals.csv";
 
         try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
 
@@ -138,5 +136,40 @@ public class RentalManager implements Manager<Rental> {
             System.out.println("Error: File not read!");
         }
     }
+
+    // να υλοποιηθεί
+
+//    public ArrayList<Rental> search(String plate, String brand, String type, String model, String color, Boolean available) {
+//        ArrayList<Car> foundCars = new ArrayList<>();
+//
+//        /* Τα αυτοκίνητα μπαίνουν στη for με τη σειρά, έπειτα γίνεται έλεγχος σε κάθε if αν έχει δοθεί τιμή για σύγκριση
+//         αν δεν έχει δοθεί τιμή (null) τότε προχωράει στην επόμενη if χωρίς να μπει στο σώμα της
+//         αν έχει δοθεί τιμή τότε τη συγκρίνει με αυτή του εκάστοτε αυτοκινήτου και
+//         -αν είναι ίση τότε προχωράει στην επόμενη if χωρίς να μπει στο σώμα της
+//         -αν δεν είναι ίση τότε μπαίνει στο σώμα της, κάνει continue και έρχεται το επόμενο αυτοκίνητο */
+//
+//        for (Car car : cars) { //null proofing (protection from NullPointerExceptions)
+//            if (plate != null && !plate.isEmpty() && !car.getPlate().equalsIgnoreCase(plate)) {
+//                continue;
+//            } //η πινακίδα έρχεται πρώτη ώστε αν είναι διαφορετική δε χρειάζονται οι υπόλοιποι έλεγχοι
+//            if (brand != null && !brand.isEmpty() && !car.getBrand().equalsIgnoreCase(brand)) {
+//                continue;
+//            }
+//            if (type != null && !type.isEmpty() && !car.getType().equalsIgnoreCase(type)) {
+//                continue;
+//            }
+//            if (model != null && !model.isEmpty() && !car.getModel().equalsIgnoreCase(model)) {
+//                continue;
+//            }
+//            if (color != null && !color.isEmpty() && !car.getColor().equalsIgnoreCase(color)) {
+//                continue;
+//            }
+//            if (available != null && car.isAvailable() != available) {
+//                continue;
+//            }
+//            foundCars.add(car);
+//        }
+//        return foundCars;
+//    }
 
 }
