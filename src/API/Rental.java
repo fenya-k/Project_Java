@@ -19,7 +19,7 @@ public class Rental {
         this.startDate = startDate;
         this.endDate = endDate;
         this.employee = employee;
-        this.rentCar.setCarStatus(CarStatus.RENTED);
+        // this.rentCar.setCarStatus(CarStatus.RENTED); //Status update moved to RentalManager.
     }
 
     public static int getCounter() {
