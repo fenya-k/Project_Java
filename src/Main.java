@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
 
         // TEST
-        Car car = new Car("ΙΚΥ1294", "Porche", "Macan", "Corolla", "2019", "Ασημί");
+       /* Car car = new Car("ΙΚΥ1294", "Porche", "Macan", "Corolla", "2019", "Ασημί");
         Car car2 = new Car("ΙΚΥ1294", "Porche", "Macan", "Corolla", "2019", "Ασημί");
         Client client = new Client("φένια", "κομπ", "12345", "6957", "φενια@");
         Client client2 = new Client("erica", "kub", "67890", "69", "erica@");
@@ -65,6 +65,75 @@ public class Main {
         System.out.println(maria.getSize());
         maria.remove(rental2);
         System.out.println(maria.getSize());
+        */
+
+        System.out.println("Initializing managers");
+        //CAR MANAGER
+        CarManager carManager=new CarManager();
+        carManager.readCSV();
+        System.out.println("Cars loaded: "+carManager.getSize());
+
+        //CLIENT MANAGER
+        ClientManager clientManager=new ClientManager();
+        clientManager.readCSV();
+        System.out.println("Clients loaded: "+clientManager.getSize());
+
+        //EMPLOYEE MANAGER
+        EmployeeManager employeeManager=new EmployeeManager();
+        System.out.println("Employees loaded: "+employeeManager.getEmployees().size());
+
+        //RENTAL MANAGER
+        RentalManager rentalManager=new RentalManager(carManager,clientManager,employeeManager);
+        rentalManager.readCSV();
+        System.out.println("Rentals loaded: "+rentalManager.getSize());
+
+        System.out.println("Test data(creating)");
+        //test car
+        Car testCar=new Car("test1", "Kia","Sport","Rio","2025","White");
+        carManager.add(testCar);
+
+        //client test
+        Client testClient=new Client("George","Takis","afm12345","9876543","george@mail");
+        clientManager.add(testClient);
+
+        Employee testEmployee=employeeManager.login("jsmith","password1");
+        if(testEmployee==null){
+            System.out.println("Error(login failed).Using the first employee from list");
+            testEmployee=employeeManager.getEmployees().get(0);
+        }
+        else {
+            System.out.println("Success. Logged in!(as "+testEmployee.getUsername()+")");
+        }
+
+        System.out.println("Rental process(test)");
+        LocalDate dateOut=LocalDate.now();
+        LocalDate dateIn=LocalDate.now().plusDays(5);
+
+        Rental newRental=new Rental(testCar,testClient,dateOut,dateIn,testEmployee);
+
+        System.out.println("Attempt to add rental");
+        boolean added= rentalManager.add(newRental);
+        if(added){
+            System.out.println("Rental added. Car status: "+testCar.getCarStatus());
+        }
+        else {
+            System.out.println("Error.Rental not added");
+        }
+
+        System.out.println("All rentals");
+        rentalManager.print();
+
+        carManager.writeCSV();
+        clientManager.writeCSV();
+        rentalManager.writeCSV();
+
+
+
+
+
+
+
+
 
 
     }

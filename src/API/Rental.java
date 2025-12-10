@@ -96,7 +96,7 @@ public class Rental {
         return "Rental: " +
                 "rentCode=" + rentCode +
                 ", rentCar=" + rentCar.getPlate() +
-                ", client=" + client.getName() + client.getSurname() +
+                ", client=" + client.getName() +" "+ client.getSurname() +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", employee=" + employee.getUsername();

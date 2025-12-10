@@ -10,24 +10,29 @@ public class RentalManager implements Manager<Rental> {
 
     private final CarManager carManager;
     private final ClientManager clientManager;
-    //private final EmployeeManager employeeManager;
+    private final EmployeeManager employeeManager;
 
-    public RentalManager(CarManager carManager, ClientManager clientManager/*, EmployeeManager employeeManager */ ) {
+    public RentalManager(CarManager carManager, ClientManager clientManager, EmployeeManager employeeManager) {
         rentals = new ArrayList<>();
         this.carManager = carManager;
         this.clientManager = clientManager;
-        //this.employeeManager = employeeManager;
+        this.employeeManager = employeeManager;
+        readCSV();
     }
 
     @Override
     public boolean add(Rental rental) {
-        if (!rentals.contains(rental)) {
-            rentals.add(rental);
-            rental.getRentCar().setCarStatus(CarStatus.RENTED);
-            return true;
+        if (rentals.contains(rental)) {
+            System.out.println("Υπάρχει ήδη ενοικίαση με κωδικό " + rental.getRentCode());
+            return false;
         }
-        System.out.println("Υπάρχει ήδη ενοικίαση με κωδικό " + rental.getRentCode());
-        return false;
+        if(!rental.getRentCar().isAvailable()){
+            System.out.println("Car "+ rental.getRentCar()+" is not available");
+            return false;
+        }
+        rentals.add(rental);
+        rental.getRentCar().setCarStatus(CarStatus.RENTED);
+        return true;
     }
 
     @Override
@@ -82,12 +87,16 @@ public class RentalManager implements Manager<Rental> {
 
                 Client client = clientManager.findByAFM(clientAFM);
                 Car rentCar = carManager.findByPlate(plate);
+                Employee employee=employeeManager.findByUsername(employeeUsername);
 
-                if (client != null && rentCar != null) {
-                    Employee employee = new Employee(employeeUsername, "", "", "", "");
+                if (client != null && rentCar != null && employee!=null) {
+                    //Employee employee = new Employee(employeeUsername, "", "", "", "");
                     //employeeManager.findByUsername(username);
                     Rental rental = new Rental(rentCode, rentCar, client, startDate, endDate, employee);
                     rentals.add(rental);
+                    if (endDate.isAfter(LocalDate.now())){
+                        rentCar.setCarStatus(CarStatus.RENTED);
+                    }
                 } else {
                     System.out.println("Η ενοικίαση " + rentCode + " δεν έγινε γιατί δεν βρέθηκε το όχημα ή ο πελάτης");
                 }
@@ -117,7 +126,7 @@ public class RentalManager implements Manager<Rental> {
                         rental.getClient().getAFM() + "," +
                         rental.getStartDate() + "," +
                         rental.getEndDate() + "," +
-                        rental.getEmployee().getName();
+                        rental.getEmployee().getUsername();
 
                 out.write(line);
                 out.newLine();
@@ -129,4 +138,5 @@ public class RentalManager implements Manager<Rental> {
             System.out.println("Error: File not read!");
         }
     }
+
 }

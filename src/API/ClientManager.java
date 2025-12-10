@@ -8,6 +8,7 @@ public class ClientManager implements Manager<Client> {
 
     public ClientManager() {
         clients = new ArrayList<>();
+        readCSV();
     }
 
     @Override

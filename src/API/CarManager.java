@@ -8,6 +8,7 @@ public class CarManager implements Manager<Car> {
 
     public CarManager() {
         cars = new ArrayList<>();
+        readCSV();
     }
 
     @Override

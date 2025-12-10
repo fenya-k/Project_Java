@@ -24,7 +24,6 @@ public class EmployeeManager {
     }
 
     public void readCSV(){
-        String filename = "users.csv";
         String line;
         String delimiter = ",";
         employees.clear();
@@ -52,6 +51,15 @@ public class EmployeeManager {
     }
     public ArrayList<Employee> getEmployees(){
         return employees;
+    }
+
+    public Employee findByUsername(String username){
+        for (Employee employee: employees){
+            if(employee.getUsername().equalsIgnoreCase(username)){
+                return employee;
+            }
+        }
+        return null;
     }
 }
 
