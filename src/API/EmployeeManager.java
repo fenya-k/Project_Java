@@ -1,9 +1,6 @@
 package API;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class EmployeeManager implements Manager<Employee> {
@@ -25,17 +22,16 @@ public class EmployeeManager implements Manager<Employee> {
     }
 
     @Override
-    public boolean add(Employee object) {
-        return false;
-    }
-
-    @Override
-    public boolean remove(Employee object) {
-        return false;
-    }
-
-    @Override
     public void print() {
+        System.out.println("List of employees");
+        if(employees.isEmpty()){
+            System.out.println("No employees found");
+        }
+        else{
+            for(Employee employee: employees){
+                System.out.println(employee.toString());
+            }
+        }
 
     }
 
@@ -44,10 +40,42 @@ public class EmployeeManager implements Manager<Employee> {
         return employees;
     }
 
+
     @Override
     public int getSize() {
         return employees.size();
     }
+
+    @Override
+    public boolean add(Employee employee) {
+        for (Employee e: employees) {
+            if (e.getUsername().equalsIgnoreCase(employee.getUsername())) {
+                System.out.println("Υπάρχει ήδη εργαζόμενος με username " + employee.getUsername());
+                return false;
+            }
+        }
+        employees.add(employee);
+        System.out.println("Ο εργαζόμενος προστέθηκε: " + employee.getUsername());
+        return true;
+    }
+
+    @Override
+    public boolean remove(Employee employee) {
+        int employeesSize = employees.size();
+        //η μεταβλητή employeesSize χρησιμοποιείται για να μην υπολογίζεται επανειλημμένα στη for (int i = 0; i < cars.size(); i++)
+        //από τη στιγμή που γίνεται return μετά τη διαγραφή δε θα εμφανίσει IndexOutOfBoundsException
+        //σε περίπτωση που θέλαμε να διαγράψουμε πολλαπλά αυτοκίνητα με την ίδια πινακίδα θα ήταν λάθος
+        for (int i = 0; i < employeesSize; i++) { //χρήση αυτής της for για αποθήκευση της θέσης στο i
+            if (employees.get(i).getUsername().equalsIgnoreCase(employee.getUsername())) {
+                employees.remove(i);
+                System.out.println("Ο εργαζόμενος διαγράφηκε");
+                return true;
+            }
+        }
+        System.out.println("Δεν βρέθηκε εργαζόμενος με username " + employee.getUsername());
+        return false;
+    }
+
 
     public void readCSV() {
         String line;
@@ -79,6 +107,28 @@ public class EmployeeManager implements Manager<Employee> {
     @Override
     public void writeCSV() {
 
+        try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
+
+            String header = "name,surname,username,email,password";
+            out.write(header);
+            out.newLine();
+
+            for (Employee employee : employees) {
+                String line = employee.getName() + "," +
+                        employee.getSurname() + "," +
+                        employee.getUsername() + "," +
+                        employee.getEmail() + "," +
+                        employee.getPassword();
+
+                out.write(line);
+                out.newLine();
+            }
+
+        } catch (FileNotFoundException e) {
+            System.err.println("Error: File not found!");
+        } catch (IOException e) {
+            System.out.println("Error: File not read!");
+        }
     }
 
     public Employee findByUsername(String username) {
@@ -88,6 +138,25 @@ public class EmployeeManager implements Manager<Employee> {
             }
         }
         return null;
+    }
+
+    public boolean changePassword(String username,String oldPass,String newPass){
+        Employee employee=findByUsername(username);
+
+        if(employee==null){
+            System.out.println("User not found");
+            return false;
+        }
+
+        if(!employee.getPassword().equals(oldPass)){
+            System.out.println("Wrong old password");
+            return false;
+        }
+
+        employee.setPassword(newPass);
+        System.out.println("Password for user "+username+ " was changed successfully");
+        writeCSV();
+        return true;
     }
 }
 

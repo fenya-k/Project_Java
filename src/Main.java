@@ -80,11 +80,11 @@ public class Main {
 
         //EMPLOYEE MANAGER
         EmployeeManager employeeManager = new EmployeeManager();
-        System.out.println("Employees loaded: " + employeeManager.getEmployees().size());
+        System.out.println("Employees loaded: " + employeeManager.getList().size());
 
         //RENTAL MANAGER
         RentalManager rentalManager = new RentalManager();
-        rentalManager.readCSV();
+        rentalManager.readCSV(carManager, clientManager, employeeManager);
         System.out.println("Rentals loaded: " + rentalManager.getSize());
 
         System.out.println("Test data(creating)");
@@ -99,7 +99,7 @@ public class Main {
         Employee testEmployee = employeeManager.login("jsmith", "password1");
         if (testEmployee == null) {
             System.out.println("Error(login failed).Using the first employee from list");
-            testEmployee = employeeManager.getEmployees().get(0);
+            testEmployee = employeeManager.getList().get(0);
         } else {
             System.out.println("Success. Logged in!(as " + testEmployee.getUsername() + ")");
         }
@@ -124,6 +124,23 @@ public class Main {
         carManager.writeCSV();
         clientManager.writeCSV();
         rentalManager.writeCSV();
+
+        //new methods testing
+        System.out.println("Changing password(test)");
+        employeeManager.changePassword("jsmith","password1","password123");
+
+        Employee oldPasswordCheck=employeeManager.login("jsmith","password1");
+        if(oldPasswordCheck==null){
+            System.out.println("Old password is no longer valid");
+        }
+
+        Employee newPasswordCheck=employeeManager.login("jsmith","password123");
+        if(newPasswordCheck!=null){
+            System.out.println("New password works");
+        }
+
+        System.out.println("Available Cars List:");
+        carManager.printAvailableCars();
 
     }
 }
