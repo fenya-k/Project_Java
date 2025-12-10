@@ -1,0 +1,189 @@
+Index: src/API/RentalManager.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package API;\r\n\r\nimport java.io.*;\r\nimport java.time.LocalDate;\r\nimport java.util.ArrayList;\r\n\r\npublic class RentalManager implements Manager<Rental> {\r\n\r\n    private final ArrayList<Rental> rentals;\r\n\r\n    private final CarManager carManager;\r\n    private final ClientManager clientManager;\r\n    //private final EmployeeManager employeeManager;\r\n\r\n    public RentalManager(CarManager carManager, ClientManager clientManager/*, EmployeeManager employeeManager */ ) {\r\n        rentals = new ArrayList<>();\r\n        this.carManager = carManager;\r\n        this.clientManager = clientManager;\r\n        //this.employeeManager = employeeManager;\r\n    }\r\n\r\n    @Override\r\n    public boolean add(Rental rental) {\r\n        if (!rentals.contains(rental)) {\r\n            rentals.add(rental);\r\n            rental.getRentCar().setCarStatus(CarStatus.RENTED);\r\n            return true;\r\n        }\r\n        System.out.println(\"Υπάρχει ήδη ενοικίαση με κωδικό \" + rental.getRentCode());\r\n        return false;\r\n    }\r\n\r\n    @Override\r\n    public boolean remove(Rental rental) {\r\n        if (rentals.contains(rental)) {\r\n            rentals.remove(rental);\r\n            rental.getRentCar().setCarStatus(CarStatus.AVAILABLE);\r\n            return true;\r\n        }\r\n        System.out.println(\"Δεν υπάρχει ενοικίαση με κωδικό \" + rental.getRentCode());\r\n        return false;\r\n    }\r\n\r\n    @Override\r\n    public ArrayList<Rental> getAll() {\r\n        return rentals;\r\n    }\r\n\r\n    @Override\r\n    public int getSize() {\r\n        return rentals.size();\r\n    }\r\n\r\n    @Override\r\n    public void print() {\r\n        for (Rental rental : rentals) {\r\n            System.out.println(rental.toString());\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void readCSV() {\r\n        String filename = \"rentals.csv\";\r\n        String line;\r\n        String delimiter = \",\";\r\n\r\n        try (BufferedReader in = new BufferedReader(new FileReader(filename))) {\r\n            in.readLine(); //skips the first line because it's a header\r\n\r\n            while ((line = in.readLine()) != null) {\r\n                String[] data = line.split(delimiter);\r\n\r\n                int rentCode = Integer.parseInt(data[0].trim());\r\n                String plate = data[1].trim();\r\n                String clientAFM = data[2].trim();\r\n                String start = data[3].trim();\r\n                String end = data[4].trim();\r\n                String employeeUsername = data[5].trim();\r\n\r\n                LocalDate startDate = LocalDate.parse(start);\r\n                LocalDate endDate = LocalDate.parse(end);\r\n\r\n                Client client = clientManager.findByAFM(clientAFM);\r\n                Car rentCar = carManager.findByPlate(plate);\r\n\r\n                if (client != null && rentCar != null) {\r\n                    Employee employee = new Employee(employeeUsername, \"\", \"\", \"\", \"\");\r\n                    //employeeManager.findByUsername(username);\r\n                    Rental rental = new Rental(rentCode, rentCar, client, startDate, endDate, employee);\r\n                    rentals.add(rental);\r\n                } else {\r\n                    System.out.println(\"Η ενοικίαση \" + rentCode + \" δεν έγινε γιατί δεν βρέθηκε το όχημα ή ο πελάτης\");\r\n                }\r\n            }\r\n        } catch (\r\n                FileNotFoundException e) {\r\n            System.err.println(\"Error: File not found!\");\r\n        } catch (\r\n                IOException e) {\r\n            System.out.println(\"Error: File not read!\");\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void writeCSV() {\r\n        String filename = \"rentals.csv\";\r\n\r\n        try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {\r\n\r\n            String header = \"κωδικός ενοικίασης,πινακίδα,ΑΦΜ πελάτη,ημέρα έναρξης,ημέρα λήξης,όνομα εργαζόμενου\";\r\n            out.write(header);\r\n            out.newLine();\r\n\r\n            for (Rental rental : rentals) {\r\n                String line = rental.getRentCode() + \",\" +\r\n                        rental.getRentCar().getPlate() + \",\" +\r\n                        rental.getClient().getAFM() + \",\" +\r\n                        rental.getStartDate() + \",\" +\r\n                        rental.getEndDate() + \",\" +\r\n                        rental.getEmployee().getName();\r\n\r\n                out.write(line);\r\n                out.newLine();\r\n            }\r\n\r\n        } catch (FileNotFoundException e) {\r\n            System.err.println(\"Error: File not found!\");\r\n        } catch (IOException e) {\r\n            System.out.println(\"Error: File not read!\");\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/API/RentalManager.java b/src/API/RentalManager.java
+--- a/src/API/RentalManager.java	(revision 29a2e9ea155c0a5cad4be4115d97056604c01aa4)
++++ b/src/API/RentalManager.java	(date 1765362374948)
+@@ -24,6 +24,8 @@
+         if (!rentals.contains(rental)) {
+             rentals.add(rental);
+             rental.getRentCar().setCarStatus(CarStatus.RENTED);
++            rental.getClient().addRentalTo(rental);
++            rental.getRentCar().addRentalTo(rental);
+             return true;
+         }
+         System.out.println("Υπάρχει ήδη ενοικίαση με κωδικό " + rental.getRentCode());
+@@ -60,7 +62,7 @@
+ 
+     @Override
+     public void readCSV() {
+-        String filename = "rentals.csv";
++        String filename = "DataBase/ManagerFiles/rentals.csv";
+         String line;
+         String delimiter = ",";
+ 
+@@ -103,7 +105,7 @@
+ 
+     @Override
+     public void writeCSV() {
+-        String filename = "rentals.csv";
++        String filename = "DataBase/ManagerFiles/rentals.csv";
+ 
+         try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
+ 
+Index: src/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import API.*;\r\n\r\nimport java.time.LocalDate;\r\nimport java.util.ArrayList;\r\n\r\npublic class Main {\r\n    public static void main(String[] args) {\r\n\r\n        // TEST\r\n        Car car = new Car(\"ΙΚΥ1294\", \"Porche\", \"Macan\", \"Corolla\", \"2019\", \"Ασημί\");\r\n        Car car2 = new Car(\"ΙΚΥ1294\", \"Porche\", \"Macan\", \"Corolla\", \"2019\", \"Ασημί\");\r\n        Client client = new Client(\"φένια\", \"κομπ\", \"12345\", \"6957\", \"φενια@\");\r\n        Client client2 = new Client(\"erica\", \"kub\", \"67890\", \"69\", \"erica@\");\r\n        Employee employee = new Employee(\"τζον\", \"τζο\", \"γιαννης\", \"γιαννης@\", \"121212\");\r\n\r\n        LocalDate dateout1 = LocalDate.of(2025, 12, 6);\r\n        LocalDate datein1 = LocalDate.of(2025, 12, 10);\r\n        Rental rental = new Rental(car, client, dateout1, datein1, employee);\r\n        LocalDate dateout2 = LocalDate.of(2025, 12, 9);\r\n        LocalDate datein2 = LocalDate.of(2025, 12, 15);\r\n        Rental rental2 = new Rental(car2, client2, dateout2, datein2, employee);\r\n\r\n        System.out.println(car);\r\n        System.out.println(client);\r\n        System.out.println(employee);\r\n        System.out.println(rental);\r\n        System.out.println(\"\\n\");\r\n\r\n        // CAR MANAGER\r\n        CarManager takis = new CarManager();\r\n        takis.readCSV();\r\n        takis.print();\r\n        takis.add(car);\r\n        takis.writeCSV();\r\n        System.out.println(\"\\n\");\r\n\r\n        ArrayList<Car> foundCars = takis.search(null, \"Toyota\", null, null, null, null);\r\n        for (Car c : foundCars) {\r\n            System.out.println(\"Found car: \");\r\n            System.out.println(c);\r\n        }\r\n        System.out.println(\"\\n\");\r\n\r\n        // CLIENT MANAGER\r\n        ClientManager sakis = new ClientManager();\r\n        //sakis.readCSV();\r\n        sakis.add(client);\r\n        sakis.add(client2);\r\n        sakis.writeCSV();\r\n        sakis.print();\r\n        Client foundClient = sakis.search(\"erica\", null, null, null, null);\r\n        System.out.println(foundClient);\r\n        System.out.println(\"\\n\");\r\n\r\n\r\n        // EMPLOYEE MANAGER\r\n\r\n\r\n        // RENTAL MANAGER\r\n        RentalManager maria = new RentalManager(takis, sakis);\r\n        maria.add(rental);\r\n        maria.add(rental2);\r\n        maria.print();\r\n        maria.writeCSV();\r\n        System.out.println(maria.getSize());\r\n        maria.remove(rental2);\r\n        System.out.println(maria.getSize());\r\n\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Main.java b/src/Main.java
+--- a/src/Main.java	(revision 29a2e9ea155c0a5cad4be4115d97056604c01aa4)
++++ b/src/Main.java	(date 1765364154616)
+@@ -34,7 +34,7 @@
+         takis.writeCSV();
+         System.out.println("\n");
+ 
+-        ArrayList<Car> foundCars = takis.search(null, "Toyota", null, null, null, null);
++        ArrayList<Car> foundCars = takis.search("ΙΚΥ1234", "Toyota", null, null, null, null);
+         for (Car c : foundCars) {
+             System.out.println("Found car: ");
+             System.out.println(c);
+Index: vehicles_with_plates.csv
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/vehicles_with_plates.csv b/vehicles_with_plates.csv
+deleted file mode 100644
+--- a/vehicles_with_plates.csv	(revision 29a2e9ea155c0a5cad4be4115d97056604c01aa4)
++++ /dev/null	(revision 29a2e9ea155c0a5cad4be4115d97056604c01aa4)
+@@ -1,52 +0,0 @@
+-id,πινακίδα,μάρκα,τύπος,μοντέλο,έτος,χρώμα,κατάσταση
+-1,ΙΚΥ1234,Toyota,Sedan,Corolla,2019,Ασημί,Διαθέσιμο
+-2,ΝΒΡ5678,Honda,Hatchback,Civic,2020,Μπλε,Διαθέσιμο
+-3,ΡΤΛ9012,Ford,SUV,Focus,2021,Μαύρο,Διαθέσιμο
+-4,ΧΖΑ3456,Volkswagen,Sedan,Passat,2018,Λευκό,Διαθέσιμο
+-5,ΕΜΚ7890,Nissan,Crossover,Qashqai,2022,Κόκκινο,Διαθέσιμο
+-6,ΑΘΕ4567,BMW,SUV,X3,2020,Γκρι,Διαθέσιμο
+-7,ΚΟΠ1122,Peugeot,Hatchback,308,2019,Μπλε,Διαθέσιμο
+-8,ΜΝΔ3344,Mercedes,Sedan,C-Class,2021,Μαύρο,Διαθέσιμο
+-9,ΠΛΩ5566,Hyundai,SUV,Tucson,2022,Λευκό,Διαθέσιμο
+-10,ΖΗΞ7788,Kia,Crossover,Sportage,2023,Ασημί,Διαθέσιμο
+-11,ΘΡΕ8899,Renault,Hatchback,Megane,2018,Κόκκινο,Διαθέσιμο
+-12,ΣΔΦ2233,Skoda,SUV,Kodiaq,2021,Γκρι,Διαθέσιμο
+-13,ΑΒΓ3344,Fiat,Compact,Punto,2017,Μπλε,Διαθέσιμο
+-14,ΔΕΖ4455,Audi,Sedan,A4,2022,Μαύρο,Διαθέσιμο
+-15,ΗΘΙ5566,Opel,Hatchback,Astra,2020,Ασημί,Διαθέσιμο
+-16,ΚΛΜ6677,Seat,SUV,Ateca,2021,Πράσινο,Διαθέσιμο
+-17,ΝΞΟ7788,Volvo,Sedan,S60,2019,Λευκό,Διαθέσιμο
+-18,ΠΡΣ8899,Mazda,Crossover,CX-5,2022,Κόκκινο,Διαθέσιμο
+-19,ΤΥΦ9900,Subaru,SUV,Forester,2023,Γκρι,Διαθέσιμο
+-20,ΧΨΩ1122,Mini,Hatchback,Cooper,2018,Κίτρινο,Διαθέσιμο
+-21,ΑΑΑ1234,Toyota,Hatchback,Yaris,2020,Λευκό,Διαθέσιμο
+-22,ΒΒΒ2345,Ford,Sedan,Mondeo,2019,Μπλε,Διαθέσιμο
+-23,ΓΓΓ3456,Peugeot,SUV,3008,2022,Μαύρο,Διαθέσιμο
+-24,ΔΔΔ4567,Volkswagen,Hatchback,Golf,2021,Κόκκινο,Διαθέσιμο
+-25,ΕΕΕ5678,Hyundai,Sedan,Elantra,2020,Γκρι,Διαθέσιμο
+-26,ΖΖΖ6789,BMW,Coupe,Series 2,2023,Ασημί,Διαθέσιμο
+-27,ΗΗΗ7890,Audi,SUV,Q5,2021,Λευκό,Διαθέσιμο
+-28,ΘΘΘ8901,Kia,Hatchback,Rio,2018,Κόκκινο,Διαθέσιμο
+-29,ΙΙΙ9012,Mercedes,SUV,GLA,2022,Μπλε,Διαθέσιμο
+-30,ΚΚΚ0123,Nissan,Sedan,Altima,2019,Γκρι,Διαθέσιμο
+-31,ΛΛΛ1234,Renault,SUV,Kadjar,2021,Μαύρο,Διαθέσιμο
+-32,ΜΜΜ2345,Skoda,Hatchback,Fabia,2018,Λευκό,Διαθέσιμο
+-33,ΝΝΝ3456,Opel,Sedan,Insignia,2020,Ασημί,Διαθέσιμο
+-34,ΞΞΞ4567,Honda,Crossover,HR-V,2022,Πράσινο,Διαθέσιμο
+-35,ΟΟΟ5678,Ford,Hatchback,Fiesta,2017,Μπλε,Διαθέσιμο
+-36,ΠΠΠ6789,Volkswagen,SUV,T-Roc,2021,Κόκκινο,Διαθέσιμο
+-37,ΡΡΡ7890,Seat,Sedan,Leon,2020,Μαύρο,Διαθέσιμο
+-38,ΣΣΣ8901,Hyundai,Crossover,Kona,2023,Λευκό,Διαθέσιμο
+-39,ΤΤΤ9012,Peugeot,SUV,5008,2022,Ασημί,Διαθέσιμο
+-40,ΥΥΥ0123,Volvo,Crossover,XC40,2021,Μπλε,Διαθέσιμο
+-41,ΦΦΦ1234,Toyota,SUV,RAV4,2022,Κόκκινο,Διαθέσιμο
+-42,ΧΧΧ2345,Mercedes,Sedan,E-Class,2021,Μαύρο,Διαθέσιμο
+-43,ΨΨΨ3456,Kia,Hatchback,Ceed,2019,Πράσινο,Διαθέσιμο
+-44,ΩΩΩ4567,Renault,Sedan,Talisman,2020,Λευκό,Διαθέσιμο
+-45,ΑΒΓ5678,Skoda,SUV,Karoq,2023,Γκρι,Διαθέσιμο
+-46,ΒΓΔ6789,Opel,Hatchback,Corsa,2018,Μπλε,Διαθέσιμο
+-47,ΓΔΕ7890,BMW,Sedan,Series 3,2022,Ασημί,Διαθέσιμο
+-48,ΔΕΖ8901,Ford,SUV,Kuga,2021,Μαύρο,Διαθέσιμο
+-49,ΕΖΗ9012,Peugeot,Crossover,2008,2023,Κόκκινο,Διαθέσιμο
+-50,ΖΗΘ0123,Audi,Hatchback,A3,2020,Λευκό,Διαθέσιμο
+-51,ΙΚΥ1294,Porche,Macan,Corolla,2019,Ασημί,Διαθέσιμο
+Index: clients.csv
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/clients.csv b/clients.csv
+deleted file mode 100644
+--- a/clients.csv	(revision 29a2e9ea155c0a5cad4be4115d97056604c01aa4)
++++ /dev/null	(revision 29a2e9ea155c0a5cad4be4115d97056604c01aa4)
+@@ -1,3 +0,0 @@
+-name,AFM,phone,email
+-φένια,κομπατσιάρη,12345,6957,φενια@
+-erica,--,67890,69,erica@
+Index: users.csv
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/users.csv b/users.csv
+deleted file mode 100644
+--- a/users.csv	(revision 29a2e9ea155c0a5cad4be4115d97056604c01aa4)
++++ /dev/null	(revision 29a2e9ea155c0a5cad4be4115d97056604c01aa4)
+@@ -1,6 +0,0 @@
+-name,surname,username,email,password
+-John,Smith,jsmith,john.smith@test.com,password1
+-Mary,Jones,mjones,mary.jones@test.com,password2
+-Tom,Brown,tbrown,tom.brown@test.com,password3
+-Anna,White,awhite,anna.white@test.com,password4
+-Luke,Hall,lhall,luke.hall@test.com,password5
+Index: src/API/Employee.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package API;\r\n\r\npublic class Employee extends Person {\r\n    private String username;\r\n    private String password;\r\n\r\n    public Employee(String name, String surname, String username, String email, String password) {\r\n        super(name, surname, email);\r\n        this.username = username;\r\n        this.password = password;\r\n    }\r\n\r\n    public String getUsername() {\r\n        return username;\r\n    }\r\n\r\n    public void setUsername(String username) {\r\n        this.username = username;\r\n    }\r\n\r\n    public String getPassword() {\r\n        return password;\r\n    }\r\n\r\n    public void setPassword(String password) {\r\n        this.password = password;\r\n    }\r\n\r\n    @Override\r\n    public String toString() {\r\n        return \"API.Employee: \" +\r\n                \"username='\" + username + '\\'' +\r\n                \", password='\" + password + '\\'' +\r\n                \", name='\" + name + '\\'' +\r\n                \", surname='\" + surname + '\\'' +\r\n                \", email='\" + email + '\\'';\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/API/Employee.java b/src/API/Employee.java
+--- a/src/API/Employee.java	(revision 29a2e9ea155c0a5cad4be4115d97056604c01aa4)
++++ b/src/API/Employee.java	(date 1765359839021)
+@@ -28,7 +28,7 @@
+ 
+     @Override
+     public String toString() {
+-        return "API.Employee: " +
++        return "Employee: " +
+                 "username='" + username + '\'' +
+                 ", password='" + password + '\'' +
+                 ", name='" + name + '\'' +
+Index: src/API/History.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/API/History.java b/src/API/History.java
+new file mode 100644
+--- /dev/null	(date 1765357884106)
++++ b/src/API/History.java	(date 1765357884106)
+@@ -0,0 +1,13 @@
++package API;
++
++public interface History {
++
++    boolean addRentalTo(Rental rental);
++
++    void printRentals();
++
++    void writeCSVofRentals();
++
++    void readCSVofRentals();
++
++}

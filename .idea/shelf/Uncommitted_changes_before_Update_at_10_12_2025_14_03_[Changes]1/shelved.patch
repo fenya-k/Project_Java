@@ -1,0 +1,333 @@
+Index: src/API/Car.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package API;\r\n\r\npublic class Car {\r\n    private static int counter = 1;\r\n\r\n    private final int id;\r\n    private String plate;\r\n    private String brand;\r\n    private String type;\r\n    private String model;\r\n    private String year;\r\n    private String color;\r\n    private CarStatus carStatus;\r\n\r\n    public Car(String plate, String brand, String type, String model, String year, String color) {\r\n        this.id = counter++;\r\n        this.plate = plate;\r\n        this.brand = brand;\r\n        this.type = type;\r\n        this.model = model;\r\n        this.year = year;\r\n        this.color = color;\r\n        carStatus = CarStatus.AVAILABLE;\r\n    }\r\n\r\n    public Car(int id, String plate, String brand, String type, String model, String year, String color, CarStatus carStatus) {\r\n        this.id = id;\r\n        this.plate = plate;\r\n        this.brand = brand;\r\n        this.type = type;\r\n        this.model = model;\r\n        this.year = year;\r\n        this.color = color;\r\n        this.carStatus = carStatus;\r\n\r\n        if (id >= counter) {\r\n            counter = id + 1;\r\n        }\r\n    }\r\n\r\n    public int getId() {\r\n        return id;\r\n    }\r\n\r\n    public String getPlate() {\r\n        return plate;\r\n    }\r\n\r\n    public void setPlate(String plate) {\r\n        this.plate = plate;\r\n    }\r\n\r\n    public String getBrand() {\r\n        return brand;\r\n    }\r\n\r\n    public void setBrand(String brand) {\r\n        this.brand = brand;\r\n    }\r\n\r\n    public String getType() {\r\n        return type;\r\n    }\r\n\r\n    public void setType(String type) {\r\n        this.type = type;\r\n    }\r\n\r\n    public String getModel() {\r\n        return model;\r\n    }\r\n\r\n    public void setModel(String model) {\r\n        this.model = model;\r\n    }\r\n\r\n    public String getYear() {\r\n        return year;\r\n    }\r\n\r\n    public void setYear(String year) {\r\n        this.year = year;\r\n    }\r\n\r\n    public String getColor() {\r\n        return color;\r\n    }\r\n\r\n    public void setColor(String color) {\r\n        this.color = color;\r\n    }\r\n\r\n    public CarStatus getCarStatus() {\r\n        return carStatus;\r\n    }\r\n\r\n    public void setCarStatus(CarStatus carStatus) {\r\n        this.carStatus = carStatus;\r\n    }\r\n\r\n    public boolean isAvailable() {\r\n        return this.carStatus == CarStatus.AVAILABLE;\r\n    }\r\n\r\n    @Override\r\n    public String toString() {\r\n        return \"Car: \" +\r\n                \"id=\" + id +\r\n                \", plate='\" + plate + '\\'' +\r\n                \", brand='\" + brand + '\\'' +\r\n                \", type='\" + type + '\\'' +\r\n                \", model='\" + model + '\\'' +\r\n                \", year='\" + year + '\\'' +\r\n                \", color='\" + color + '\\'' +\r\n                \", car status=\" + carStatus;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/API/Car.java b/src/API/Car.java
+--- a/src/API/Car.java	(revision 29a2e9ea155c0a5cad4be4115d97056604c01aa4)
++++ b/src/API/Car.java	(date 1765362800633)
+@@ -1,6 +1,10 @@
+ package API;
+ 
+-public class Car {
++import java.io.*;
++import java.time.LocalDate;
++import java.util.ArrayList;
++
++public class Car implements History{
+     private static int counter = 1;
+ 
+     private final int id;
+@@ -11,6 +15,7 @@
+     private String year;
+     private String color;
+     private CarStatus carStatus;
++    ArrayList<Rental> carRentals;
+ 
+     public Car(String plate, String brand, String type, String model, String year, String color) {
+         this.id = counter++;
+@@ -21,6 +26,7 @@
+         this.year = year;
+         this.color = color;
+         carStatus = CarStatus.AVAILABLE;
++        carRentals = new ArrayList<>();
+     }
+ 
+     public Car(int id, String plate, String brand, String type, String model, String year, String color, CarStatus carStatus) {
+@@ -32,6 +38,7 @@
+         this.year = year;
+         this.color = color;
+         this.carStatus = carStatus;
++        carRentals = new ArrayList<>();
+ 
+         if (id >= counter) {
+             counter = id + 1;
+@@ -102,6 +109,56 @@
+         return this.carStatus == CarStatus.AVAILABLE;
+     }
+ 
++    @Override
++    public boolean addRentalTo(Rental rental){
++        if(!carRentals.contains(rental)){
++            carRentals.add(rental);
++            return true;
++        }
++        return false;
++    }
++
++    @Override
++    public void printRentals() {
++        for(Rental rental : carRentals){
++            System.out.println(rental);
++        }
++    }
++
++    @Override
++    public void writeCSVofRentals() {
++        String filename = "DataBase/HistoryCars/carRentals.csv";
++
++        try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
++
++            String header = "κωδικός ενοικίασης,πινακίδα,ΑΦΜ πελάτη,ημέρα έναρξης,ημέρα λήξης,όνομα εργαζόμενου";
++            out.write(header);
++            out.newLine();
++
++            for (Rental rental : carRentals) {
++                String line = rental.getRentCode() + "," +
++                        rental.getRentCar().getPlate() + "," +
++                        rental.getClient().getAFM() + "," +
++                        rental.getStartDate() + "," +
++                        rental.getEndDate() + "," +
++                        rental.getEmployee().getName();
++
++                out.write(line);
++                out.newLine();
++            }
++
++        } catch (FileNotFoundException e) {
++            System.err.println("Error: File not found!");
++        } catch (IOException e) {
++            System.out.println("Error: File not read!");
++        }
++    }
++
++    @Override
++    public void readCSVofRentals() {
++
++    }
++
+     @Override
+     public String toString() {
+         return "Car: " +
+Index: src/API/Client.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package API;\r\n\r\npublic class Client extends Person {\r\n    private String AFM;\r\n    private String phone;\r\n\r\n    public Client(String name, String surname, String AFM, String phone, String email) {\r\n        super(name, surname, email);\r\n        this.AFM = AFM;\r\n        this.phone = phone;\r\n    }\r\n\r\n    public String getAFM() {\r\n        return AFM;\r\n    }\r\n\r\n    public void setAFM(String AFM) {\r\n        this.AFM = AFM;\r\n    }\r\n\r\n    public String getPhone() {\r\n        return phone;\r\n    }\r\n\r\n    public void setPhone(String phone) {\r\n        this.phone = phone;\r\n    }\r\n\r\n\r\n    @Override\r\n    public String toString() {\r\n        return \"Client: \" +\r\n                \"name='\" + name + '\\'' +\r\n                \", surname='\" + surname + '\\'' +\r\n                \", AFM='\" + AFM + '\\'' +\r\n                \", phone='\" + phone + '\\'' +\r\n                \", email='\" + email + '\\'';\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/API/Client.java b/src/API/Client.java
+--- a/src/API/Client.java	(revision 29a2e9ea155c0a5cad4be4115d97056604c01aa4)
++++ b/src/API/Client.java	(date 1765359839009)
+@@ -1,13 +1,21 @@
+ package API;
+ 
+-public class Client extends Person {
++import java.io.BufferedWriter;
++import java.io.FileNotFoundException;
++import java.io.FileWriter;
++import java.io.IOException;
++import java.util.ArrayList;
++
++public class Client extends Person implements History {
+     private String AFM;
+     private String phone;
++    ArrayList<Rental> clientRentals;
+ 
+     public Client(String name, String surname, String AFM, String phone, String email) {
+         super(name, surname, email);
+         this.AFM = AFM;
+         this.phone = phone;
++        clientRentals = new ArrayList<>();
+     }
+ 
+     public String getAFM() {
+@@ -26,6 +34,55 @@
+         this.phone = phone;
+     }
+ 
++    @Override
++    public boolean addRentalTo(Rental rental) {
++        if (!clientRentals.contains(rental)) {
++            clientRentals.add(rental);
++            return true;
++        }
++        return false;
++    }
++
++    @Override
++    public void printRentals() {
++        for (Rental rental : clientRentals) {
++            System.out.println(rental);
++        }
++    }
++
++    @Override
++    public void writeCSVofRentals() {
++            String filename = "clientRentals.csv";
++
++            try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
++
++                String header = "κωδικός ενοικίασης,πινακίδα,ΑΦΜ πελάτη,ημέρα έναρξης,ημέρα λήξης,όνομα εργαζόμενου";
++                out.write(header);
++                out.newLine();
++
++                for (Rental rental : clientRentals) {
++                    String line = rental.getRentCode() + "," +
++                            rental.getRentCar().getPlate() + "," +
++                            rental.getClient().getAFM() + "," +
++                            rental.getStartDate() + "," +
++                            rental.getEndDate() + "," +
++                            rental.getEmployee().getName();
++
++                    out.write(line);
++                    out.newLine();
++                }
++
++            } catch (FileNotFoundException e) {
++                System.err.println("Error: File not found!");
++            } catch (IOException e) {
++                System.out.println("Error: File not read!");
++            }
++        }
++
++    @Override
++    public void readCSVofRentals() {
++
++    }
+ 
+     @Override
+     public String toString() {
+@@ -36,4 +93,5 @@
+                 ", phone='" + phone + '\'' +
+                 ", email='" + email + '\'';
+     }
++
+ }
+Index: src/API/ClientManager.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package API;\r\n\r\nimport java.io.*;\r\nimport java.util.ArrayList;\r\n\r\npublic class ClientManager implements Manager<Client> {\r\n    private final ArrayList<Client> clients;\r\n\r\n    public ClientManager() {\r\n        clients = new ArrayList<>();\r\n    }\r\n\r\n    @Override\r\n    public boolean add(Client client) {\r\n        for (Client c : clients) {\r\n            if (c.getAFM().equals(client.getAFM())) {\r\n                System.out.println(\"Υπάρχει ήδη πελάτης με το ΑΦΜ \" + client.getAFM());\r\n                return false;\r\n            }\r\n        }\r\n        clients.add(client);\r\n        System.out.println(\"Ο πελάτης προστέθηκε\");\r\n        return true;\r\n    }\r\n\r\n    @Override\r\n    public boolean remove(Client client) {\r\n        for (int i = 0; i < clients.size(); i++) {\r\n            if (clients.get(i).getAFM().equals(client.getAFM())) {\r\n                clients.remove(i);\r\n                System.out.println(\"Ο πελάτης διαγράφηκε\");\r\n                return true;\r\n            }\r\n        }\r\n        System.out.println(\"Δεν βρέθηκε κάποιος πελάτης με το ΑΦΜ \" + client.getAFM());\r\n        return false;\r\n    }\r\n\r\n    @Override\r\n    public ArrayList<Client> getAll() {\r\n        return clients;\r\n    }\r\n\r\n    @Override\r\n    public int getSize() {\r\n        return clients.size();\r\n    }\r\n\r\n    @Override\r\n    public void print() {\r\n        for (Client client : clients) {\r\n            System.out.println(client.toString());\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void readCSV() {\r\n        String filename = \"clients.csv\";\r\n        String line;\r\n        String delimiter = \",\";\r\n\r\n        try (BufferedReader in = new BufferedReader(new FileReader(filename))) {\r\n            in.readLine(); //skips the first line because it's a header\r\n\r\n            while ((line = in.readLine()) != null) {\r\n                String[] data = line.split(delimiter);\r\n\r\n                String name = data[0].trim();\r\n                String surname = data[1].trim();\r\n                String AFM = data[2].trim();\r\n                String phone = data[3].trim();\r\n                String email = data[4].trim();\r\n\r\n                Client client = new Client(name, surname, AFM, phone, email);\r\n                clients.add(client);\r\n            }\r\n        } catch (FileNotFoundException e) {\r\n            System.err.println(\"Error: File not found!\");\r\n        } catch (IOException e) {\r\n            System.out.println(\"Error: File not read!\");\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void writeCSV() {\r\n        String filename = \"clients.csv\";\r\n        String line;\r\n\r\n        try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {\r\n\r\n            String header = \"name,surname,AFM,phone,email\";\r\n            out.write(header);\r\n            out.newLine();\r\n\r\n            for (Client client : clients) {\r\n\r\n                line = client.getName() + \",\" +\r\n                        client.getSurname() + \",\" +\r\n                        client.getAFM() + \",\" +\r\n                        client.getPhone() + \",\" +\r\n                        client.getEmail();\r\n\r\n                out.write(line);\r\n                out.newLine();\r\n            }\r\n        } catch (FileNotFoundException e) {\r\n            System.err.println(\"Error: File not found!\");\r\n        } catch (IOException e) {\r\n            System.out.println(\"Error: File not read!\");\r\n        }\r\n    }\r\n\r\n\r\n    public Client search(String name, String surname, String AFM, String phone, String email) {\r\n        for (Client client : clients) {\r\n            if (name != null && !name.isEmpty()) {\r\n                if (!client.getName().equalsIgnoreCase(name)) {\r\n                    continue;\r\n                }\r\n            }\r\n            if (surname != null && !surname.isEmpty()) {\r\n                if (!client.getSurname().equalsIgnoreCase(surname)) {\r\n                    continue;\r\n                }\r\n            }\r\n            if (AFM != null && !AFM.isEmpty()) {\r\n                if (!client.getAFM().equalsIgnoreCase(AFM)) {\r\n                    continue;\r\n                }\r\n            }\r\n            if (phone != null && !phone.isEmpty()) {\r\n                if (!client.getPhone().equalsIgnoreCase(phone)) {\r\n                    continue;\r\n                }\r\n            }\r\n            if (email != null && !email.isEmpty()) {\r\n                if (!client.getEmail().equalsIgnoreCase(email)) {\r\n                    continue;\r\n                }\r\n            }\r\n            return client;\r\n        }\r\n        return null;\r\n    }\r\n\r\n    public Client findByAFM(String AFM) {\r\n        for (Client c : clients) {\r\n            if (c.getAFM().equalsIgnoreCase(AFM)) return c;\r\n        }\r\n        return null;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/API/ClientManager.java b/src/API/ClientManager.java
+--- a/src/API/ClientManager.java	(revision 29a2e9ea155c0a5cad4be4115d97056604c01aa4)
++++ b/src/API/ClientManager.java	(date 1765366723514)
+@@ -25,7 +25,11 @@
+ 
+     @Override
+     public boolean remove(Client client) {
+-        for (int i = 0; i < clients.size(); i++) {
++        int clientsSize = clients.size();
++        //η μεταβλητή clientsSize χρησιμοποιείται για να μην υπολογίζεται επανειλημμένα στη for (int i = 0; i < clients.size(); i++)
++        //από τη στιγμή που γίνεται return μετά τη διαγραφή δε θα εμφανίσει IndexOutOfBoundsException
++        //σε περίπτωση που θέλαμε να διαγράψουμε πολλαπλούς πελάτες με το ίδιο ΑΦΜ θα ήταν λάθος
++        for (int i = 0; i < clientsSize; i++) { //χρήση αυτής της for για αποθήκευση της θέσης στο i
+             if (clients.get(i).getAFM().equals(client.getAFM())) {
+                 clients.remove(i);
+                 System.out.println("Ο πελάτης διαγράφηκε");
+@@ -55,7 +59,7 @@
+ 
+     @Override
+     public void readCSV() {
+-        String filename = "clients.csv";
++        String filename = "DataBase/ManagerFiles/clients.csv";
+         String line;
+         String delimiter = ",";
+ 
+@@ -83,7 +87,7 @@
+ 
+     @Override
+     public void writeCSV() {
+-        String filename = "clients.csv";
++        String filename = "DataBase/ManagerFiles/clients.csv";
+         String line;
+ 
+         try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
+@@ -112,6 +116,13 @@
+ 
+ 
+     public Client search(String name, String surname, String AFM, String phone, String email) {
++
++        /* Οι πελάτες μπαίνουν στη for με τη σειρά, έπειτα γίνεται έλεγχος σε κάθε if αν έχει δοθεί τιμή για σύγκριση
++         αν δεν έχει δοθεί τιμή (null) τότε προχωράει στην επόμενη if χωρίς να μπει στο σώμα της
++         αν έχει δοθεί τιμή τότε τη συγκρίνει με αυτή του εκάστοτε αυτοκινήτου και
++         -αν είναι ίση τότε προχωράει στην επόμενη if χωρίς να μπει στο σώμα της
++         -αν δεν είναι ίση τότε μπαίνει στο σώμα της, κάνει continue και έρχεται ο επόμενος πελάτης */
++
+         for (Client client : clients) {
+             if (name != null && !name.isEmpty()) {
+                 if (!client.getName().equalsIgnoreCase(name)) {
+Index: src/API/CarManager.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package API;\r\n\r\nimport java.io.*;\r\nimport java.util.ArrayList;\r\n\r\npublic class CarManager implements Manager<Car> {\r\n    private final ArrayList<Car> cars;\r\n\r\n    public CarManager() {\r\n        cars = new ArrayList<>();\r\n    }\r\n\r\n    @Override\r\n    public boolean add(Car car) {\r\n        for (Car c : cars) {\r\n            if (c.getPlate().equalsIgnoreCase(car.getPlate())) {\r\n                System.out.println(\"Υπάρχει ήδη αυτοκίνητο με την πινακίδα \" + car.getPlate());\r\n                return false;\r\n            }\r\n        }\r\n        cars.add(car);\r\n        System.out.println(\"Το αυτοκίνητο προστέθηκε\");\r\n        return true;\r\n    }\r\n\r\n    @Override\r\n    public boolean remove(Car car) {\r\n        for (int i = 0; i < cars.size(); i++) {\r\n            if (cars.get(i).getPlate().equalsIgnoreCase(car.getPlate())) {\r\n                cars.remove(i);\r\n                System.out.println(\"Το αυτοκίνητο διαγράφηκε\");\r\n                return true;\r\n            }\r\n        }\r\n        System.out.println(\"Δεν βρέθηκε κάποιο αυτοκίνητο με την πινακίδα \" + car.getPlate());\r\n        return false;\r\n    }\r\n\r\n    @Override\r\n    public ArrayList<Car> getAll() {\r\n        ArrayList<Car> temp = this.cars; //encapsulation - defensive copying\r\n        return temp;\r\n    }\r\n\r\n    @Override\r\n    public int getSize() {\r\n        return cars.size();\r\n    }\r\n\r\n    @Override\r\n    public void print() {\r\n        for (Car car : cars) {\r\n            System.out.println(car.toString());\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void readCSV() {\r\n        String filename = \"vehicles_with_plates.csv\";\r\n        String line;\r\n        String delimiter = \",\";\r\n\r\n        try (BufferedReader in = new BufferedReader(new FileReader(filename))) {\r\n            in.readLine(); //skips the first line because it's a header\r\n\r\n            while ((line = in.readLine()) != null) {\r\n                String[] data = line.split(delimiter);\r\n\r\n                int id = Integer.parseInt(data[0].trim());\r\n                String plate = data[1].trim();\r\n                String brand = data[2].trim();\r\n                String type = data[3].trim();\r\n                String model = data[4].trim();\r\n                String year = data[5].trim();\r\n                String color = data[6].trim();\r\n                String statusGreek = data[7].trim();\r\n\r\n                CarStatus status;\r\n                if (statusGreek.equalsIgnoreCase(\"Διαθέσιμο\")) {\r\n                    status = CarStatus.AVAILABLE;\r\n                } else {\r\n                    status = CarStatus.RENTED;\r\n                }\r\n\r\n                Car car = new Car(id, plate, brand, type, model, year, color, status);\r\n                cars.add(car);\r\n            }\r\n        } catch (FileNotFoundException e) {\r\n            System.err.println(\"Error: File not found!\");\r\n        } catch (IOException e) {\r\n            System.out.println(\"Error: File not read!\");\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void writeCSV() {\r\n        String filename = \"vehicles_with_plates.csv\";\r\n        String line;\r\n\r\n        try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {\r\n\r\n            String header = \"id,πινακίδα,μάρκα,τύπος,μοντέλο,έτος,χρώμα,κατάσταση\";\r\n            out.write(header);\r\n            out.newLine();\r\n\r\n            for (Car car : cars) {\r\n                String availability = car.isAvailable() ? \"Διαθέσιμο\" : \"Ενοικιασμένο\";\r\n\r\n                line = car.getId() + \",\" +\r\n                        car.getPlate() + \",\" +\r\n                        car.getBrand() + \",\" +\r\n                        car.getType() + \",\" +\r\n                        car.getModel() + \",\" +\r\n                        car.getYear() + \",\" +\r\n                        car.getColor() + \",\" +\r\n                        availability;\r\n\r\n                out.write(line);\r\n                out.newLine();\r\n            }\r\n        } catch (FileNotFoundException e) {\r\n            System.err.println(\"Error: File not found!\");\r\n        } catch (IOException e) {\r\n            System.out.println(\"Error: File not read!\");\r\n        }\r\n    }\r\n\r\n    public ArrayList<Car> search(String plate, String brand, String type, String model, String color, Boolean available) {\r\n        ArrayList<Car> foundCars = new ArrayList<>();\r\n\r\n        for (Car car : cars) {\r\n            if (plate != null && !plate.isEmpty() && !car.getPlate().equalsIgnoreCase(plate)) {\r\n                continue;\r\n            }\r\n            if (brand != null && !brand.isEmpty() && !car.getBrand().equalsIgnoreCase(brand)) {\r\n                continue;\r\n            }\r\n            if (type != null && !type.isEmpty() && !car.getType().equalsIgnoreCase(type)) {\r\n                continue;\r\n            }\r\n            if (model != null && !model.isEmpty() && !car.getModel().equalsIgnoreCase(model)) {\r\n                continue;\r\n            }\r\n            if (color != null && !color.isEmpty() && !car.getColor().equalsIgnoreCase(color)) {\r\n                continue;\r\n            }\r\n            if (available != null && car.isAvailable() != available) {\r\n                continue;\r\n            }\r\n            foundCars.add(car);\r\n        }\r\n        return foundCars;\r\n    }\r\n\r\n    public Car findByPlate(String plate) {\r\n        for (Car c : cars) {\r\n            if (c.getPlate().equalsIgnoreCase(plate)) return c;\r\n        }\r\n        return null;\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/API/CarManager.java b/src/API/CarManager.java
+--- a/src/API/CarManager.java	(revision 29a2e9ea155c0a5cad4be4115d97056604c01aa4)
++++ b/src/API/CarManager.java	(date 1765366723547)
+@@ -25,7 +25,11 @@
+ 
+     @Override
+     public boolean remove(Car car) {
+-        for (int i = 0; i < cars.size(); i++) {
++        int carsSize = cars.size();
++        //η μεταβλητή carsSize χρησιμοποιείται για να μην υπολογίζεται επανειλημμένα στη for (int i = 0; i < cars.size(); i++)
++        //από τη στιγμή που γίνεται return μετά τη διαγραφή δε θα εμφανίσει IndexOutOfBoundsException
++        //σε περίπτωση που θέλαμε να διαγράψουμε πολλαπλά αυτοκίνητα με την ίδια πινακίδα θα ήταν λάθος
++        for (int i = 0; i < carsSize; i++) { //χρήση αυτής της for για αποθήκευση της θέσης στο i
+             if (cars.get(i).getPlate().equalsIgnoreCase(car.getPlate())) {
+                 cars.remove(i);
+                 System.out.println("Το αυτοκίνητο διαγράφηκε");
+@@ -56,7 +60,7 @@
+ 
+     @Override
+     public void readCSV() {
+-        String filename = "vehicles_with_plates.csv";
++        String filename = "DataBase/ManagerFiles/vehicles.csv";
+         String line;
+         String delimiter = ",";
+ 
+@@ -94,8 +98,7 @@
+ 
+     @Override
+     public void writeCSV() {
+-        String filename = "vehicles_with_plates.csv";
+-        String line;
++        String filename = "DataBase/ManagerFiles/vehicles.csv";
+ 
+         try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
+ 
+@@ -106,7 +109,7 @@
+             for (Car car : cars) {
+                 String availability = car.isAvailable() ? "Διαθέσιμο" : "Ενοικιασμένο";
+ 
+-                line = car.getId() + "," +
++                String line = car.getId() + "," +
+                         car.getPlate() + "," +
+                         car.getBrand() + "," +
+                         car.getType() + "," +
+@@ -125,13 +128,20 @@
+         }
+     }
+ 
++
+     public ArrayList<Car> search(String plate, String brand, String type, String model, String color, Boolean available) {
+         ArrayList<Car> foundCars = new ArrayList<>();
+ 
+-        for (Car car : cars) {
++        /* Τα αυτοκίνητα μπαίνουν στη for με τη σειρά, έπειτα γίνεται έλεγχος σε κάθε if αν έχει δοθεί τιμή για σύγκριση
++         αν δεν έχει δοθεί τιμή (null) τότε προχωράει στην επόμενη if χωρίς να μπει στο σώμα της
++         αν έχει δοθεί τιμή τότε τη συγκρίνει με αυτή του εκάστοτε αυτοκινήτου και
++         -αν είναι ίση τότε προχωράει στην επόμενη if χωρίς να μπει στο σώμα της
++         -αν δεν είναι ίση τότε μπαίνει στο σώμα της, κάνει continue και έρχεται το επόμενο αυτοκίνητο */
++
++        for (Car car : cars) { //null proofing (protection from NullPointerExceptions)
+             if (plate != null && !plate.isEmpty() && !car.getPlate().equalsIgnoreCase(plate)) {
+                 continue;
+-            }
++            } //η πινακίδα έρχεται πρώτη ώστε αν είναι διαφορετική δε χρειάζονται οι υπόλοιποι έλεγχοι
+             if (brand != null && !brand.isEmpty() && !car.getBrand().equalsIgnoreCase(brand)) {
+                 continue;
+             }
+@@ -158,5 +168,4 @@
+         }
+         return null;
+     }
+-
+ }
