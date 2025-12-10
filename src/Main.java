@@ -127,14 +127,5 @@ public class Main {
         clientManager.writeCSV();
         rentalManager.writeCSV();
 
-
-
-
-
-
-
-
-
-
     }
 }

@@ -26,7 +26,11 @@ public class CarManager implements Manager<Car> {
 
     @Override
     public boolean remove(Car car) {
-        for (int i = 0; i < cars.size(); i++) {
+        int carsSize = cars.size();
+        //η μεταβλητή carsSize χρησιμοποιείται για να μην υπολογίζεται επανειλημμένα στη for (int i = 0; i < cars.size(); i++)
+        //από τη στιγμή που γίνεται return μετά τη διαγραφή δε θα εμφανίσει IndexOutOfBoundsException
+        //σε περίπτωση που θέλαμε να διαγράψουμε πολλαπλά αυτοκίνητα με την ίδια πινακίδα θα ήταν λάθος
+        for (int i = 0; i < carsSize; i++) { //χρήση αυτής της for για αποθήκευση της θέσης στο i
             if (cars.get(i).getPlate().equalsIgnoreCase(car.getPlate())) {
                 cars.remove(i);
                 System.out.println("Το αυτοκίνητο διαγράφηκε");
@@ -57,7 +61,7 @@ public class CarManager implements Manager<Car> {
 
     @Override
     public void readCSV() {
-        String filename = "vehicles_with_plates.csv";
+        String filename = "DataBase/ManagerFiles/vehicles.csv";
         String line;
         String delimiter = ",";
 
@@ -95,8 +99,7 @@ public class CarManager implements Manager<Car> {
 
     @Override
     public void writeCSV() {
-        String filename = "vehicles_with_plates.csv";
-        String line;
+        String filename = "DataBase/ManagerFiles/vehicles.csv";
 
         try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
 
@@ -107,7 +110,7 @@ public class CarManager implements Manager<Car> {
             for (Car car : cars) {
                 String availability = car.isAvailable() ? "Διαθέσιμο" : "Ενοικιασμένο";
 
-                line = car.getId() + "," +
+                String line = car.getId() + "," +
                         car.getPlate() + "," +
                         car.getBrand() + "," +
                         car.getType() + "," +
@@ -126,13 +129,20 @@ public class CarManager implements Manager<Car> {
         }
     }
 
+
     public ArrayList<Car> search(String plate, String brand, String type, String model, String color, Boolean available) {
         ArrayList<Car> foundCars = new ArrayList<>();
 
-        for (Car car : cars) {
+        /* Τα αυτοκίνητα μπαίνουν στη for με τη σειρά, έπειτα γίνεται έλεγχος σε κάθε if αν έχει δοθεί τιμή για σύγκριση
+         αν δεν έχει δοθεί τιμή (null) τότε προχωράει στην επόμενη if χωρίς να μπει στο σώμα της
+         αν έχει δοθεί τιμή τότε τη συγκρίνει με αυτή του εκάστοτε αυτοκινήτου και
+         -αν είναι ίση τότε προχωράει στην επόμενη if χωρίς να μπει στο σώμα της
+         -αν δεν είναι ίση τότε μπαίνει στο σώμα της, κάνει continue και έρχεται το επόμενο αυτοκίνητο */
+
+        for (Car car : cars) { //null proofing (protection from NullPointerExceptions)
             if (plate != null && !plate.isEmpty() && !car.getPlate().equalsIgnoreCase(plate)) {
                 continue;
-            }
+            } //η πινακίδα έρχεται πρώτη ώστε αν είναι διαφορετική δε χρειάζονται οι υπόλοιποι έλεγχοι
             if (brand != null && !brand.isEmpty() && !car.getBrand().equalsIgnoreCase(brand)) {
                 continue;
             }
@@ -159,5 +169,4 @@ public class CarManager implements Manager<Car> {
         }
         return null;
     }
-
 }

@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class EmployeeManager {
-    private String filename="users.csv";
+    private final String filename="DataBase/ManagerFiles/users.csv";
     private ArrayList<Employee> employees;
 
     public EmployeeManager(){

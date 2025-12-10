@@ -4,7 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="35b9289b-614b-4ad3-ae10-3e9c21368406" name="Changes" comment="corrections" />
+    <list default="true" id="35b9289b-614b-4ad3-ae10-3e9c21368406" name="Changes" comment="corrections">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DataBase/ManagerFiles/clients.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DataBase/ManagerFiles/rentals.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DataBase/ManagerFiles/vehicles.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Project_Java.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Project_Java/API/CarStatus.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Project_Java/API/Manager.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Project_Java/API/Person.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/API/History.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clients.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API/Car.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/Car.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API/CarManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/CarManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API/ClientManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/ClientManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API/EmployeeManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/EmployeeManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users.csv" beforeDir="false" afterPath="$PROJECT_DIR$/DataBase/ManagerFiles/users.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vehicles_with_plates.csv" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -53,6 +76,7 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "Merging main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true"
   }
