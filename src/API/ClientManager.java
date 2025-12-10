@@ -1,67 +1,78 @@
 package API;
 
-
 import java.io.*;
 import java.util.ArrayList;
 
-public class ClientManager {
-    private String filename="clients.csv";
-    private ArrayList<Client> clients;
+public class ClientManager implements Manager<Client> {
+    private final ArrayList<Client> clients;
 
     public ClientManager() {
         clients = new ArrayList<>();
-        readCSV();
     }
 
-    public void addClient(Client client) {
-        for (Client c: clients){
-            if(client.getAFM().equals(client.getAFM())){
-                System.out.println("Client with AFM " +client.getAFM()+" already exists");
-            return;
+    @Override
+    public boolean add(Client client) {
+        for (Client c : clients) {
+            if (c.getAFM().equals(client.getAFM())) {
+                System.out.println("Υπάρχει ήδη πελάτης με το ΑΦΜ " + client.getAFM());
+                return false;
             }
         }
         clients.add(client);
-        writeCSV();
-        System.out.println("Client added successfully");
+        System.out.println("Ο πελάτης προστέθηκε");
+        return true;
     }
 
+    @Override
+    public boolean remove(Client client) {
+        for (int i = 0; i < clients.size(); i++) {
+            if (clients.get(i).getAFM().equals(client.getAFM())) {
+                clients.remove(i);
+                System.out.println("Ο πελάτης διαγράφηκε");
+                return true;
+            }
+        }
+        System.out.println("Δεν βρέθηκε κάποιος πελάτης με το ΑΦΜ " + client.getAFM());
+        return false;
+    }
 
-
-    public ArrayList<Client> getClients() {
+    @Override
+    public ArrayList<Client> getAll() {
         return clients;
     }
 
+    @Override
     public int getSize() {
         return clients.size();
     }
 
-    public void printClients() {
-        for (Client client: clients) {
-            System.out.println(client);
+    @Override
+    public void print() {
+        for (Client client : clients) {
+            System.out.println(client.toString());
         }
     }
 
+    @Override
     public void readCSV() {
+        String filename = "clients.csv";
         String line;
         String delimiter = ",";
-        clients.clear();;
 
         try (BufferedReader in = new BufferedReader(new FileReader(filename))) {
-            in.readLine(); //skips the first line
+            in.readLine(); //skips the first line because it's a header
 
             while ((line = in.readLine()) != null) {
                 String[] data = line.split(delimiter);
-                if(data.length>=5){
-                    String afm = data[0].trim();
-                    String name = data[1].trim();
-                    String surname = data[2].trim();
-                    String phone = data[3].trim();
-                    String email = data[4].trim();
 
-                    Client client = new Client(afm, name, surname, phone, email);
-                    clients.add(client);
-                }
+                String name = data[0].trim();
+                String surname = data[1].trim();
+                String AFM = data[2].trim();
+                String phone = data[3].trim();
+                String email = data[4].trim();
 
+                Client client = new Client(name, surname, AFM, phone, email);
+                clients.add(client);
             }
         } catch (FileNotFoundException e) {
             System.err.println("Error: File not found!");
@@ -70,27 +81,72 @@ public class ClientManager {
         }
     }
 
+    @Override
     public void writeCSV() {
+        String filename = "clients.csv";
+        String line;
 
         try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
 
-            String header="AFM,name,surname,phone,email";
+            String header = "name,surname,AFM,phone,email";
             out.write(header);
             out.newLine();
 
-            for (Client client: clients){
-               String line = client.getAFM() + "," +
-                        client.getName() + "," +
+            for (Client client : clients) {
+
+                line = client.getName() + "," +
                         client.getSurname() + "," +
+                        client.getAFM() + "," +
                         client.getPhone() + "," +
                         client.getEmail();
+
                 out.write(line);
                 out.newLine();
             }
-        }  catch (IOException e) {
-            System.out.println("Error: writing file!");
+        } catch (FileNotFoundException e) {
+            System.err.println("Error: File not found!");
+        } catch (IOException e) {
+            System.out.println("Error: File not read!");
         }
     }
 
-}
 
+    public Client search(String name, String surname, String AFM, String phone, String email) {
+        for (Client client : clients) {
+            if (name != null && !name.isEmpty()) {
+                if (!client.getName().equalsIgnoreCase(name)) {
+                    continue;
+                }
+            }
+            if (surname != null && !surname.isEmpty()) {
+                if (!client.getSurname().equalsIgnoreCase(surname)) {
+                    continue;
+                }
+            }
+            if (AFM != null && !AFM.isEmpty()) {
+                if (!client.getAFM().equalsIgnoreCase(AFM)) {
+                    continue;
+                }
+            }
+            if (phone != null && !phone.isEmpty()) {
+                if (!client.getPhone().equalsIgnoreCase(phone)) {
+                    continue;
+                }
+            }
+            if (email != null && !email.isEmpty()) {
+                if (!client.getEmail().equalsIgnoreCase(email)) {
+                    continue;
+                }
+            }
+            return client;
+        }
+        return null;
+    }
+
+    public Client findByAFM(String AFM) {
+        for (Client c : clients) {
+            if (c.getAFM().equalsIgnoreCase(AFM)) return c;
+        }
+        return null;
+    }
+}

@@ -1,18 +1,19 @@
-package API;//package api;
+package API;
 
 import java.io.*;
 import java.util.ArrayList;
 
-public class CarManager {
-    private ArrayList<Car> cars;
+public class CarManager implements Manager<Car> {
+    private final ArrayList<Car> cars;
 
     public CarManager() {
         cars = new ArrayList<>();
     }
 
-    public boolean addCar(Car car) {
-        for(Car c : cars){
-            if (c.getPlate().equals(car.getPlate())) {
+    @Override
+    public boolean add(Car car) {
+        for (Car c : cars) {
+            if (c.getPlate().equalsIgnoreCase(car.getPlate())) {
                 System.out.println("Υπάρχει ήδη αυτοκίνητο με την πινακίδα " + car.getPlate());
                 return false;
             }
@@ -22,9 +23,10 @@ public class CarManager {
         return true;
     }
 
-    public boolean removeCar(Car car) {
+    @Override
+    public boolean remove(Car car) {
         for (int i = 0; i < cars.size(); i++) {
-            if (cars.get(i).getPlate().equals(car.getPlate())) {
+            if (cars.get(i).getPlate().equalsIgnoreCase(car.getPlate())) {
                 cars.remove(i);
                 System.out.println("Το αυτοκίνητο διαγράφηκε");
                 return true;
@@ -34,20 +36,25 @@ public class CarManager {
         return false;
     }
 
-    public ArrayList<Car> getCars() {
-        return cars;
+    @Override
+    public ArrayList<Car> getAll() {
+        ArrayList<Car> temp = this.cars; //encapsulation - defensive copying
+        return temp;
     }
 
+    @Override
     public int getSize() {
         return cars.size();
     }
 
-    public void printCars() {
+    @Override
+    public void print() {
         for (Car car : cars) {
             System.out.println(car.toString());
         }
     }
 
+    @Override
     public void readCSV() {
         String filename = "vehicles_with_plates.csv";
         String line;
@@ -85,17 +92,18 @@ public class CarManager {
         }
     }
 
+    @Override
     public void writeCSV() {
         String filename = "vehicles_with_plates.csv";
         String line;
 
         try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
 
-            String header="id,πινακίδα,μάρκα,τύπος,μοντέλο,έτος,χρώμα,κατάσταση";
+            String header = "id,πινακίδα,μάρκα,τύπος,μοντέλο,έτος,χρώμα,κατάσταση";
             out.write(header);
             out.newLine();
 
-            for (Car car: cars){
+            for (Car car : cars) {
                 String availability = car.isAvailable() ? "Διαθέσιμο" : "Ενοικιασμένο";
 
                 line = car.getId() + "," +
@@ -117,43 +125,38 @@ public class CarManager {
         }
     }
 
-    public ArrayList<Car> searchCar(String plate, String brand, String type, String model, String color, Boolean available) {
+    public ArrayList<Car> search(String plate, String brand, String type, String model, String color, Boolean available) {
         ArrayList<Car> foundCars = new ArrayList<>();
 
         for (Car car : cars) {
-            if (plate != null && !plate.isEmpty()) {
-                if (!car.getPlate().equalsIgnoreCase(plate)) {
-                    continue;
-                }
+            if (plate != null && !plate.isEmpty() && !car.getPlate().equalsIgnoreCase(plate)) {
+                continue;
             }
-            if (brand != null && !brand.isEmpty()) {
-                if (!car.getBrand().equalsIgnoreCase(brand)) {
-                    continue;
-                }
+            if (brand != null && !brand.isEmpty() && !car.getBrand().equalsIgnoreCase(brand)) {
+                continue;
             }
-            if (type != null && !type.isEmpty()) {
-                if (!car.getType().equalsIgnoreCase(type)) {
-                    continue;
-                }
+            if (type != null && !type.isEmpty() && !car.getType().equalsIgnoreCase(type)) {
+                continue;
             }
-            if (model != null && !model.isEmpty()) {
-                if (!car.getModel().equalsIgnoreCase(model)) {
-                    continue;
-                }
+            if (model != null && !model.isEmpty() && !car.getModel().equalsIgnoreCase(model)) {
+                continue;
             }
-            if (color != null && !color.isEmpty()) {
-                if (!car.getColor().equalsIgnoreCase(color)) {
-                    continue;
-                }
+            if (color != null && !color.isEmpty() && !car.getColor().equalsIgnoreCase(color)) {
+                continue;
             }
-            if (available != null) {
-                if (car.isAvailable() != available) {
-                    continue;
-                }
+            if (available != null && car.isAvailable() != available) {
+                continue;
             }
             foundCars.add(car);
         }
         return foundCars;
+    }
+
+    public Car findByPlate(String plate) {
+        for (Car c : cars) {
+            if (c.getPlate().equalsIgnoreCase(plate)) return c;
+        }
+        return null;
     }
 
 }

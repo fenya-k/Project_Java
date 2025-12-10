@@ -22,6 +22,19 @@ public class Rental {
         // this.rentCar.setCarStatus(CarStatus.RENTED); //Status update moved to RentalManager.
     }
 
+    public Rental(int rentCode, Car rentCar, Client client, LocalDate startDate, LocalDate endDate, Employee employee) {
+        this.rentCode = rentCode;
+        this.rentCar = rentCar;
+        this.client = client;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.employee = employee;
+
+        if (rentCode >= counter) {
+            counter = rentCode + 1;
+        }
+    }
+
     public static int getCounter() {
         return counter;
     }
@@ -80,12 +93,12 @@ public class Rental {
 
     @Override
     public String toString() {
-        return "API.Rental: " +
+        return "Rental: " +
                 "rentCode=" + rentCode +
-                ", rentCar=" + rentCar +
-                ", client=" + client.getName() +
-                ", startDate='" + startDate + '\'' +
-                ", endDate='" + endDate + '\'' +
-                ", employee=" + employee.getName();
+                ", rentCar=" + rentCar.getPlate() +
+                ", client=" + client.getName() + client.getSurname() +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", employee=" + employee.getUsername();
     }
 }

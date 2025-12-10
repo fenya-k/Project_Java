@@ -4,7 +4,7 @@ public class Client extends Person {
     private String AFM;
     private String phone;
 
-    public Client(String AFM, String name, String surname, String phone, String email) {
+    public Client(String name, String surname, String AFM, String phone, String email) {
         super(name, surname, email);
         this.AFM = AFM;
         this.phone = phone;
@@ -29,9 +29,10 @@ public class Client extends Person {
 
     @Override
     public String toString() {
-        return "API.Client: " +
-                "AFM='" + AFM + '\'' +
-                ", name='" + name + '\'' +
+        return "Client: " +
+                "name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", AFM='" + AFM + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'';
     }

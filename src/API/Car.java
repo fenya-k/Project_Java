@@ -3,7 +3,7 @@ package API;
 public class Car {
     private static int counter = 1;
 
-    private int id;
+    private final int id;
     private String plate;
     private String brand;
     private String type;
@@ -90,9 +90,13 @@ public class Car {
         this.color = color;
     }
 
-    public CarStatus getCarStatus() { return carStatus; }
+    public CarStatus getCarStatus() {
+        return carStatus;
+    }
 
-    public void setCarStatus(CarStatus carStatus) { this.carStatus = carStatus; }
+    public void setCarStatus(CarStatus carStatus) {
+        this.carStatus = carStatus;
+    }
 
     public boolean isAvailable() {
         return this.carStatus == CarStatus.AVAILABLE;
@@ -100,7 +104,7 @@ public class Car {
 
     @Override
     public String toString() {
-        return "API.Car: " +
+        return "Car: " +
                 "id=" + id +
                 ", plate='" + plate + '\'' +
                 ", brand='" + brand + '\'' +
@@ -109,10 +113,5 @@ public class Car {
                 ", year='" + year + '\'' +
                 ", color='" + color + '\'' +
                 ", car status=" + carStatus;
-    }
-
-    public static class RentalManager{
-
-
     }
 }
