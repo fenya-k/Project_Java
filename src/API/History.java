@@ -1,12 +1,13 @@
 package API;
 
+import java.util.ArrayList;
+
 public interface History {
 
     boolean addRental(Rental rental);
 
     void printRentals();
 
-    void writeCSVofRentals();
+    ArrayList<Rental> returnList();
 
-    void readCSVofRentals();
 }

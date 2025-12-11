@@ -6,7 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Client extends Person implements History {
+public class Client extends Person implements History, ReadWriteCSV {
     private String AFM;
     private String phone;
     ArrayList<Rental> clientRentals;
@@ -36,52 +36,31 @@ public class Client extends Person implements History {
 
     @Override
     public boolean addRental(Rental rental) {
-        if (!clientRentals.contains(rental)) {
-            clientRentals.add(rental);
-            return true;
+        for (Rental r : clientRentals) {
+            if (r.getRentCode() == rental.getRentCode()) {
+                System.out.println("Υπάρχει ήδη ενοικίαση με κωδικό " + rental.getRentCode());
+                return false;
+            }
         }
-        return false;
+        clientRentals.add(rental);
+        return true;
     }
 
     @Override
     public void printRentals() {
-        for (Rental rental : clientRentals) {
-            System.out.println(rental);
+        if (clientRentals.isEmpty()) {
+            System.out.println("No rentals found");
+        } else {
+            for (Rental rental : clientRentals) {
+                System.out.println(rental.toString());
+            }
         }
     }
 
     @Override
-    public void writeCSVofRentals() {
-            String filename = "clientRentals.csv";
-
-            try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
-
-                String header = "κωδικός ενοικίασης,πινακίδα,ΑΦΜ πελάτη,ημέρα έναρξης,ημέρα λήξης,όνομα εργαζόμενου";
-                out.write(header);
-                out.newLine();
-
-                for (Rental rental : clientRentals) {
-                    String line = rental.getRentCode() + "," +
-                            rental.getRentCar().getPlate() + "," +
-                            rental.getClient().getAFM() + "," +
-                            rental.getStartDate() + "," +
-                            rental.getEndDate() + "," +
-                            rental.getEmployee().getName();
-
-                    out.write(line);
-                    out.newLine();
-                }
-
-            } catch (FileNotFoundException e) {
-                System.err.println("Error: File not found!");
-            } catch (IOException e) {
-                System.out.println("Error: File not read!");
-            }
-        }
-
-    @Override
-    public void readCSVofRentals() {
-
+    public ArrayList<Rental> returnList() {
+        ArrayList<Rental> temp = this.clientRentals; //encapsulation - defensive copying
+        return temp;
     }
 
     @Override

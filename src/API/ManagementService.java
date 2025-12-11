@@ -1,6 +1,12 @@
 package API;
 
 public class ManagementService {
+    private final String filenameCars = "DataBase/ManagerFiles/vehicles.csv";
+    private final String filenameClients = "DataBase/ManagerFiles/clients.csv";
+    private final String filenameEmployees = "DataBase/ManagerFiles/users.csv";
+    private final String filenameRentals = "DataBase/ManagerFiles/rentals.csv";
+    private final String filenameCarRentals = "DataBase/HistoryCars/carRentals.csv";
+    private final String filenameClientRentals = "DataBase/HistoryClients/clientRentals.csv";
 
     private final CarManager carManager;
     private final ClientManager clientManager;
@@ -14,14 +20,20 @@ public class ManagementService {
         this.rentalManager = new RentalManager();
     }
 
-    public void readAllCSV(){
-        carManager.readCSV();
-        clientManager.readCSV();
-        employeeManager.readCSV();
-        rentalManager.readCSV(carManager, clientManager, employeeManager);
+    public void readAllCSV() {
+        carManager.readCSV(filenameCars);
+        clientManager.readCSV(filenameClients);
+        employeeManager.readCSV(filenameEmployees);
+        rentalManager.readCSV(carManager, clientManager, employeeManager, filenameRentals, rentalManager.getList());
+        for (Car car : carManager.getList()) {
+            car.readCSV(carManager, clientManager, employeeManager, filenameCarRentals, car.returnList());
+        }
+        for (Client client : clientManager.getList()) {
+            client.readCSV(carManager, clientManager, employeeManager, filenameClientRentals, client.returnList());
+        }
     }
 
-    public void rentCar(Rental rental){
+    public void rentCar(Rental rental) {
         rentalManager.add(rental);
         Car rentedCar = carManager.findByPlate(rental.getRentCar().getPlate());
         rentedCar.setCarStatus(CarStatus.RENTED); // update status
@@ -30,10 +42,22 @@ public class ManagementService {
         client.addRental(rental); //update history
     }
 
-    public void writeAllCSV(){
-        carManager.writeCSV();;
-        clientManager.writeCSV();
-        employeeManager.writeCSV();
-        rentalManager.writeCSV();
+    public void returnCar(Rental rental) {
+        rentalManager.remove(rental);
+        Car rentedCar = carManager.findByPlate(rental.getRentCar().getPlate());
+        rentedCar.setCarStatus(CarStatus.AVAILABLE); // update status
+    }
+
+    public void writeAllCSV() {
+        carManager.writeCSV(filenameCars);
+        clientManager.writeCSV(filenameClients);
+        employeeManager.writeCSV(filenameEmployees);
+        rentalManager.writeCSV(filenameRentals, rentalManager.getList());
+        for (Car car : carManager.getList()) {
+            car.writeCSV(filenameCarRentals, car.returnList());
+        }
+        for (Client client : clientManager.getList()) {
+            client.writeCSV(filenameClientRentals, client.returnList());
+        }
     }
 }

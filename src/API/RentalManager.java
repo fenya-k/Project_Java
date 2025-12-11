@@ -4,9 +4,8 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class RentalManager implements Manager<Rental> {
+public class RentalManager implements Manager<Rental>, ReadWriteCSV {
 
-    private final String filename = "DataBase/ManagerFiles/rentals.csv";
     private final ArrayList<Rental> rentals;
 
     public RentalManager() {
@@ -15,8 +14,8 @@ public class RentalManager implements Manager<Rental> {
 
     @Override
     public boolean add(Rental rental) {
-        for(Rental r : rentals){
-            if(r.getRentCode() == rental.getRentCode()){
+        for (Rental r : rentals) {
+            if (r.getRentCode() == rental.getRentCode()) {
                 System.out.println("Υπάρχει ήδη ενοικίαση με κωδικό " + rental.getRentCode());
                 return false;
             }
@@ -51,7 +50,8 @@ public class RentalManager implements Manager<Rental> {
 
     @Override
     public ArrayList<Rental> getList() {
-        return rentals;
+        ArrayList<Rental> temp = this.rentals; //encapsulation - defensive copying
+        return temp;
     }
 
     @Override
@@ -61,81 +61,15 @@ public class RentalManager implements Manager<Rental> {
 
     @Override
     public void print() {
-        for (Rental rental : rentals) {
-            System.out.println(rental.toString());
-        }
-    }
-
-    public void readCSV(CarManager carManager, ClientManager clientManager, EmployeeManager employeeManager) {
-        String line;
-        String delimiter = ",";
-
-        try (BufferedReader in = new BufferedReader(new FileReader(filename))) {
-            in.readLine(); //skips the first line because it's a header
-
-            while ((line = in.readLine()) != null) {
-                String[] data = line.split(delimiter);
-
-                int rentCode = Integer.parseInt(data[0].trim());
-                String plate = data[1].trim();
-                String clientAFM = data[2].trim();
-                String start = data[3].trim();
-                String end = data[4].trim();
-                String employeeUsername = data[5].trim();
-
-                LocalDate startDate = LocalDate.parse(start);
-                LocalDate endDate = LocalDate.parse(end);
-
-                Client client = clientManager.findByAFM(clientAFM);
-                Car rentCar = carManager.findByPlate(plate);
-                Employee employee = employeeManager.findByUsername(employeeUsername);
-
-                if (client != null && rentCar != null && employee != null) {
-                    Rental rental = new Rental(rentCode, rentCar, client, startDate, endDate, employee);
-                    rentals.add(rental);
-                    if (endDate.isAfter(LocalDate.now())) {
-                        rentCar.setCarStatus(CarStatus.RENTED);
-                    }
-                } else {
-                    System.out.println("Η ενοικίαση " + rentCode + " δεν έγινε γιατί δεν βρέθηκε το όχημα ή ο πελάτης");
-                }
-            }
-        } catch (
-                FileNotFoundException e) {
-            System.err.println("Error: File not found!");
-        } catch (
-                IOException e) {
-            System.out.println("Error: File not read!");
-        }
-    }
-
-    @Override
-    public void writeCSV() {
-
-        try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
-
-            String header = "κωδικός ενοικίασης,πινακίδα,ΑΦΜ πελάτη,ημέρα έναρξης,ημέρα λήξης,όνομα εργαζόμενου";
-            out.write(header);
-            out.newLine();
-
+        if (rentals.isEmpty()) {
+            System.out.println("No rentals found");
+        } else {
             for (Rental rental : rentals) {
-                String line = rental.getRentCode() + "," +
-                        rental.getRentCar().getPlate() + "," +
-                        rental.getClient().getAFM() + "," +
-                        rental.getStartDate() + "," +
-                        rental.getEndDate() + "," +
-                        rental.getEmployee().getUsername();
-
-                out.write(line);
-                out.newLine();
+                System.out.println(rental.toString());
             }
-
-        } catch (FileNotFoundException e) {
-            System.err.println("Error: File not found!");
-        } catch (IOException e) {
-            System.out.println("Error: File not read!");
         }
     }
+
 
     // να υλοποιηθεί
 

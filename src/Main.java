@@ -1,8 +1,5 @@
 import API.*;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-
 public class Main {
     public static void main(String[] args) {
 
@@ -67,80 +64,86 @@ public class Main {
         System.out.println(maria.getSize());
         */
 
-        System.out.println("Initializing managers");
-        //CAR MANAGER
-        CarManager carManager = new CarManager();
-        carManager.readCSV();
-        System.out.println("Cars loaded: " + carManager.getSize());
+//        System.out.println("Initializing managers");
+//        //CAR MANAGER
+//        CarManager carManager = new CarManager();
+//        carManager.readCSV();
+//        System.out.println("Cars loaded: " + carManager.getSize());
+//
+//        //CLIENT MANAGER
+//        ClientManager clientManager = new ClientManager();
+//        clientManager.readCSV();
+//        System.out.println("Clients loaded: " + clientManager.getSize());
+//
+//        //EMPLOYEE MANAGER
+//        EmployeeManager employeeManager = new EmployeeManager();
+//        System.out.println("Employees loaded: " + employeeManager.getList().size());
+//
+//        //RENTAL MANAGER
+//        RentalManager rentalManager = new RentalManager();
+//        rentalManager.readCSV(carManager, clientManager, employeeManager);
+//        System.out.println("Rentals loaded: " + rentalManager.getSize());
+//
+//        System.out.println("Test data(creating)");
+//        //test car
+//        Car testCar = new Car("test1", "Kia", "Sport", "Rio", "2025", "White");
+//        carManager.add(testCar);
+//
+//        //client test
+//        Client testClient = new Client("George", "Takis", "afm12345", "9876543", "george@mail");
+//        clientManager.add(testClient);
+//
+//        Employee testEmployee = employeeManager.login("jsmith", "password1");
+//        if (testEmployee == null) {
+//            System.out.println("Error(login failed).Using the first employee from list");
+//            testEmployee = employeeManager.getList().get(0);
+//        } else {
+//            System.out.println("Success. Logged in!(as " + testEmployee.getUsername() + ")");
+//        }
+//
+//        System.out.println("Rental process(test)");
+//        LocalDate dateOut = LocalDate.now();
+//        LocalDate dateIn = LocalDate.now().plusDays(5);
+//
+//        Rental newRental = new Rental(testCar, testClient, dateOut, dateIn, testEmployee);
+//
+//        System.out.println("Attempt to add rental");
+//        boolean added = rentalManager.add(newRental);
+//        if (added) {
+//            System.out.println("Rental added. Car status: " + testCar.getCarStatus());
+//        } else {
+//            System.out.println("Error.Rental not added");
+//        }
+//
+//        System.out.println("All rentals");
+//        rentalManager.print();
+//
+//        carManager.writeCSV();
+//        clientManager.writeCSV();
+//        rentalManager.writeCSV();
+//
+//        //new methods testing
+//        System.out.println("Changing password(test)");
+//        employeeManager.changePassword("jsmith","password1","password123");
+//
+//        Employee oldPasswordCheck=employeeManager.login("jsmith","password1");
+//        if(oldPasswordCheck==null){
+//            System.out.println("Old password is no longer valid");
+//        }
+//
+//        Employee newPasswordCheck=employeeManager.login("jsmith","password123");
+//        if(newPasswordCheck!=null){
+//            System.out.println("New password works");
+//        }
+//
+//        System.out.println("Available Cars List:");
+//        carManager.printAvailableCars();
+//
 
-        //CLIENT MANAGER
-        ClientManager clientManager = new ClientManager();
-        clientManager.readCSV();
-        System.out.println("Clients loaded: " + clientManager.getSize());
 
-        //EMPLOYEE MANAGER
-        EmployeeManager employeeManager = new EmployeeManager();
-        System.out.println("Employees loaded: " + employeeManager.getList().size());
+        ManagementService service = new ManagementService();
+        service.readAllCSV();
 
-        //RENTAL MANAGER
-        RentalManager rentalManager = new RentalManager();
-        rentalManager.readCSV(carManager, clientManager, employeeManager);
-        System.out.println("Rentals loaded: " + rentalManager.getSize());
 
-        System.out.println("Test data(creating)");
-        //test car
-        Car testCar = new Car("test1", "Kia", "Sport", "Rio", "2025", "White");
-        carManager.add(testCar);
-
-        //client test
-        Client testClient = new Client("George", "Takis", "afm12345", "9876543", "george@mail");
-        clientManager.add(testClient);
-
-        Employee testEmployee = employeeManager.login("jsmith", "password1");
-        if (testEmployee == null) {
-            System.out.println("Error(login failed).Using the first employee from list");
-            testEmployee = employeeManager.getList().get(0);
-        } else {
-            System.out.println("Success. Logged in!(as " + testEmployee.getUsername() + ")");
-        }
-
-        System.out.println("Rental process(test)");
-        LocalDate dateOut = LocalDate.now();
-        LocalDate dateIn = LocalDate.now().plusDays(5);
-
-        Rental newRental = new Rental(testCar, testClient, dateOut, dateIn, testEmployee);
-
-        System.out.println("Attempt to add rental");
-        boolean added = rentalManager.add(newRental);
-        if (added) {
-            System.out.println("Rental added. Car status: " + testCar.getCarStatus());
-        } else {
-            System.out.println("Error.Rental not added");
-        }
-
-        System.out.println("All rentals");
-        rentalManager.print();
-
-        carManager.writeCSV();
-        clientManager.writeCSV();
-        rentalManager.writeCSV();
-
-        //new methods testing
-        System.out.println("Changing password(test)");
-        employeeManager.changePassword("jsmith","password1","password123");
-
-        Employee oldPasswordCheck=employeeManager.login("jsmith","password1");
-        if(oldPasswordCheck==null){
-            System.out.println("Old password is no longer valid");
-        }
-
-        Employee newPasswordCheck=employeeManager.login("jsmith","password123");
-        if(newPasswordCheck!=null){
-            System.out.println("New password works");
-        }
-
-        System.out.println("Available Cars List:");
-        carManager.printAvailableCars();
-
-    }
+   }
 }

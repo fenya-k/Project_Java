@@ -13,8 +13,4 @@ public interface Manager<T> {
     int getSize();
 
     void print();
-
-    //void readCSV();
-
-    void writeCSV();
 }

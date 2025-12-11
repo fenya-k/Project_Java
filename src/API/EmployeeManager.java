@@ -4,12 +4,10 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class EmployeeManager implements Manager<Employee> {
-    private final String filename = "DataBase/ManagerFiles/users.csv";
     private ArrayList<Employee> employees;
 
     public EmployeeManager() {
         employees = new ArrayList<>();
-        readCSV();
     }
 
     public Employee login(String username, String password) {
@@ -24,20 +22,19 @@ public class EmployeeManager implements Manager<Employee> {
     @Override
     public void print() {
         System.out.println("List of employees");
-        if(employees.isEmpty()){
+        if (employees.isEmpty()) {
             System.out.println("No employees found");
-        }
-        else{
-            for(Employee employee: employees){
+        } else {
+            for (Employee employee : employees) {
                 System.out.println(employee.toString());
             }
         }
-
     }
 
     @Override
     public ArrayList<Employee> getList() {
-        return employees;
+        ArrayList<Employee> temp = this.employees; //encapsulation - defensive copying
+        return temp;
     }
 
 
@@ -48,7 +45,7 @@ public class EmployeeManager implements Manager<Employee> {
 
     @Override
     public boolean add(Employee employee) {
-        for (Employee e: employees) {
+        for (Employee e : employees) {
             if (e.getUsername().equalsIgnoreCase(employee.getUsername())) {
                 System.out.println("Υπάρχει ήδη εργαζόμενος με username " + employee.getUsername());
                 return false;
@@ -77,7 +74,7 @@ public class EmployeeManager implements Manager<Employee> {
     }
 
 
-    public void readCSV() {
+    public void readCSV(String filename) {
         String line;
         String delimiter = ",";
         employees.clear();
@@ -104,8 +101,7 @@ public class EmployeeManager implements Manager<Employee> {
         }
     }
 
-    @Override
-    public void writeCSV() {
+    public void writeCSV(String filename) {
 
         try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
 
@@ -140,22 +136,22 @@ public class EmployeeManager implements Manager<Employee> {
         return null;
     }
 
-    public boolean changePassword(String username,String oldPass,String newPass){
-        Employee employee=findByUsername(username);
+    public boolean changePassword(String username, String oldPass, String newPass) {
+        Employee employee = findByUsername(username);
 
-        if(employee==null){
+        if (employee == null) {
             System.out.println("User not found");
             return false;
         }
 
-        if(!employee.getPassword().equals(oldPass)){
+        if (!employee.getPassword().equals(oldPass)) {
             System.out.println("Wrong old password");
             return false;
         }
 
         employee.setPassword(newPass);
-        System.out.println("Password for user "+username+ " was changed successfully");
-        writeCSV();
+        System.out.println("Password for user " + username + " was changed successfully");
+        //writeCSV();
         return true;
     }
 }

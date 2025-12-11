@@ -4,13 +4,10 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class CarManager implements Manager<Car> {
-
-    private final String filename = "DataBase/ManagerFiles/vehicles.csv";
     private final ArrayList<Car> cars;
 
     public CarManager() {
         cars = new ArrayList<>();
-        readCSV();
     }
 
     @Override
@@ -56,27 +53,31 @@ public class CarManager implements Manager<Car> {
 
     @Override
     public void print() {
-        for (Car car : cars) {
-            System.out.println(car.toString());
+        if (cars.isEmpty()) {
+            System.out.println("No cars found");
+        } else {
+            for (Car car : cars) {
+                System.out.println(car.toString());
+            }
         }
     }
 
-    public void printAvailableCars(){
+    public void printAvailableCars() {
         System.out.println("Available cars");
-        boolean carFound=false;
+        boolean carFound = false;
 
-        for (Car car: cars){
-            if(car.isAvailable()){
+        for (Car car : cars) {
+            if (car.isAvailable()) {
                 System.out.println(car);
-                carFound=true;
+                carFound = true;
             }
         }
-        if (!carFound){
+        if (!carFound) {
             System.out.println("There are no available cars currently");
         }
     }
 
-    public void readCSV() {
+    public void readCSV(String filename) {
         String line;
         String delimiter = ",";
 
@@ -112,8 +113,7 @@ public class CarManager implements Manager<Car> {
         }
     }
 
-    @Override
-    public void writeCSV() {
+    public void writeCSV(String filename) {
 
         try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
 

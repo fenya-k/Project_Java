@@ -5,14 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="35b9289b-614b-4ad3-ae10-3e9c21368406" name="Changes" comment="corrections">
+      <change afterPath="$PROJECT_DIR$/src/API/ReadWriteCSV.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataBase/ManagerFiles/rentals.csv" beforeDir="false" afterPath="$PROJECT_DIR$/DataBase/ManagerFiles/rentals.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataBase/ManagerFiles/users.csv" beforeDir="false" afterPath="$PROJECT_DIR$/DataBase/ManagerFiles/users.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataBase/ManagerFiles/vehicles.csv" beforeDir="false" afterPath="$PROJECT_DIR$/DataBase/ManagerFiles/vehicles.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Project_Java/API/Manager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Project_Java/API/Manager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API/Car.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/Car.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/API/CarManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/CarManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/API/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/Employee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API/ClientManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/ClientManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/API/EmployeeManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/EmployeeManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API/History.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/History.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API/ManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/ManagementService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/Manager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API/RentalManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/RentalManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -43,12 +46,12 @@
     &quot;assignee&quot;: &quot;fenya-k&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/fenya-k/Project_Java.git",
-    "accountId": "79b78581-c877-405d-90c1-dfe50e2504ae"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/fenya-k/Project_Java.git&quot;,
+    &quot;accountId&quot;: &quot;79b78581-c877-405d-90c1-dfe50e2504ae&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -108,7 +111,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765369721442</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="corrections">
+      <option name="closed" value="true" />
+      <created>1765476584751</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1765476584751</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

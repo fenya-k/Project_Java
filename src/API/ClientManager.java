@@ -4,8 +4,6 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class ClientManager implements Manager<Client> {
-
-    private final String filename = "DataBase/ManagerFiles/clients.csv";
     private final ArrayList<Client> clients;
 
     public ClientManager() {
@@ -44,7 +42,8 @@ public class ClientManager implements Manager<Client> {
 
     @Override
     public ArrayList<Client> getList() {
-        return clients;
+        ArrayList<Client> temp = this.clients; //encapsulation - defensive copying
+        return temp;
     }
 
     @Override
@@ -54,12 +53,16 @@ public class ClientManager implements Manager<Client> {
 
     @Override
     public void print() {
-        for (Client client : clients) {
-            System.out.println(client.toString());
+        if (clients.isEmpty()) {
+            System.out.println("No clients found");
+        } else {
+            for (Client client : clients) {
+                System.out.println(client.toString());
+            }
         }
     }
 
-    public void readCSV() {
+    public void readCSV(String filename) {
         String line;
         String delimiter = ",";
 
@@ -85,8 +88,7 @@ public class ClientManager implements Manager<Client> {
         }
     }
 
-    @Override
-    public void writeCSV() {
+    public void writeCSV(String filename) {
         String line;
 
         try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
