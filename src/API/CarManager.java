@@ -61,6 +61,21 @@ public class CarManager implements Manager<Car> {
         }
     }
 
+    public void printAvailableCars(){
+        System.out.println("Available cars");
+        boolean carFound=false;
+
+        for (Car car: cars){
+            if(car.isAvailable()){
+                System.out.println(car);
+                carFound=true;
+            }
+        }
+        if (!carFound){
+            System.out.println("There are no available cars currently");
+        }
+    }
+
     public void readCSV() {
         String line;
         String delimiter = ",";
