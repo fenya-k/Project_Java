@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class EmployeeManager implements Manager<Employee> {
-    private ArrayList<Employee> employees;
+    private final ArrayList<Employee> employees;
 
     public EmployeeManager() {
         employees = new ArrayList<>();
@@ -151,7 +151,6 @@ public class EmployeeManager implements Manager<Employee> {
 
         employee.setPassword(newPass);
         System.out.println("Password for user " + username + " was changed successfully");
-        //writeCSV();
         return true;
     }
 }

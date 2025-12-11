@@ -1,6 +1,8 @@
 package API;
 
 public class ManagementService {
+
+    //FILE NAMES
     private final String filenameCars = "DataBase/ManagerFiles/vehicles.csv";
     private final String filenameClients = "DataBase/ManagerFiles/clients.csv";
     private final String filenameEmployees = "DataBase/ManagerFiles/users.csv";
@@ -8,11 +10,13 @@ public class ManagementService {
     private final String filenameCarRentals = "DataBase/HistoryCars/carRentals.csv";
     private final String filenameClientRentals = "DataBase/HistoryClients/clientRentals.csv";
 
+    //ALL MANAGERS
     private final CarManager carManager;
     private final ClientManager clientManager;
     private final EmployeeManager employeeManager;
     private final RentalManager rentalManager;
 
+    //CONSTRUCTOR
     public ManagementService() {
         this.carManager = new CarManager();
         this.clientManager = new ClientManager();
@@ -20,6 +24,7 @@ public class ManagementService {
         this.rentalManager = new RentalManager();
     }
 
+    //READS ALL CSV OF ENTITIES AND HISTORY
     public void readAllCSV() {
         carManager.readCSV(filenameCars);
         clientManager.readCSV(filenameClients);
@@ -33,6 +38,7 @@ public class ManagementService {
         }
     }
 
+    //MAKES A RENTAL AND UPDATES HISTORY
     public void rentCar(Rental rental) {
         rentalManager.add(rental);
         Car rentedCar = carManager.findByPlate(rental.getRentCar().getPlate());
@@ -42,12 +48,14 @@ public class ManagementService {
         client.addRental(rental); //update history
     }
 
+    //MAKES A RETURN NO HISTORY UPDATE NEEDED
     public void returnCar(Rental rental) {
         rentalManager.remove(rental);
         Car rentedCar = carManager.findByPlate(rental.getRentCar().getPlate());
         rentedCar.setCarStatus(CarStatus.AVAILABLE); // update status
     }
 
+    //WRITES ALL CSV OF ENTITIES AND HISTORY
     public void writeAllCSV() {
         carManager.writeCSV(filenameCars);
         clientManager.writeCSV(filenameClients);
