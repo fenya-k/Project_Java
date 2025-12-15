@@ -68,4 +68,10 @@ public class ManagementService {
             client.writeCSV(filenameClientRentals, client.returnList());
         }
     }
+
+    // GETTERS FOR TESTS
+    public CarManager getCarManager() { return carManager; }
+    public ClientManager getClientManager() { return clientManager; }
+    public EmployeeManager getEmployeeManager() { return employeeManager; }
+    public RentalManager getRentalManager() { return rentalManager; }
 }

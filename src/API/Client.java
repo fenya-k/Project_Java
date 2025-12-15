@@ -55,8 +55,7 @@ public class Client extends Person implements History, ReadWriteCSV {
 
     @Override
     public ArrayList<Rental> returnList() {
-        ArrayList<Rental> temp = this.clientRentals; //encapsulation - defensive copying
-        return temp;
+        return new ArrayList<>(this.clientRentals); //encapsulation - defensive copying
     }
 
     @Override

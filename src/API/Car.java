@@ -133,8 +133,7 @@ public class Car implements History, ReadWriteCSV {
 
     @Override
     public ArrayList<Rental> returnList() {
-        ArrayList<Rental> temp = this.carRentals; //encapsulation - defensive copying
-        return temp;
+        return new ArrayList<>(this.carRentals); //encapsulation - defensive copying
     }
 
     @Override

@@ -50,8 +50,7 @@ public class RentalManager implements Manager<Rental>, ReadWriteCSV {
 
     @Override
     public ArrayList<Rental> getList() {
-        ArrayList<Rental> temp = this.rentals; //encapsulation - defensive copying
-        return temp;
+        return new ArrayList<>(this.rentals); //encapsulation - defensive copying
     }
 
     @Override
