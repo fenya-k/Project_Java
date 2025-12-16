@@ -5,27 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="35b9289b-614b-4ad3-ae10-3e9c21368406" name="Changes" comment="changed stuff as discussed, have not tested yet">
-      <change afterPath="$PROJECT_DIR$/Test/API/CarManagerTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Test/API/CarTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Test/API/ClientManagerTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Test/API/ClientTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Test/API/EmployeeManagerTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Test/API/EmployeeTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Test/API/HistoryInterfaceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Test/API/ManagementServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Test/API/ManagerInterfaceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Test/API/RentalManagerTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Test/API/RentalTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project_Java.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Project_Java.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Project_Java/API/Car.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Project_Java/API/Car.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Project_Java/API/CarManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Project_Java/API/CarManager.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Project_Java/API/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Project_Java/API/Client.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Project_Java/API/Employee.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Project_Java/API/Employee.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Project_Java/API/ClientManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Project_Java/API/ClientManager.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Project_Java/API/EmployeeManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Project_Java/API/EmployeeManager.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Project_Java/API/ManagementService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Project_Java/API/ManagementService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Project_Java/API/RentalManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Project_Java/API/RentalManager.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/API/Car.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/Car.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/API/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/Employee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API/History.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/History.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/API/ManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/ManagementService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API/RentalManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/RentalManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,8 +29,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -55,12 +48,12 @@
     &quot;assignee&quot;: &quot;fenya-k&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/fenya-k/Project_Java.git",
-    "accountId": "0ca67f31-1f85-45a0-96ac-498610409432"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/fenya-k/Project_Java.git&quot;,
+    &quot;accountId&quot;: &quot;79b78581-c877-405d-90c1-dfe50e2504ae&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -69,124 +62,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "Downloaded.Files.Path.Enabled": "false",
-    "JUnit.CarManagerTest.executor": "Run",
-    "JUnit.CarTest.executor": "Run",
-    "JUnit.CarTest.testToString.executor": "Run",
-    "JUnit.ClientManagerTest.executor": "Run",
-    "JUnit.ClientTest.executor": "Run",
-    "JUnit.EmployeeManagerTest.executor": "Run",
-    "JUnit.EmployeeTest.executor": "Run",
-    "JUnit.HistoryInterfaceTest.executor": "Run",
-    "JUnit.ManagementServiceTest.executor": "Run",
-    "JUnit.RentalManagerTest.executor": "Run",
-    "JUnit.RentalTest.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
   }
-}]]></component>
-  <component name="RecentsManager">
-    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="API" />
-    </key>
-  </component>
-  <component name="RunManager" selected="JUnit.ManagerInterfaceTest">
-    <configuration name="EmployeeManagerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Project_Java" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="API.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="API" />
-      <option name="MAIN_CLASS_NAME" value="API.EmployeeManagerTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="HistoryInterfaceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Project_Java" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="API.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="API" />
-      <option name="MAIN_CLASS_NAME" value="API.HistoryInterfaceTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ManagementServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Project_Java" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="API.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="API" />
-      <option name="MAIN_CLASS_NAME" value="API.ManagementServiceTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ManagerInterfaceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Project_Java" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="API.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="API" />
-      <option name="MAIN_CLASS_NAME" value="API.ManagerInterfaceTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="RentalManagerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Project_Java" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="API.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="API" />
-      <option name="MAIN_CLASS_NAME" value="API.RentalManagerTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="JUnit.ManagerInterfaceTest" />
-        <item itemvalue="JUnit.ManagementServiceTest" />
-        <item itemvalue="JUnit.HistoryInterfaceTest" />
-        <item itemvalue="JUnit.RentalManagerTest" />
-        <item itemvalue="JUnit.EmployeeManagerTest" />
-      </list>
-    </recent_temporary>
-  </component>
+}</component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="35b9289b-614b-4ad3-ae10-3e9c21368406" name="Changes" comment="" />
@@ -251,15 +137,7 @@
       <option name="project" value="LOCAL" />
       <updated>1765480468607</updated>
     </task>
-    <task id="LOCAL-00008" summary="changed stuff as discussed, have not tested yet">
-      <option name="closed" value="true" />
-      <created>1765480909803</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1765480909803</updated>
-    </task>
-    <option name="localTasksCounter" value="9" />
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

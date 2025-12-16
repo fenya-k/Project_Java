@@ -2,9 +2,9 @@ import API.*;
 
 public class Main {
     public static void main(String[] args) {
-
+        /*
         // TEST
-       /* Car car = new Car("ΙΚΥ1294", "Porche", "Macan", "Corolla", "2019", "Ασημί");
+        Car car = new Car("ΙΚΥ1294", "Porche", "Macan", "Corolla", "2019", "Ασημί");
         Car car2 = new Car("ΙΚΥ1294", "Porche", "Macan", "Corolla", "2019", "Ασημί");
         Client client = new Client("φένια", "κομπ", "12345", "6957", "φενια@");
         Client client2 = new Client("erica", "kub", "67890", "69", "erica@");
@@ -62,7 +62,7 @@ public class Main {
         System.out.println(maria.getSize());
         maria.remove(rental2);
         System.out.println(maria.getSize());
-        */
+*/
 
 //        System.out.println("Initializing managers");
 //        //CAR MANAGER
@@ -138,7 +138,7 @@ public class Main {
 //
 //        System.out.println("Available Cars List:");
 //        carManager.printAvailableCars();
-//
+
 
 
         ManagementService service = new ManagementService();

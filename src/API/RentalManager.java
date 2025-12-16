@@ -48,6 +48,16 @@ public class RentalManager implements Manager<Rental>, ReadWriteCSV {
         return false;
     }
 
+    public ArrayList<Rental> searchByClientAFM(String AFMclient){
+        ArrayList<Rental> found=new ArrayList<>();
+        for (Rental rental:rentals){
+            if(rental.getClient().getAFM().equals(AFMclient)){
+                found.add(rental);
+            }
+        }
+        return found;
+    }
+
     @Override
     public ArrayList<Rental> getList() {
         return new ArrayList<>(this.rentals); //encapsulation - defensive copying

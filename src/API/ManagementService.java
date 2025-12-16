@@ -38,6 +38,14 @@ public class ManagementService {
         }
     }
 
+    /**
+     * Performs the car rental process.
+     * 1. Adds rental to the global list.
+     * 2. Updates the car status to RENTED.
+     * 3. Adds rental to the car's history.
+     * 4. Adds rental to the client's history.
+     * * @param rental The rental object to be processed.
+     */
     //MAKES A RENTAL AND UPDATES HISTORY
     public void rentCar(Rental rental) {
         rentalManager.add(rental);

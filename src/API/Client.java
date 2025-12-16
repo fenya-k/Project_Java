@@ -1,5 +1,7 @@
 package API;
 
+import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Client extends Person implements History, ReadWriteCSV {
@@ -58,6 +60,65 @@ public class Client extends Person implements History, ReadWriteCSV {
         return new ArrayList<>(this.clientRentals); //encapsulation - defensive copying
     }
 
+    @Override
+    public  void readCSV(CarManager CM,ClientManager CLM,EmployeeManager EM,String filename, ArrayList<Rental> list) {
+        String line;
+        String delimiter = ",";
+
+        try (BufferedReader in = new BufferedReader(new FileReader(filename))) {
+            in.readLine(); //skips the first line because it's a header
+
+            while ((line = in.readLine()) != null) {
+                String[] data = line.split(delimiter);
+
+                if (data.length >= 6) {
+                    String AFMrecord = data[2].trim();
+
+                    if (AFMrecord.equalsIgnoreCase(this.AFM)) {
+                        try {
+                            int rentCode = Integer.parseInt(data[0].trim());
+                            String plate = data[1].trim();
+                            LocalDate start = LocalDate.parse(data[3].trim());
+                            LocalDate end = LocalDate.parse(data[4].trim());
+                            String userEmp = data[5].trim();
+
+                            Car car=CM.findByPlate(plate);
+                            Employee employee = EM.findByUsername(userEmp);
+
+                            if (car != null && employee != null) {
+                                Rental rental = new Rental(rentCode, car, this, start, end, employee);
+                                this.addRental(rental);
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Error");
+                        }
+                    }
+                }
+            }
+        }catch (IOException e){
+            System.out.println("File not found");
+        }
+    }
+
+    public void writeCSV(String filename,ArrayList<Rental> list) {
+        String line;
+        try (BufferedWriter out = new BufferedWriter(new FileWriter(filename, true))) {
+
+            for (Rental rental : clientRentals) {
+                line = rental.getRentCode() + "," +
+                        rental.getRentCar().getPlate() + "," +
+                        this.getAFM() + "," +
+                        rental.getStartDate() + "," +
+                        rental.getEndDate() + "," +
+                        rental.getEmployee().getUsername();
+
+                out.write(line);
+                out.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error writing car history");
+        }
+    }
     @Override
     public String toString() {
         return "Client: " +

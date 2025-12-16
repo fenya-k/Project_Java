@@ -1,6 +1,7 @@
 package API;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Car implements History, ReadWriteCSV {
@@ -123,8 +124,9 @@ public class Car implements History, ReadWriteCSV {
     @Override
     public void printRentals() {
         if (carRentals.isEmpty()) {
-            System.out.println("No rentals found");
+            System.out.println("No rentals found for: " + plate);
         } else {
+            System.out.println("Rental history for: " + plate);
             for (Rental rental : carRentals) {
                 System.out.println(rental.toString());
             }
@@ -134,6 +136,66 @@ public class Car implements History, ReadWriteCSV {
     @Override
     public ArrayList<Rental> returnList() {
         return new ArrayList<>(this.carRentals); //encapsulation - defensive copying
+    }
+
+    @Override
+    public  void readCSV(CarManager CM,ClientManager CLM,EmployeeManager EM,String filename, ArrayList<Rental> list) {
+        String line;
+        String delimiter = ",";
+
+        try (BufferedReader in = new BufferedReader(new FileReader(filename))) {
+            in.readLine(); //skips the first line because it's a header
+
+            while ((line = in.readLine()) != null) {
+                String[] data = line.split(delimiter);
+
+                if (data.length >= 6) {
+                    String plateRecord = data[1].trim();
+
+                    if (plateRecord.equalsIgnoreCase(this.plate)) {
+                        try {
+                            int rentCode = Integer.parseInt(data[0].trim());
+                            String AFMclient = data[2].trim();
+                            LocalDate start = LocalDate.parse(data[3].trim());
+                            LocalDate end = LocalDate.parse(data[4].trim());
+                            String userEmp = data[5].trim();
+
+                            Client client = CLM.findByAFM(AFMclient);
+                            Employee employee = EM.findByUsername(userEmp);
+
+                            if (client != null && employee != null) {
+                                Rental rental = new Rental(rentCode, this, client, start, end, employee);
+                                this.addRental(rental);
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Error");
+                        }
+                    }
+                }
+            }
+        }catch (IOException e){
+            System.out.println("File not found");
+        }
+    }
+
+    public void writeCSV(String filename,ArrayList<Rental> list) {
+        String line;
+        try (BufferedWriter out = new BufferedWriter(new FileWriter(filename, true))) {
+
+            for (Rental rental : carRentals) {
+                line = rental.getRentCode() + "," +
+                        this.getPlate() + "," +
+                        rental.getClient().getAFM() + "," +
+                        rental.getStartDate() + "," +
+                        rental.getEndDate() + "," +
+                        rental.getEmployee().getUsername();
+
+                out.write(line);
+                out.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error writing car history");
+        }
     }
 
     @Override
