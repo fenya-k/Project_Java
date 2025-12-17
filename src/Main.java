@@ -1,8 +1,29 @@
-import API.*;
+import API.ManagementService;
+import GUI.MainFrame;
+import javax.swing.SwingUtilities;
 
 public class Main {
     public static void main(String[] args) {
-        /*
+
+        // 1. Load data (Initialize backend service)
+        System.out.println("Loading database...");
+        ManagementService service = new ManagementService();
+        service.readAllCSV();
+        System.out.println("Database loaded.");
+
+        // 2. Launch the GUI (in the Swing Event Dispatch Thread)
+        SwingUtilities.invokeLater(() -> {
+            MainFrame frame = new MainFrame(service);
+            frame.setVisible(true); // Make the window visible
+        });
+    }
+}
+
+/*import API.*;
+
+public class Main {
+    public static void main(String[] args) {
+
         // TEST
         Car car = new Car("ΙΚΥ1294", "Porche", "Macan", "Corolla", "2019", "Ασημί");
         Car car2 = new Car("ΙΚΥ1294", "Porche", "Macan", "Corolla", "2019", "Ασημί");
@@ -62,7 +83,7 @@ public class Main {
         System.out.println(maria.getSize());
         maria.remove(rental2);
         System.out.println(maria.getSize());
-*/
+
 
 //        System.out.println("Initializing managers");
 //        //CAR MANAGER
@@ -146,4 +167,7 @@ public class Main {
 
 
    }
-}
+}*/
+
+
+
