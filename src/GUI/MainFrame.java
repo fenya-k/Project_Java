@@ -22,10 +22,6 @@ public class MainFrame extends JFrame {
         startPanel.setLayout(new GridBagLayout());//buttons will be in the centre
         startPanel.setBackground(new Color(240, 240, 240));//color-to be changed
 
-        //client button
-        JButton clientButton = new JButton("Client View(Cars available)");
-        styleButton(clientButton);
-
         //employee button
         JButton employeeButton = new JButton("Employee Login");
         styleButton(employeeButton);
@@ -34,8 +30,8 @@ public class MainFrame extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);//insets between buttons-to be changed
         gbc.gridx = 0;//selects the first column
-        gbc.gridy = 0;//selects the first row
-        startPanel.add(clientButton, gbc);//adds clientButton to the panel using position above
+        gbc.gridy = 0; //selects the first row
+        //startPanel.add(clientButton, gbc);//adds clientButton to the panel using position above
 
         gbc.gridy = 1;//changes setting to the second row
         startPanel.add(employeeButton, gbc);//adds employeeButton to the panel below the first button
@@ -43,9 +39,9 @@ public class MainFrame extends JFrame {
         //add panel to the window
         add(startPanel, BorderLayout.CENTER);
 
-        clientButton.addActionListener(e -> {
+        /*clientButton.addActionListener(e -> {
             JOptionPane.showMessageDialog(this, "Car Table will be shown here");
-        });
+        });*/
 
         employeeButton.addActionListener(e -> {
                     //login window to be added
@@ -61,10 +57,12 @@ public class MainFrame extends JFrame {
         button.setFont(new Font("Arial",Font.BOLD,16));
         button.setPreferredSize(new Dimension(250,40));
         button.setFocusPainted(false);
-
-
-
     }
+
+    /*//client button
+        JButton clientButton = new JButton("Client View(Cars available)");
+        styleButton(clientButton);*/
+
 
 
 
