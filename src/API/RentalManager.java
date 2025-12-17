@@ -1,7 +1,6 @@
 package API;
 
 import java.io.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class RentalManager implements Manager<Rental>, ReadWriteCSV {
@@ -48,10 +47,10 @@ public class RentalManager implements Manager<Rental>, ReadWriteCSV {
         return false;
     }
 
-    public ArrayList<Rental> searchByClientAFM(String AFMclient){
-        ArrayList<Rental> found=new ArrayList<>();
-        for (Rental rental:rentals){
-            if(rental.getClient().getAFM().equals(AFMclient)){
+    public ArrayList<Rental> searchByClientAFM(String AFM) {
+        ArrayList<Rental> found = new ArrayList<>();
+        for (Rental rental : rentals) {
+            if (rental.getClient().getAFM().equals(AFM)) {
                 found.add(rental);
             }
         }
@@ -79,40 +78,19 @@ public class RentalManager implements Manager<Rental>, ReadWriteCSV {
         }
     }
 
+    public ArrayList<Rental> search(String plate, String AFM) {
+        ArrayList<Rental> foundRentals = new ArrayList<>();
 
-    // να υλοποιηθεί
-
-//    public ArrayList<Rental> search(String plate, String brand, String type, String model, String color, Boolean available) {
-//        ArrayList<Car> foundCars = new ArrayList<>();
-//
-//        /* Τα αυτοκίνητα μπαίνουν στη for με τη σειρά, έπειτα γίνεται έλεγχος σε κάθε if αν έχει δοθεί τιμή για σύγκριση
-//         αν δεν έχει δοθεί τιμή (null) τότε προχωράει στην επόμενη if χωρίς να μπει στο σώμα της
-//         αν έχει δοθεί τιμή τότε τη συγκρίνει με αυτή του εκάστοτε αυτοκινήτου και
-//         -αν είναι ίση τότε προχωράει στην επόμενη if χωρίς να μπει στο σώμα της
-//         -αν δεν είναι ίση τότε μπαίνει στο σώμα της, κάνει continue και έρχεται το επόμενο αυτοκίνητο */
-//
-//        for (Car car : cars) { //null proofing (protection from NullPointerExceptions)
-//            if (plate != null && !plate.isEmpty() && !car.getPlate().equalsIgnoreCase(plate)) {
-//                continue;
-//            } //η πινακίδα έρχεται πρώτη ώστε αν είναι διαφορετική δε χρειάζονται οι υπόλοιποι έλεγχοι
-//            if (brand != null && !brand.isEmpty() && !car.getBrand().equalsIgnoreCase(brand)) {
-//                continue;
-//            }
-//            if (type != null && !type.isEmpty() && !car.getType().equalsIgnoreCase(type)) {
-//                continue;
-//            }
-//            if (model != null && !model.isEmpty() && !car.getModel().equalsIgnoreCase(model)) {
-//                continue;
-//            }
-//            if (color != null && !color.isEmpty() && !car.getColor().equalsIgnoreCase(color)) {
-//                continue;
-//            }
-//            if (available != null && car.isAvailable() != available) {
-//                continue;
-//            }
-//            foundCars.add(car);
-//        }
-//        return foundCars;
-//    }
+        for (Rental rental : rentals) { //null proofing (protection from NullPointerExceptions)
+            if (plate != null && !plate.isEmpty() && !rental.getRentCar().getPlate().equalsIgnoreCase(plate)) {
+                continue;
+            }
+            if (AFM != null && !AFM.isEmpty() && !rental.getClient().getAFM().equalsIgnoreCase(AFM)) {
+                continue;
+            }
+            foundRentals.add(rental);
+        }
+        return foundRentals;
+    }
 
 }

@@ -10,6 +10,31 @@ public class ClientManager implements Manager<Client> {
         clients = new ArrayList<>();
     }
 
+    public String isValidClient(String name, String surname, String AFM, String phone, String email) {
+        String fullString = "";
+
+        if (name == null || name.isEmpty()) {
+            fullString += "Παρακαλώ καταχωρήστε τον όνομα.\n";
+        }
+        if (surname == null || surname.isEmpty()) {
+            fullString += "Παρακαλώ καταχωρήστε το επίθετο.\n";
+        }
+        if (AFM == null || AFM.isEmpty()) {
+            fullString += "Παρακαλώ καταχωρήστε το ΑΦΜ.\n";
+        }
+        if (phone == null || phone.isEmpty()) {
+            fullString += "Παρακαλώ καταχωρήστε το τηλέφωνο.\n";
+        }
+        if (email == null || email.isEmpty()) {
+            fullString += "Παρακαλώ καταχωρήστε το email.\n";
+        }
+        if (fullString.isEmpty()) {
+            return "Επιτυχής καταχώρηση.";
+        } else {
+            return fullString;
+        }
+    }
+
     @Override
     public boolean add(Client client) {
         for (Client c : clients) {
@@ -20,6 +45,15 @@ public class ClientManager implements Manager<Client> {
         }
         clients.add(client);
         System.out.println("Ο πελάτης προστέθηκε");
+        return true;
+    }
+
+    public boolean edit(String name, String surname, String AFM, String phone, String email) {
+        Client editedClient = findByAFM(AFM);
+        editedClient.setName(name);
+        editedClient.setSurname(surname);
+        editedClient.setPhone(phone);
+        editedClient.setEmail(email);
         return true;
     }
 
@@ -83,7 +117,7 @@ public class ClientManager implements Manager<Client> {
         } catch (FileNotFoundException e) {
             System.err.println("Error: File not found!");
         } catch (IOException e) {
-            System.out.println("Error: File not read!");
+            System.err.println("Error: File not read!");
         }
     }
 
@@ -110,7 +144,7 @@ public class ClientManager implements Manager<Client> {
         } catch (FileNotFoundException e) {
             System.err.println("Error: File not found!");
         } catch (IOException e) {
-            System.out.println("Error: File not read!");
+            System.err.println("Error: File not read!");
         }
     }
 

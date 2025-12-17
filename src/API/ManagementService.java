@@ -37,6 +37,51 @@ public class ManagementService {
             client.readCSV(carManager, clientManager, employeeManager, filenameClientRentals, client.returnList());
         }
     }
+    //ADDS A NEW CAR
+    public boolean addNewCar(String plate, String brand, String type, String model, String year, String color){
+        String check = carManager.isValidCar(plate, brand, type, model, year, color);
+        System.out.println(check);
+        if(!check.equals("Επιτυχής καταχώρηση.")){
+            return false;
+        }
+        Car newCar = new Car(plate, brand, type, model, year, color);
+        carManager.add(newCar);
+        return true;
+    }
+
+    //EDITS AN EXISTING CAR
+    public boolean editExistingCar(String plate, String brand, String type, String model, String year, String color){
+        String check = carManager.isValidCar(plate, brand, type, model, year, color);
+        System.out.println(check);
+        if(!check.equals("Επιτυχής καταχώρηση.")){
+            return false;
+        }
+        carManager.edit(plate, brand, type, model, year, color);
+        return true;
+    }
+
+    //ADDS A NEW CLIENT
+    public boolean addNewClient(String name, String surname, String AFM, String phone, String email){
+        String check = clientManager.isValidClient(name, surname, AFM, phone, email);
+        System.out.println(check);
+        if(!check.equals("Επιτυχής καταχώρηση.")){
+            return false;
+        }
+        Client newClient = new Client(name, surname, AFM, phone, email);
+        clientManager.add(newClient);
+        return true;
+    }
+
+    //EDITS AN EXISTING CLIENT
+    public boolean editExistingClient(String name, String surname, String AFM, String phone, String email){
+        String check = clientManager.isValidClient(name, surname, AFM, phone, email);
+        System.out.println(check);
+        if(!check.equals("Επιτυχής καταχώρηση.")){
+            return false;
+        }
+        clientManager.edit(name, surname, AFM, phone, email);
+        return true;
+    }
 
     /**
      * Performs the car rental process.

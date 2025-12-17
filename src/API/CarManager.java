@@ -5,9 +5,67 @@ import java.util.ArrayList;
 
 public class CarManager implements Manager<Car> {
     private final ArrayList<Car> cars;
+    static boolean flag1 = false, flag2 = false, flag3 = false, flag4 = false;
 
     public CarManager() {
         cars = new ArrayList<>();
+    }
+
+    public String isValidCar(String plate, String brand, String type, String model, String year, String color) {
+        String fullString = "";
+
+        if (plate == null || plate.isEmpty()) {
+            fullString += "Παρακαλώ καταχωρήστε τον αριθμό πινακίδας.\n";
+        }
+        if (brand == null || brand.isEmpty()) {
+            fullString += "Παρακαλώ καταχωρήστε τη μάρκα.\n";
+        }
+        if (type == null || type.isEmpty()) {
+            fullString += "Παρακαλώ καταχωρήστε τον τύπο.\n";
+        }
+        if (model == null || model.isEmpty()) {
+            fullString += "Παρακαλώ καταχωρήστε το μοντέλο.\n";
+        }
+        if (year == null || year.isEmpty()) {
+            fullString += "Παρακαλώ καταχωρήστε το έτος κυκλοφορίας.\n";
+        } else {
+            try {
+                int yearInt = Integer.parseInt(year);
+                if (yearInt <= 0) {
+                    fullString += "Το έτος κυκλοφορίας πρέπει να είναι θετικός αριθμός.\n";
+                    flag2 = true;
+                    if (flag1 && flag2 && flag3 && flag4) {
+                        fullString += "Bruh!";
+                    }
+                } else if (yearInt < 1886) {
+                    fullString += "Το πρώτο αυτοκίνητο κατασκευάστηκε το 1886.\n Στο έτος που δόθηκε δεν υπήρχαν αυτοκίνητα.\n";
+                    flag3 = true;
+                    if (flag1 && flag2 && flag3 && flag4) {
+                        fullString += "Bruh!";
+                    }
+                } else if (yearInt > 2025) {
+                    fullString += "Το αυτοκίνητο δεν μπορεί να έχει κατασκευαστεί στο μέλλον.\n";
+                    flag4 = true;
+                    if (flag1 && flag2 && flag3 && flag4) {
+                        fullString += "Bruh!";
+                    }
+                }
+            } catch (NumberFormatException e) {
+                fullString += "Το έτος κυκλοφορίας πρέπει να είναι αριθμός";
+                flag1 = true;
+                if (flag1 && flag2 && flag3 && flag4) {
+                    fullString += "Bruh!";
+                }
+            }
+        }
+        if (color == null || color.isEmpty()) {
+            fullString += "Παρακαλώ καταχωρήστε το χρώμα.\n";
+        }
+        if (fullString.isEmpty()) {
+            return "Επιτυχής καταχώρηση.";
+        } else {
+            return fullString;
+        }
     }
 
     @Override
@@ -20,6 +78,16 @@ public class CarManager implements Manager<Car> {
         }
         cars.add(car);
         System.out.println("Το αυτοκίνητο προστέθηκε");
+        return true;
+    }
+
+    public boolean edit(String plate, String brand, String type, String model, String year, String color) {
+        Car editedCar = findByPlate(plate);
+        editedCar.setBrand(brand);
+        editedCar.setType(type);
+        editedCar.setModel(model);
+        editedCar.setYear(year);
+        editedCar.setColor(color);
         return true;
     }
 
@@ -108,7 +176,7 @@ public class CarManager implements Manager<Car> {
         } catch (FileNotFoundException e) {
             System.err.println("Error: File not found!");
         } catch (IOException e) {
-            System.out.println("Error: File not read!");
+            System.err.println("Error: File not read!");
         }
     }
 

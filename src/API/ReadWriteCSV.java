@@ -45,7 +45,7 @@ public interface ReadWriteCSV {
             System.err.println("Error: File not found!");
         } catch (
                 IOException e) {
-            System.out.println("Error: File not read!");
+            System.err.println("Error: File not read!");
         }
     }
 
@@ -73,7 +73,7 @@ public interface ReadWriteCSV {
         } catch (FileNotFoundException e) {
             System.err.println("Error: File not found!");
         } catch (IOException e) {
-            System.out.println("Error: File not read!");
+            System.err.println("Error: File not read!");
         }
     }
 

@@ -96,7 +96,7 @@ public class Client extends Person implements History, ReadWriteCSV {
                 }
             }
         }catch (IOException e){
-            System.out.println("File not found");
+            System.err.println("File not found");
         }
     }
 
@@ -116,7 +116,7 @@ public class Client extends Person implements History, ReadWriteCSV {
                 out.newLine();
             }
         } catch (IOException e) {
-            System.out.println("Error writing car history");
+            System.err.println("Error writing car history");
         }
     }
     @Override

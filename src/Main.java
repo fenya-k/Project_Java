@@ -1,10 +1,10 @@
 import API.ManagementService;
-import GUI.MainFrame;
-import javax.swing.SwingUtilities;
+
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-
+/*
         // 1. Load data (Initialize backend service)
         System.out.println("Loading database...");
         ManagementService service = new ManagementService();
@@ -16,6 +16,55 @@ public class Main {
             MainFrame frame = new MainFrame(service);
             frame.setVisible(true); // Make the window visible
         });
+    } */
+
+        ManagementService service = new ManagementService();
+        boolean isOkay = false;
+        Scanner in = new Scanner(System.in);
+        /*
+        String plate;
+        String brand;
+        String type;
+        String model;
+        String year;
+        String color;
+
+        while (!isOkay) {
+            System.out.println("plate");
+            plate = in.nextLine();
+            System.out.println("brand");
+            brand = in.nextLine();
+            System.out.println("type");
+            type = in.nextLine();
+            System.out.println("model");
+            model = in.nextLine();
+            System.out.println("year");
+            year = in.nextLine();
+            System.out.println("color");
+            color = in.nextLine();
+            isOkay = service.addNewCar(plate, brand, type, model, year, color);
+        } */
+
+        isOkay = false;
+        String name;
+        String surname;
+        String AFM;
+        String phone;
+        String email;
+
+        while (!isOkay) {
+            System.out.println("name");
+            name = in.nextLine();
+            System.out.println("surname");
+            surname = in.nextLine();
+            System.out.println("AFM");
+            AFM = in.nextLine();
+            System.out.println("phone");
+            phone = in.nextLine();
+            System.out.println("email");
+            email = in.nextLine();
+            isOkay = service.addNewClient(name, surname, AFM, phone, email);
+        }
     }
 }
 
