@@ -51,10 +51,10 @@ public class CarManager implements Manager<Car> {
                     }
                 }
             } catch (NumberFormatException e) {
-                fullString += "Το έτος κυκλοφορίας πρέπει να είναι αριθμός";
+                fullString += "Το έτος κυκλοφορίας πρέπει να είναι αριθμός.";
                 flag1 = true;
                 if (flag1 && flag2 && flag3 && flag4) {
-                    fullString += "Bruh!";
+                    fullString += "\n Bruh!";
                 }
             }
         }
@@ -62,7 +62,7 @@ public class CarManager implements Manager<Car> {
             fullString += "Παρακαλώ καταχωρήστε το χρώμα.\n";
         }
         if (fullString.isEmpty()) {
-            return "Επιτυχής καταχώρηση.";
+            return "Τα στοιχεία είναι πλήρη.";
         } else {
             return fullString;
         }

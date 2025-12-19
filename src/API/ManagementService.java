@@ -37,23 +37,28 @@ public class ManagementService {
             client.readCSV(carManager, clientManager, employeeManager, filenameClientRentals, client.returnList());
         }
     }
+
     //ADDS A NEW CAR
-    public boolean addNewCar(String plate, String brand, String type, String model, String year, String color){
+    public String addNewCar(String plate, String brand, String type, String model, String year, String color) {
         String check = carManager.isValidCar(plate, brand, type, model, year, color);
         System.out.println(check);
-        if(!check.equals("Επιτυχής καταχώρηση.")){
-            return false;
+        if (!check.equals("Τα στοιχεία είναι πλήρη.")) {
+            return check;
         }
         Car newCar = new Car(plate, brand, type, model, year, color);
-        carManager.add(newCar);
-        return true;
+        boolean isAdded = carManager.add(newCar);
+        if (isAdded) {
+            return "Επιτυχής καταχώρηση.";
+        } else {
+            return "Υπάρχει ήδη αυτοκίνητο με αυτή την πινακίδα.";
+        }
     }
 
     //EDITS AN EXISTING CAR
-    public boolean editExistingCar(String plate, String brand, String type, String model, String year, String color){
+    public boolean editExistingCar(String plate, String brand, String type, String model, String year, String color) {
         String check = carManager.isValidCar(plate, brand, type, model, year, color);
         System.out.println(check);
-        if(!check.equals("Επιτυχής καταχώρηση.")){
+        if (!check.equals("Επιτυχής καταχώρηση.")) {
             return false;
         }
         carManager.edit(plate, brand, type, model, year, color);
@@ -61,10 +66,10 @@ public class ManagementService {
     }
 
     //ADDS A NEW CLIENT
-    public boolean addNewClient(String name, String surname, String AFM, String phone, String email){
+    public boolean addNewClient(String name, String surname, String AFM, String phone, String email) {
         String check = clientManager.isValidClient(name, surname, AFM, phone, email);
         System.out.println(check);
-        if(!check.equals("Επιτυχής καταχώρηση.")){
+        if (!check.equals("Επιτυχής καταχώρηση.")) {
             return false;
         }
         Client newClient = new Client(name, surname, AFM, phone, email);
@@ -73,10 +78,10 @@ public class ManagementService {
     }
 
     //EDITS AN EXISTING CLIENT
-    public boolean editExistingClient(String name, String surname, String AFM, String phone, String email){
+    public boolean editExistingClient(String name, String surname, String AFM, String phone, String email) {
         String check = clientManager.isValidClient(name, surname, AFM, phone, email);
         System.out.println(check);
-        if(!check.equals("Επιτυχής καταχώρηση.")){
+        if (!check.equals("Επιτυχής καταχώρηση.")) {
             return false;
         }
         clientManager.edit(name, surname, AFM, phone, email);
@@ -123,8 +128,19 @@ public class ManagementService {
     }
 
     // GETTERS FOR TESTS
-    public CarManager getCarManager() { return carManager; }
-    public ClientManager getClientManager() { return clientManager; }
-    public EmployeeManager getEmployeeManager() { return employeeManager; }
-    public RentalManager getRentalManager() { return rentalManager; }
+    public CarManager getCarManager() {
+        return carManager;
+    }
+
+    public ClientManager getClientManager() {
+        return clientManager;
+    }
+
+    public EmployeeManager getEmployeeManager() {
+        return employeeManager;
+    }
+
+    public RentalManager getRentalManager() {
+        return rentalManager;
+    }
 }
