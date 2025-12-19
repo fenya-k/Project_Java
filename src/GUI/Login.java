@@ -10,14 +10,16 @@ import java.awt.event.ActionListener;
 
 public class Login extends JFrame {
 
-    private ManagementService service;
-    private JLabel usernameLabel;
-    private JTextField usernameField;
-    private JLabel passwordLabel;
-    private JPasswordField passwordField;
-    private JButton loginButton;
+    Font boldFont = new Font("Segoe UI", Font.BOLD, 16);
+    Font regularFont = new Font("Segoe UI", Font.PLAIN, 16);
     private final String iconPath = "Database/Images/login icon.png";
 
+    private final ManagementService service;
+    private final JLabel usernameLabel;
+    private final JTextField usernameField;
+    private final JLabel passwordLabel;
+    private final JPasswordField passwordField;
+    private final JButton loginButton;
 
     public Login(ManagementService service) {
         this.service = service;
@@ -42,22 +44,20 @@ public class Login extends JFrame {
          */
 
         // LOGIN PANEL LABELS + FIELDS
-        Font font = new Font("Segoe UI", Font.BOLD, 16);
-
         usernameLabel = new JLabel("Username: ", SwingConstants.CENTER);
-        usernameLabel.setFont(font);
+        usernameLabel.setFont(boldFont);
         loginPanel.add(usernameLabel);
 
         usernameField = new JTextField(11);
-        usernameField.setFont(font);
+        usernameField.setFont(regularFont);
         loginPanel.add(usernameField);
 
         passwordLabel = new JLabel("Password: ", SwingConstants.CENTER);
-        passwordLabel.setFont(font);
+        passwordLabel.setFont(boldFont);
         loginPanel.add(passwordLabel);
 
         passwordField = new JPasswordField(11);
-        passwordLabel.setFont(font);
+        passwordLabel.setFont(regularFont);
         loginPanel.add(passwordField);
 
         // LOGIN BUTTON
@@ -73,7 +73,7 @@ public class Login extends JFrame {
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 28, 0)); //padding
         buttonPanel.add(loginButton);
-        /** Ομοίως δημιουργούμε ένα πάνελ buttonPanel για να τοποθετήσουμε μέσα σε αυτό το κουμπί */
+        /** Ομοίως, δημιουργούμε ένα πάνελ buttonPanel για να τοποθετήσουμε μέσα σε αυτό το κουμπί */
 
         //ADD OUTER PANEL + BUTTON PANEL
         add(outerPanel, BorderLayout.CENTER);

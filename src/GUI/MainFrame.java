@@ -4,11 +4,14 @@ import API.ManagementService;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame {
 
-    private final ManagementService service;
     private final String iconPath = "Database/Images/login icon.png";
+
+    private final ManagementService service;
 
     public MainFrame(ManagementService service) {
         this.service = service;
@@ -28,7 +31,7 @@ public class MainFrame extends JFrame {
         mainPage.setBorder(BorderFactory.createEmptyBorder(50, 10, 20, 10));
 
         JLabel welcomeLabel = new JLabel("Καλωσήρθατε!");
-        Font font = new Font("Segoe UI", Font.BOLD | Font.ITALIC, 21);
+        Font font = new Font("Segoe UI", Font.BOLD | Font.ITALIC, 25);
         welcomeLabel.setFont(font);
         welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         welcomeLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
@@ -42,21 +45,29 @@ public class MainFrame extends JFrame {
         mainPage.add(iconLabel);
         add(mainPage);
 
-        //MENU BAR
+        // MENU BAR
         JMenuBar menuBar = new JMenuBar();
 
+        // CAR //
         JMenu carsMenu = new JMenu("Οχήματα");
         JMenuItem addCar = new JMenuItem("Προσθήκη Οχήματος");
         JMenuItem listCars = new JMenuItem("Λίστα Οχημάτων");
         carsMenu.add(addCar);
         carsMenu.add(listCars);
+        // ADD CAR DIALOG //
+        addCar.addActionListener(e -> {
+            AddCarDialog dialog = new AddCarDialog(this, service);
+            dialog.setVisible(true);
+        });
 
+        // CLIENT //
         JMenu clientsMenu = new JMenu("Πελάτες");
         JMenuItem addClient = new JMenuItem("Προσθήκη Πελάτη");
         JMenuItem listClients = new JMenuItem("Λίστα Πελατών");
         clientsMenu.add(addClient);
         clientsMenu.add(listClients);
 
+        // RENTALS //
         JMenu rentalsMenu = new JMenu("Ενοικιάσεις");
         JMenuItem addRental = new JMenuItem("Προσθήκη Ενοικίασης");
         JMenuItem removeRental = new JMenuItem("Επιστροφή Οχήματος");
@@ -66,12 +77,14 @@ public class MainFrame extends JFrame {
         rentalsMenu.addSeparator();
         rentalsMenu.add(listRental);
 
+        // EMPLOYEES //
         JMenu employeesMenu = new JMenu("Υπάλληλοι");
         JMenuItem addEmployee = new JMenuItem("Προσθήκη Υπάλληλου");
         JMenuItem listEmployee = new JMenuItem("Λίστα Υπαλλήλων");
         employeesMenu.add(addEmployee);
         employeesMenu.add(listEmployee);
 
+        // LOGOUT //
         JButton logoutButton = new JButton("Αποσύνδεση");
         logoutButton.setFocusPainted(false);
         logoutButton.setContentAreaFilled(false);
@@ -79,20 +92,20 @@ public class MainFrame extends JFrame {
         logoutButton.setForeground(new Color(8, 46, 131));
         logoutButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
         logoutButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
+        // LOGOUT ACTION LISTENER //
         logoutButton.addActionListener(e -> {
             int confirm = JOptionPane.showConfirmDialog(this,
                     "Θέλετε σίγουρα να αποσυνδεθείτε;",
                     "Αποσύνδεση",
                     JOptionPane.YES_NO_OPTION
             );
-
             if (confirm == JOptionPane.YES_OPTION) {
                 dispose(); // Κλείνει το MainFrame
                 new Login(service); // Ανοίγει το Login
             }
         });
 
+        // ADD TO MENU //
         menuBar.add(Box.createHorizontalStrut(10));
         menuBar.add(carsMenu);
         menuBar.add(clientsMenu);
@@ -102,6 +115,7 @@ public class MainFrame extends JFrame {
         menuBar.add(logoutButton);
         menuBar.add(Box.createHorizontalStrut(10));
 
+        // SET MENU //
         setJMenuBar(menuBar);
 
 
