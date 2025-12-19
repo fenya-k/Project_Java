@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class AdminMenuFrame extends JFrame {
+
     public AdminMenuFrame(ManagementService service,Employee employee) {
         setTitle("Admin Dashboard - User: " + employee.getUsername());
         setSize(500, 400);
