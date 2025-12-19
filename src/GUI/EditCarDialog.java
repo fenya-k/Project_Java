@@ -1,13 +1,15 @@
 package GUI;
 
+import API.Car;
 import API.ManagementService;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class AddCarDialog extends JDialog implements StyleAddCancel {
+public class EditCarDialog extends JDialog implements StyleAddCancel {
 
     private final ManagementService service;
+    private Car car;
 
     private JTextField plateField;
     private JTextField brandField;
@@ -16,9 +18,10 @@ public class AddCarDialog extends JDialog implements StyleAddCancel {
     private JTextField yearField;
     private JTextField colorField;
 
-    public AddCarDialog(JFrame parent, ManagementService service) {
-        super(parent, "Προσθήκη Νέου Οχήματος", true); // true = modal
+    public EditCarDialog(TableCar parent, ManagementService service, Car car) {
+        super(parent, "Επεξεργασία Οχήματος", true);
         this.service = service;
+        this.car = car;
 
         // DIALOG
         setSize(600, 460);
@@ -30,26 +33,34 @@ public class AddCarDialog extends JDialog implements StyleAddCancel {
 
         addCarPanel.add(new JLabel("Πινακίδα"));
         plateField = new JTextField();
+        plateField.setText(car.getPlate());
+        plateField.setEditable(false);
+        plateField.setBackground(new Color(204, 204, 204));
         addCarPanel.add(plateField);
 
         addCarPanel.add(new JLabel("Μάρκα"));
         brandField = new JTextField();
+        brandField.setText(car.getBrand());
         addCarPanel.add(brandField);
 
         addCarPanel.add(new JLabel("Τύπος"));
         typeField = new JTextField();
+        typeField.setText(car.getType());
         addCarPanel.add(typeField);
 
         addCarPanel.add(new JLabel("Μοντέλο"));
         modelField = new JTextField();
+        modelField.setText(car.getModel());
         addCarPanel.add(modelField);
 
         addCarPanel.add(new JLabel("Χρονολογία"));
         yearField = new JTextField();
+        yearField.setText(String.valueOf(car.getYear()));
         addCarPanel.add(yearField);
 
         addCarPanel.add(new JLabel("Χρώμα"));
         colorField = new JTextField();
+        colorField.setText(car.getColor());
         addCarPanel.add(colorField);
 
         for (Component c : addCarPanel.getComponents()) {
@@ -93,16 +104,16 @@ public class AddCarDialog extends JDialog implements StyleAddCancel {
         String year = yearField.getText().trim();
         String colour = colorField.getText().trim();
 
-        String check = service.addNewCar(plate, brand, type, model, year, colour);
+        String check = service.editExistingCar(plate, brand, type, model, year, colour);
 
         if (check.equals("Επιτυχής καταχώρηση.")) {
-            JOptionPane.showMessageDialog(this, check,
-                    "Το όχημα προστέθηκε επιτυχώς!",
+            JOptionPane.showMessageDialog(this, "Επιτυχής ενημέρωση.",
+                    "Το όχημα ενημερώθηκε επιτυχώς!",
                     JOptionPane.INFORMATION_MESSAGE);
             dispose();
         } else {
             JOptionPane.showMessageDialog(this, check,
-                    "Η καταχώρηση απέτυχε!",
+                    "Η ενημέρωση απέτυχε!",
                     JOptionPane.ERROR_MESSAGE);
         }
     }

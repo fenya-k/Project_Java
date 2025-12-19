@@ -4,8 +4,6 @@ import API.ManagementService;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame {
 
@@ -16,7 +14,7 @@ public class MainFrame extends JFrame {
     public MainFrame(ManagementService service) {
         this.service = service;
 
-        // FRAME SETTINGS
+        // FRAME
         setTitle("Σύστημα Ενοικιάσεων Αυτοκινήτων");                 //τίτλος
         setSize(900, 600);                             //μέγεθος
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);            //κλείσιμο στην έξοδο
@@ -57,6 +55,11 @@ public class MainFrame extends JFrame {
         // ADD CAR DIALOG //
         addCar.addActionListener(e -> {
             AddCarDialog dialog = new AddCarDialog(this, service);
+            dialog.setVisible(true);
+        });
+        // CAR TABLE //
+        listCars.addActionListener(e -> {
+            TableCar dialog = new TableCar(this, service);
             dialog.setVisible(true);
         });
 

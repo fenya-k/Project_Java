@@ -55,14 +55,14 @@ public class ManagementService {
     }
 
     //EDITS AN EXISTING CAR
-    public boolean editExistingCar(String plate, String brand, String type, String model, String year, String color) {
-        String check = carManager.isValidCar(plate, brand, type, model, year, color);
+    public String editExistingCar(String plate, String brand, String type, String model, String year, String color) {
+            String check = carManager.isValidCar(plate, brand, type, model, year, color);
         System.out.println(check);
-        if (!check.equals("Επιτυχής καταχώρηση.")) {
-            return false;
+        if (!check.equals("Τα στοιχεία είναι πλήρη.")) {
+            return check;
         }
         carManager.edit(plate, brand, type, model, year, color);
-        return true;
+        return "Επιτυχής καταχώρηση.";
     }
 
     //ADDS A NEW CLIENT
