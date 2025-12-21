@@ -66,26 +66,32 @@ public class ManagementService {
     }
 
     //ADDS A NEW CLIENT
-    public boolean addNewClient(String name, String surname, String AFM, String phone, String email) {
+    public String addNewClient(String name, String surname, String AFM, String phone, String email) {
         String check = clientManager.isValidClient(name, surname, AFM, phone, email);
         System.out.println(check);
         if (!check.equals("Επιτυχής καταχώρηση.")) {
-            return false;
+            return check;
         }
+
         Client newClient = new Client(name, surname, AFM, phone, email);
-        clientManager.add(newClient);
-        return true;
+        boolean isAdded = clientManager.add(newClient);
+
+        if(isAdded){
+            return  "Επιτυχής καταχώρηση.";
+        } else{
+            return "Υπάρχει ήδη πελάτης με αυτό το ΑΦΜ.";
+        }
     }
 
     //EDITS AN EXISTING CLIENT
-    public boolean editExistingClient(String name, String surname, String AFM, String phone, String email) {
+    public String editExistingClient(String name, String surname, String AFM, String phone, String email) {
         String check = clientManager.isValidClient(name, surname, AFM, phone, email);
         System.out.println(check);
         if (!check.equals("Επιτυχής καταχώρηση.")) {
-            return false;
+            return check;
         }
         clientManager.edit(name, surname, AFM, phone, email);
-        return true;
+        return  "Επιτυχής καταχώρηση.";
     }
 
     /**

@@ -69,6 +69,16 @@ public class MainFrame extends JFrame {
         JMenuItem listClients = new JMenuItem("Λίστα Πελατών");
         clientsMenu.add(addClient);
         clientsMenu.add(listClients);
+        // ADD CLIENT DIALOG //
+        addClient.addActionListener(e -> {
+            AddClientDialog dialog = new AddClientDialog(this, service);
+            dialog.setVisible(true);
+        });
+        // CLIENT TABLE //
+        listClients.addActionListener(e -> {
+            TableClient dialog = new TableClient(this, service);
+            dialog.setVisible(true);
+        });
 
         // RENTALS //
         JMenu rentalsMenu = new JMenu("Ενοικιάσεις");
