@@ -1,6 +1,5 @@
 package GUI;
 
-import API.Client;
 import API.ManagementService;
 import API.Rental;
 
@@ -15,7 +14,7 @@ public class TableRental extends JDialog implements StyleEditRemoveHistory {
     private DefaultTableModel model;
 
     public TableRental(JFrame parent,ManagementService service){
-        super(parent,"Λίστα Ενοικιάσεων",true);
+        super(parent,"Λίστα Ενοικιάσεων και Επιστροφές",true);
         this.service=service;
 
         setSize(950,600);
@@ -41,23 +40,55 @@ public class TableRental extends JDialog implements StyleEditRemoveHistory {
         JScrollPane scroll = new JScrollPane(table);
         add(scroll, BorderLayout.CENTER);
 
-        JPanel tablePanel = new JPanel(new BorderLayout());
-        tablePanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
-        tablePanel.add(scroll, BorderLayout.CENTER);
-
-        add(tablePanel, BorderLayout.CENTER);
-
         // BUTTONS
+        JButton returnButton = new JButton("Επιστροφή Οχήματος");
+        styleButtonRemove(returnButton);
+        returnButton.setText("Επιστροφή");
+        returnButton.addActionListener(e -> returnCar());
+
         JButton closeButton = new JButton("Κλείσιμο");
         styleButtonEdit(closeButton);
         closeButton.addActionListener(e -> dispose());
 
-        JPanel buttonPanel = new JPanel(new GridBagLayout());
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0)); //padding
-        buttonPanel.add(closeButton);
+        JPanel tablePanel = new JPanel(new GridBagLayout());
+        tablePanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
+        tablePanel.add(returnButton);
+        tablePanel.add(Box.createHorizontalStrut(30));
+        tablePanel.add(closeButton);
 
-        add(buttonPanel, BorderLayout.SOUTH);
+        add(tablePanel, BorderLayout.SOUTH);
         refreshTable();
+    }
+
+    private void returnCar(){
+        int row=table.getSelectedRow();
+        if(row==-1){
+            JOptionPane.showMessageDialog(this,"Επιλέξτε ενοικίαση","Προσοχή",JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int confirmation=JOptionPane.showConfirmDialog(this,"Επιβεβαίωση επιστροφής οχήματος;\\nΤο όχημα θα γίνει ξανά 'Διαθέσιμο'","Επιστροφή",JOptionPane.YES_NO_OPTION);
+
+        if (confirmation!=JOptionPane.YES_OPTION){
+            return;
+        }
+
+        int rentCode=(int) model.getValueAt(row,0);
+
+        Rental selected=null;
+        for (Rental rental: service.getRentalManager().getList()){
+            if (rental.getRentCode()==rentCode){
+                selected=rental;
+                break;
+            }
+        }
+        if (selected!=null) {
+            service.returnCar(selected);
+            refreshTable();
+            JOptionPane.showMessageDialog(this, "Το όχημα επιστράφηκε επιτυχώς");
+        }else {
+            JOptionPane.showMessageDialog(this,"Σφάλμα κατά την επιστροφή","Error",JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void refreshTable() {

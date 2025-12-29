@@ -4,16 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="35b9289b-614b-4ad3-ae10-3e9c21368406" name="Changes" comment=" gui for login">
-      <change afterPath="$PROJECT_DIR$/src/GUI/TableRental.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_10_12_2025_14_03__Changes_1.xml" beforeDir="false" />
+    <list default="true" id="35b9289b-614b-4ad3-ae10-3e9c21368406" name="Changes" comment="ClientDialog add and edit.TableRental">
+      <change afterPath="$PROJECT_DIR$/src/GUI/AddEmployeeDialog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GUI/AddRentalDialog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GUI/TableEmployee.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Project_Java/API/ManagementService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Project_Java/API/ManagementService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/API/ManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/ManagementService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/AddClientDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/AddClientDialog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/EditClientDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/EditClientDialog.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GUI/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/MainFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/TableClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/TableClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/TableRental.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/TableRental.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -164,7 +161,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765968917466</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="ClientDialog add and edit.TableRental">
+      <option name="closed" value="true" />
+      <created>1766314628177</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1766314628177</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -186,6 +191,7 @@
     <MESSAGE value="first gui work" />
     <MESSAGE value=" gui" />
     <MESSAGE value=" gui for login" />
-    <option name="LAST_COMMIT_MESSAGE" value=" gui for login" />
+    <MESSAGE value="ClientDialog add and edit.TableRental" />
+    <option name="LAST_COMMIT_MESSAGE" value="ClientDialog add and edit.TableRental" />
   </component>
 </project>

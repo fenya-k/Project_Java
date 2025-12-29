@@ -89,6 +89,22 @@ public class MainFrame extends JFrame {
         rentalsMenu.add(removeRental);
         rentalsMenu.addSeparator();
         rentalsMenu.add(listRental);
+        //ADD RENTAL
+        addRental.addActionListener(e -> {
+            AddRentalDialog dialog=new AddRentalDialog(this,service);
+            dialog.setVisible(true);
+        });
+        //RETURN CAR
+        removeRental.addActionListener(e -> {
+            TableRental dialog=new TableRental(this,service);
+            dialog.setVisible(true);
+            JOptionPane.showMessageDialog(dialog,"Επιλέξτε μια ενοικίαση και πατήστε 'Επιστροφή'");
+        });
+        //LIST RENTAL
+        listRental.addActionListener(e -> {
+            TableRental dialog=new TableRental(this,service);
+            dialog.setVisible(true);
+        });
 
         // EMPLOYEES //
         JMenu employeesMenu = new JMenu("Υπάλληλοι");
@@ -97,6 +113,13 @@ public class MainFrame extends JFrame {
         employeesMenu.add(addEmployee);
         employeesMenu.add(listEmployee);
 
+        addEmployee.addActionListener(e -> {
+            AddEmployeeDialog dialog=new AddEmployeeDialog(this,service);
+            dialog.setVisible(true);
+        });
+        listEmployee.addActionListener(e -> {
+            TableEmployee dialog=new TableEmployee(this,service);
+        });
         // LOGOUT //
         JButton logoutButton = new JButton("Αποσύνδεση");
         logoutButton.setFocusPainted(false);
