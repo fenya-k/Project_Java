@@ -1,7 +1,6 @@
 package GUI;
 
 import API.Car;
-import API.Client;
 import API.ManagementService;
 
 import javax.swing.*;
@@ -132,7 +131,21 @@ public class TableCar extends JDialog implements StyleEditRemoveHistory {
     }
 
     private void history() {
+        int row = table.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this,
+                    "Επιλέξτε όχημα!",
+                    "Δεν επιλέχθηκε όχημα",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        String plate = (String) model.getValueAt(row, 0);
+        Car car = service.getCarManager().findByPlate(plate);
 
+        HistoryCarDialog dialog = new HistoryCarDialog(this, service, car);
+        dialog.setVisible(true);
+
+        refreshTable();
     }
 
     private void refreshTable() {

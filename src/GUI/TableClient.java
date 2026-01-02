@@ -131,7 +131,21 @@ public class TableClient extends JDialog implements StyleEditRemoveHistory {
     }
 
     private void history() {
+        int row = table.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this,
+                    "Επιλέξτε πελάτη!",
+                    "Δεν επιλέχθηκε πελάτης.",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        String afm = (String) model.getValueAt(row, 2);
+        Client client = service.getClientManager().findByAFM(afm);
 
+        HistoryClientDialog dialog = new HistoryClientDialog(this, service, client);
+        dialog.setVisible(true);
+
+        refreshTable();
     }
 
     private void refreshTable() {
