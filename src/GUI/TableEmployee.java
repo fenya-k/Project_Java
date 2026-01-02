@@ -38,20 +38,22 @@ public class TableEmployee extends JDialog implements StyleEditRemoveHistory {
         table.getTableHeader().setFont(boldFont);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // Επιλογή μίας γραμμής
 
-        add(new JScrollPane(table), BorderLayout.CENTER);
+        JScrollPane scroll = new JScrollPane(table);
+        add(scroll, BorderLayout.CENTER);
+
+        JPanel tablePanel = new JPanel(new BorderLayout());
+        tablePanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
+        tablePanel.add(scroll, BorderLayout.CENTER);
+
+        add(tablePanel, BorderLayout.CENTER);
 
         // BUTTONS
-        JButton closeButton = new JButton("Κλείσιμο");
-        styleButtonEdit(closeButton);
-        closeButton.addActionListener(e -> dispose());
-
         JButton removeButton = new JButton("Διαγραφή");
         styleButtonRemove(removeButton);
         removeButton.addActionListener(e -> remove());
 
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(40, 0, 40, 0)); //padding
-        buttonPanel.add(closeButton);
         buttonPanel.add(Box.createHorizontalStrut(32));
         buttonPanel.add(removeButton);
 
