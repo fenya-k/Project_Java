@@ -84,7 +84,7 @@ public class TableCar extends JDialog implements StyleEditRemoveHistory {
             return;
         }
 
-        String plate = (String) model.getValueAt(row, 0);
+        String plate = ((String) model.getValueAt(row, 0)).trim();
         Car car = service.getCarManager().findByPlate(plate);
 
         EditCarDialog dialog = new EditCarDialog(this, service, car);
@@ -111,7 +111,7 @@ public class TableCar extends JDialog implements StyleEditRemoveHistory {
             return;
         }
 
-        String plate = (String) model.getValueAt(row, 0);
+        String plate = ((String) model.getValueAt(row, 0)).trim();
         Car car = service.getCarManager().findByPlate(plate);
 
         boolean isRemoved = service.getCarManager().remove(car);
@@ -119,13 +119,13 @@ public class TableCar extends JDialog implements StyleEditRemoveHistory {
         if (isRemoved) {
             refreshTable();
             JOptionPane.showMessageDialog(this,
-                    "Επιτυχής αφαίρεση.",
                     "Το όχημα αφαιρέθηκε επιτυχώς!",
+                    "Επιτυχής αφαίρεση.",
                     JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(this,
-                    "Σφάλμα.",
                     "Η καταχώρηση απέτυχε!",
+                    "Σφάλμα.",
                     JOptionPane.ERROR_MESSAGE);
         }
     }

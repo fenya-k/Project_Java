@@ -120,6 +120,7 @@ public class MainFrame extends JFrame {
         listEmployee.addActionListener(e -> {
             TableEmployee dialog=new TableEmployee(this,service);
         });
+
         // LOGOUT //
         JButton logoutButton = new JButton("Αποσύνδεση");
         logoutButton.setFocusPainted(false);
@@ -128,6 +129,7 @@ public class MainFrame extends JFrame {
         logoutButton.setForeground(new Color(8, 46, 131));
         logoutButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
         logoutButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
         // LOGOUT ACTION LISTENER //
         logoutButton.addActionListener(e -> {
             int confirm = JOptionPane.showConfirmDialog(this,
@@ -154,6 +156,27 @@ public class MainFrame extends JFrame {
         // SET MENU //
         setJMenuBar(menuBar);
 
+        // ΟΝ ΕΧΙΤ
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+
+                int choice = JOptionPane.showConfirmDialog(MainFrame.this,
+                        "Θέλετε να κλείσετε την εφαρμογή και να αποθηκεύσετε;", "Έξοδος",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE);
+
+                if (choice == JOptionPane.YES_OPTION) {
+                    System.out.println("Saving...");
+
+                    service.writeAllCSV();
+
+                    System.out.println("Saved. Bye!");
+                    System.exit(0);
+                }
+            }
+        });
 
         setVisible(true);
     }

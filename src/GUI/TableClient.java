@@ -119,13 +119,13 @@ public class TableClient extends JDialog implements StyleEditRemoveHistory {
         if (isRemoved) {
             refreshTable();
             JOptionPane.showMessageDialog(this,
-                    "Επιτυχής αφαίρεση.",
                     "Ο πελάτης αφαιρέθηκε επιτυχώς!",
+                    "Επιτυχής αφαίρεση.",
                     JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(this,
-                    "Σφάλμα.",
                     "Η καταχώρηση απέτυχε!",
+                    "Σφάλμα.",
                     JOptionPane.ERROR_MESSAGE);
         }
     }
