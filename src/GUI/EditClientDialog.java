@@ -8,13 +8,13 @@ import java.awt.*;
 
 public class EditClientDialog extends JDialog implements StyleAddCancel {
     private final ManagementService service;
-    private Client client;
+    private final Client client;
 
-    private JTextField nameField;
-    private JTextField surnameField;
-    private JTextField afmField;
-    private JTextField phoneField;
-    private JTextField emailField;
+    private final JTextField nameField;
+    private final JTextField surnameField;
+    private final JTextField afmField;
+    private final JTextField phoneField;
+    private final JTextField emailField;
 
     public EditClientDialog(JDialog parent, ManagementService service, Client client) {
         super(parent, "Επεξεργασία Πελάτη", true);

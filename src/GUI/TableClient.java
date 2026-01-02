@@ -8,20 +8,70 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class TableClient extends JDialog implements StyleEditRemoveHistory {
+public class TableClient extends JDialog implements StyleEditRemoveHistory, StyleTwoOptions {
     private final ManagementService service;
-    private JTable table;
-    private DefaultTableModel model;
+    private final JTable table;
+    private final DefaultTableModel model;
 
-    public TableClient(JFrame parent, ManagementService service){
+    // For search
+    private final JTextField nameField, surnameField, afmField, phoneField;
+
+    public TableClient(JFrame parent, ManagementService service) {
         super(parent, "Διαχείριση Πελατών", true); // true = modal
         this.service = service;
 
         // DIALOG
-        setSize(900, 600);
+        setSize(1000, 700);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+
+        // SEARCH PANEL
+        JPanel searchPanel = new JPanel();
+        searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.Y_AXIS));
+        searchPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        JPanel fieldsPanel = new JPanel(new GridLayout(2, 4, 10, 5));
+
+        // LABELS //
+        fieldsPanel.add(new JLabel("Όνομα:"));
+        fieldsPanel.add(new JLabel("Επώνυμο:"));
+        fieldsPanel.add(new JLabel("ΑΦΜ:"));
+        fieldsPanel.add(new JLabel("Τηλέφωνο:"));
+
+        // FIELDS //
+        nameField = new JTextField();
+        fieldsPanel.add(nameField);
+        surnameField = new JTextField();
+        fieldsPanel.add(surnameField);
+        afmField = new JTextField();
+        fieldsPanel.add(afmField);
+        phoneField = new JTextField();
+        fieldsPanel.add(phoneField);
+
+        searchPanel.add(fieldsPanel);
+
+        // SEARCH BUTTONS //
+        JPanel searchButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton buttonSearch = new JButton("Αναζήτηση");
+        styleButtonOptionOne(buttonSearch);
+        buttonSearch.addActionListener(e -> performSearch());
+
+        JButton buttonReset = new JButton("Καθαρισμός Φίλτρων");
+        styleButtonOptionTwo(buttonReset);
+        buttonReset.addActionListener(e -> {
+            nameField.setText("");
+            surnameField.setText("");
+            afmField.setText("");
+            phoneField.setText("");
+            performSearch();
+        });
+
+        searchButtonPanel.add(buttonSearch);
+        searchButtonPanel.add(Box.createHorizontalStrut(26));
+        searchButtonPanel.add(buttonReset);
+        searchPanel.add(searchButtonPanel);
+
+        add(searchPanel, BorderLayout.NORTH);
 
         // TABLE
         String[] columns = {"Όνομα", "Επίθετο", "ΑΦΜ", "Τηλέφωνο", "Email"};
@@ -73,6 +123,33 @@ public class TableClient extends JDialog implements StyleEditRemoveHistory {
         refreshTable();
     }
 
+    private void performSearch() {
+        String name = isEmpty(nameField) ? null : nameField.getText().trim();
+        String surname = isEmpty(surnameField) ? null : surnameField.getText().trim();
+        String afm = isEmpty(afmField) ? null : afmField.getText().trim();
+        String phone = isEmpty(phoneField) ? null : phoneField.getText().trim();
+
+        // ΚΛΗΣΗ ΤΗΣ SEARCH ΤΟΥ MANAGER
+        ArrayList<Client> results = service.getClientManager().search(name, surname, afm, phone);
+
+        ((DefaultTableModel) table.getModel()).setRowCount(0);
+
+        if (results != null) {
+            for (Client c : results) {
+                ((DefaultTableModel) table.getModel()).addRow(new Object[]{
+                        c.getName(),
+                        c.getSurname(),
+                        c.getAFM(),
+                        c.getPhone(),
+                });
+            }
+        }
+    }
+
+    private boolean isEmpty(JTextField field) {
+        return field.getText().trim().isEmpty();
+    }
+
     private void edit() {
         int row = table.getSelectedRow();
         if (row == -1) {
@@ -86,7 +163,7 @@ public class TableClient extends JDialog implements StyleEditRemoveHistory {
         String afm = (String) model.getValueAt(row, 2);
         Client client = service.getClientManager().findByAFM(afm);
 
-        if(client!=null){
+        if (client != null) {
             EditClientDialog dialog = new EditClientDialog(this, service, client);
             dialog.setVisible(true);
             refreshTable();
@@ -150,6 +227,8 @@ public class TableClient extends JDialog implements StyleEditRemoveHistory {
 
     private void refreshTable() {
 
+        performSearch();
+        /*
         model.setRowCount(0);
 
         ArrayList<Client> list = service.getClientManager().getList();
@@ -157,6 +236,6 @@ public class TableClient extends JDialog implements StyleEditRemoveHistory {
             model.addRow(new Object[]{
                     client.getName(), client.getSurname(), client.getAFM(), client.getPhone(), client.getEmail()
             });
-        }
+        }*/
     }
 }

@@ -94,6 +94,17 @@ public class ManagementService {
         return  "Επιτυχής καταχώρηση.";
     }
 
+    //EDITS AN EXISTING EMPLOYEE
+    public String editExistingEmployee(String username, String name, String surname, String email) {
+        String check = employeeManager.isValidEmployee(username, name, surname, email);
+        System.out.println(check);
+        if (!check.equals("Επιτυχής καταχώρηση.")) {
+            return check;
+        }
+        employeeManager.edit(username, name, surname, email);
+        return  "Επιτυχής καταχώρηση.";
+    }
+
     /**
      * Performs the car rental process.
      * 1. Adds rental to the global list.

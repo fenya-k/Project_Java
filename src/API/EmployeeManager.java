@@ -19,27 +19,26 @@ public class EmployeeManager implements Manager<Employee> {
         return null; //fail
     }
 
-    @Override
-    public void print() {
-        System.out.println("List of employees");
-        if (employees.isEmpty()) {
-            System.out.println("No employees found");
-        } else {
-            for (Employee employee : employees) {
-                System.out.println(employee.toString());
-            }
+    public String isValidEmployee( String username, String name, String surname, String email) {
+        String fullString = "";
+
+        if (name == null || name.isEmpty()) {
+            fullString += "Παρακαλώ καταχωρήστε τον όνομα.\n";
         }
-    }
-
-    @Override
-    public ArrayList<Employee> getList() {
-        return new ArrayList<>(this.employees); //encapsulation - defensive copying
-    }
-
-
-    @Override
-    public int getSize() {
-        return employees.size();
+        if (surname == null || surname.isEmpty()) {
+            fullString += "Παρακαλώ καταχωρήστε το επίθετο.\n";
+        }
+        if (username == null || username.isEmpty()) {
+            fullString += "Παρακαλώ καταχωρήστε το παρατσούκλι.\n";
+        }
+        if (email == null || email.isEmpty()) {
+            fullString += "Παρακαλώ καταχωρήστε το email.\n";
+        }
+        if (fullString.isEmpty()) {
+            return "Επιτυχής καταχώρηση.";
+        } else {
+            return fullString;
+        }
     }
 
     @Override
@@ -52,6 +51,14 @@ public class EmployeeManager implements Manager<Employee> {
         }
         employees.add(employee);
         System.out.println("Ο εργαζόμενος προστέθηκε: " + employee.getUsername());
+        return true;
+    }
+
+    public boolean edit( String username, String name, String surname, String email) {
+        Employee editedEmployee = findByUsername(username);
+        editedEmployee.setName(name);
+        editedEmployee.setSurname(surname);
+        editedEmployee.setEmail(email);
         return true;
     }
 
@@ -72,6 +79,27 @@ public class EmployeeManager implements Manager<Employee> {
         return false;
     }
 
+    @Override
+    public void print() {
+        System.out.println("List of employees");
+        if (employees.isEmpty()) {
+            System.out.println("No employees found");
+        } else {
+            for (Employee employee : employees) {
+                System.out.println(employee.toString());
+            }
+        }
+    }
+
+    @Override
+    public ArrayList<Employee> getList() {
+        return new ArrayList<>(this.employees); //encapsulation - defensive copying
+    }
+
+    @Override
+    public int getSize() {
+        return employees.size();
+    }
 
     public void readCSV(String filename) {
         String line;

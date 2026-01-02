@@ -1,5 +1,6 @@
 package GUI;
 
+import API.Client;
 import API.Employee;
 import API.ManagementService;
 
@@ -48,18 +49,43 @@ public class TableEmployee extends JDialog implements StyleEditRemoveHistory {
         add(tablePanel, BorderLayout.CENTER);
 
         // BUTTONS
+        JButton editButton = new JButton("Επεξεργασία");
+        styleButtonEdit(editButton);
+        editButton.addActionListener(e -> edit());
+
         JButton removeButton = new JButton("Διαγραφή");
         styleButtonRemove(removeButton);
         removeButton.addActionListener(e -> remove());
 
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(40, 0, 40, 0)); //padding
+        buttonPanel.add(editButton);
         buttonPanel.add(Box.createHorizontalStrut(32));
         buttonPanel.add(removeButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
 
         refreshTable();
+    }
+
+    private void edit() {
+        int row = table.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this,
+                    "Επιλέξτε υπάλληλο!",
+                    "Δεν επιλέχθηκε υπάλληλος.",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String username = (String) model.getValueAt(row, 0);
+        Employee employee = service.getEmployeeManager().findByUsername(username);
+
+        if (employee != null) {
+            EditEmployeeDialog dialog = new EditEmployeeDialog(this, service, employee);
+            dialog.setVisible(true);
+            refreshTable();
+        }
     }
 
     private void remove() {
@@ -76,7 +102,7 @@ public class TableEmployee extends JDialog implements StyleEditRemoveHistory {
             return;
         }
 
-        String username = (String) model.getValueAt(row, 2);
+        String username = (String) model.getValueAt(row, 0);
         Employee employee = service.getEmployeeManager().findByUsername(username);
         if (employee != null) {
             service.getEmployeeManager().remove(employee);

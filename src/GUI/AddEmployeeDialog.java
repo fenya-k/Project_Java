@@ -9,11 +9,11 @@ import java.awt.*;
 public class AddEmployeeDialog extends JDialog implements StyleAddCancel{
         private final ManagementService service;
 
-        private JTextField nameField;
-        private JTextField surnameField;
-        private JTextField usernameField;
-        private JTextField emailField;
-        private JPasswordField passwordField;
+        private final JTextField nameField;
+        private final JTextField surnameField;
+        private final JTextField usernameField;
+        private final JTextField emailField;
+        private final JPasswordField passwordField;
 
         public AddEmployeeDialog(JFrame parent, ManagementService service) {
             super(parent, "Προσθήκη Υπαλλήλου", true);
@@ -35,13 +35,13 @@ public class AddEmployeeDialog extends JDialog implements StyleAddCancel{
             surnameField = new JTextField();
             addClientPanel.add(surnameField);
 
-            addClientPanel.add(new JLabel("Username"));
-            usernameField = new JTextField();
-            addClientPanel.add(usernameField);
-
             addClientPanel.add(new JLabel("Email"));
             emailField = new JTextField();
             addClientPanel.add(emailField);
+
+            addClientPanel.add(new JLabel("Username"));
+            usernameField = new JTextField();
+            addClientPanel.add(usernameField);
 
             addClientPanel.add(new JLabel("Password"));
             passwordField = new JPasswordField();
@@ -83,9 +83,9 @@ public class AddEmployeeDialog extends JDialog implements StyleAddCancel{
 
             String name = nameField.getText().trim();
             String surname = surnameField.getText().trim();
+            String email = emailField.getText().trim();
             String user = usernameField.getText().trim();
             String password = new String(passwordField.getPassword()).trim();
-            String email = emailField.getText().trim();
 
             if (name.isEmpty() || surname.isEmpty() || user.isEmpty() || password.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "'Ολα τα πεδία πρέπει να είναι συμπληρωμένα", "Σφάλμα", JOptionPane.ERROR_MESSAGE);

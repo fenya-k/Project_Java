@@ -8,21 +8,83 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class TableCar extends JDialog implements StyleEditRemoveHistory {
+public class TableCar extends JDialog implements StyleEditRemoveHistory, StyleTwoOptions {
 
     private final ManagementService service;
-    private JTable table;
-    private DefaultTableModel model;
+    private final JTable table;
+    private final DefaultTableModel model;
+
+    // For search
+    private final JTextField plateField, brandField, typeField, modelField, colorField;
+    private final JComboBox<String> availabilityBox;
 
     public TableCar(JFrame parent, ManagementService service) {
         super(parent, "Διαχείριση Οχημάτων", true); // true = modal
         this.service = service;
 
         // DIALOG
-        setSize(900, 600);
+        setSize(1100, 800);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+
+        // SEARCH PANEL
+        JPanel searchPanel = new JPanel();
+        searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.Y_AXIS));
+        searchPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        JPanel fieldsPanel = new JPanel(new GridLayout(2, 6, 10, 5));
+
+        // LABELS //
+        fieldsPanel.add(new JLabel("Πινακίδα:"));
+        fieldsPanel.add(new JLabel("Μάρκα:"));
+        fieldsPanel.add(new JLabel("Τύπος:"));
+        fieldsPanel.add(new JLabel("Μοντέλο:"));
+        fieldsPanel.add(new JLabel("Χρώμα:"));
+        fieldsPanel.add(new JLabel("Κατάσταση:"));
+
+        // FIELDS //
+        plateField = new JTextField();
+        fieldsPanel.add(plateField);
+        brandField = new JTextField();
+        fieldsPanel.add(brandField);
+        typeField = new JTextField();
+        fieldsPanel.add(typeField);
+        modelField = new JTextField();
+        fieldsPanel.add(modelField);
+        colorField = new JTextField();
+        fieldsPanel.add(colorField);
+
+        String[] options = {"Όλα", "Διαθέσιμα", "Ενοικιασμένα"};
+        availabilityBox = new JComboBox<>(options);
+        fieldsPanel.add(availabilityBox);
+
+        searchPanel.add(fieldsPanel);
+        searchPanel.add(Box.createVerticalStrut(10));
+
+        // SEARCH BUTTONS //
+        JPanel searchButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton buttonSearch = new JButton("Αναζήτηση");
+        styleButtonOptionOne(buttonSearch);
+        buttonSearch.addActionListener(e -> performSearch());
+
+        JButton buttonReset = new JButton("Καθαρισμός Φίλτρων");
+        styleButtonOptionTwo(buttonReset);
+        buttonReset.addActionListener(e -> {
+            plateField.setText("");
+            brandField.setText("");
+            typeField.setText("");
+            modelField.setText("");
+            colorField.setText("");
+            availabilityBox.setSelectedIndex(0);
+            performSearch();
+        });
+
+        searchButtonPanel.add(buttonSearch);
+        searchButtonPanel.add(Box.createHorizontalStrut(26));
+        searchButtonPanel.add(buttonReset);
+        searchPanel.add(searchButtonPanel);
+
+        add(searchPanel, BorderLayout.NORTH);
 
         // TABLE
         String[] columns = {"Πινακίδα", "Μάρκα", "Τύπος", "Μοντέλο", "Έτος", "Χρώμα", "Κατάσταση"};
@@ -72,6 +134,42 @@ public class TableCar extends JDialog implements StyleEditRemoveHistory {
         add(buttonPanel, BorderLayout.SOUTH);
 
         refreshTable();
+    }
+
+    private void performSearch() {
+        String plate = isEmpty(plateField) ? null : plateField.getText().trim();
+        String brand = isEmpty(brandField) ? null : brandField.getText().trim();
+        String type = isEmpty(typeField) ? null : typeField.getText().trim();
+        String model = isEmpty(modelField) ? null : modelField.getText().trim();
+        String color = isEmpty(colorField) ? null : colorField.getText().trim();
+
+        Boolean available = null;
+        if (availabilityBox.getSelectedIndex() == 1) available = true;
+        if (availabilityBox.getSelectedIndex() == 2) available = false;
+
+        // ΚΛΗΣΗ ΤΗΣ SEARCH ΤΟΥ MANAGER
+        ArrayList<Car> results = service.getCarManager().search(plate, brand, type, model, color, available);
+
+        ((DefaultTableModel) table.getModel()).setRowCount(0);
+
+        if (results != null) {
+            for (Car c : results) {
+                ((DefaultTableModel) table.getModel()).addRow(new Object[]{
+                        c.getPlate(),
+                        c.getBrand(),
+                        c.getType(),
+                        c.getModel(),
+                        c.getYear(),
+                        c.getColor(),
+                        c.isAvailable() ? "Διαθέσιμο" : "Ενοικιασμένο"
+                });
+            }
+        }
+    }
+
+    // Βοηθητική για έλεγχο κενού πεδίου
+    private boolean isEmpty(JTextField field) {
+        return field.getText().trim().isEmpty();
     }
 
     private void edit() {
@@ -139,7 +237,7 @@ public class TableCar extends JDialog implements StyleEditRemoveHistory {
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-        String plate = (String) model.getValueAt(row, 0);
+        String plate = ((String) model.getValueAt(row, 0)).trim();
         Car car = service.getCarManager().findByPlate(plate);
 
         HistoryCarDialog dialog = new HistoryCarDialog(this, service, car);
@@ -149,14 +247,6 @@ public class TableCar extends JDialog implements StyleEditRemoveHistory {
     }
 
     private void refreshTable() {
-
-        model.setRowCount(0);
-
-        ArrayList<Car> list = service.getCarManager().getList();
-        for (Car car : list) {
-            model.addRow(new Object[]{
-                    car.getPlate(), car.getBrand(), car.getType(), car.getModel(), car.getYear(), car.getColor(), car.getCarStatus()
-            });
-        }
+        performSearch();
     }
 }

@@ -149,8 +149,9 @@ public class ClientManager implements Manager<Client> {
     }
 
 
-    public Client search(String name, String surname, String AFM, String phone, String email) {
+    public ArrayList<Client> search(String name, String surname, String AFM, String phone) {
 
+        ArrayList<Client> foundClients = new ArrayList<>();
         /* Οι πελάτες μπαίνουν στη for με τη σειρά, έπειτα γίνεται έλεγχος σε κάθε if αν έχει δοθεί τιμή για σύγκριση
          αν δεν έχει δοθεί τιμή (null) τότε προχωράει στην επόμενη if χωρίς να μπει στο σώμα της
          αν έχει δοθεί τιμή τότε τη συγκρίνει με αυτή του εκάστοτε αυτοκινήτου και
@@ -178,14 +179,9 @@ public class ClientManager implements Manager<Client> {
                     continue;
                 }
             }
-            if (email != null && !email.isEmpty()) {
-                if (!client.getEmail().equalsIgnoreCase(email)) {
-                    continue;
-                }
-            }
-            return client;
+            foundClients.add(client);
         }
-        return null;
+        return foundClients;
     }
 
     public Client findByAFM(String AFM) {
