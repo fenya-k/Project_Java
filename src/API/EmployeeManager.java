@@ -93,7 +93,7 @@ public class EmployeeManager implements Manager<Employee> {
 
     @Override
     public ArrayList<Employee> getList() {
-        return new ArrayList<>(this.employees); //encapsulation - defensive copying
+        return employees; //encapsulation - defensive copying
     }
 
     @Override

@@ -110,7 +110,7 @@ public class CarManager implements Manager<Car> {
 
     @Override
     public ArrayList<Car> getList() {
-        return new ArrayList<>(this.cars); //encapsulation - defensive copying
+        return cars; //encapsulation - defensive copying
     }
 
     @Override

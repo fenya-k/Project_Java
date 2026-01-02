@@ -1,6 +1,8 @@
 package API;
 
 import java.io.*;
+import java.security.CodeSigner;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class RentalManager implements Manager<Rental>, ReadWriteCSV {
@@ -9,6 +11,34 @@ public class RentalManager implements Manager<Rental>, ReadWriteCSV {
 
     public RentalManager() {
         rentals = new ArrayList<>();
+    }
+
+    public String isValidRental(int code, Car rentCar, Client client, LocalDate startDate, LocalDate endDate, Employee employee) {
+        String fullString = "";
+
+        if (code <= 0) {
+            fullString += "Παρακαλώ καταχωρήστε τον κωδικό.\n";
+        }
+        if (rentCar == null) {
+            fullString += "Παρακαλώ καταχωρήστε το όχημα.\n";
+        }
+        if (client == null) {
+            fullString += "Παρακαλώ καταχωρήστε τον πελάτη.\n";
+        }
+        if (employee == null) {
+            fullString += "Παρακαλώ καταχωρήστε τον υπάλληλο.\n";
+        }
+        if (startDate == null) {
+            fullString += "Παρακαλώ καταχωρήστε ημερομηνία παραλαβής.\n";
+        }
+        if (endDate == null) {
+            fullString += "Παρακαλώ καταχωρήστε ημερομηνία επιστροφής.\n";
+        }
+        if (fullString.isEmpty()) {
+            return "Επιτυχής καταχώρηση.";
+        } else {
+            return fullString;
+        }
     }
 
     @Override
@@ -26,6 +56,16 @@ public class RentalManager implements Manager<Rental>, ReadWriteCSV {
         rentals.add(rental);
         rental.getRentCar().setCarStatus(CarStatus.RENTED);
         System.out.println("Η ενοικίαση έγινε");
+        return true;
+    }
+
+    public boolean edit(int code, Car rentCar, Client client, LocalDate startDate, LocalDate endDate, Employee employee) {
+        Rental editedRental = findByCode(code);
+        editedRental.setRentCar(rentCar);
+        editedRental.setClient(client);
+        editedRental.setStartDate(startDate);
+        editedRental.setEndDate(endDate);
+        editedRental.setEmployee(employee);
         return true;
     }
 
@@ -47,19 +87,9 @@ public class RentalManager implements Manager<Rental>, ReadWriteCSV {
         return false;
     }
 
-    public ArrayList<Rental> searchByClientAFM(String AFM) {
-        ArrayList<Rental> found = new ArrayList<>();
-        for (Rental rental : rentals) {
-            if (rental.getClient().getAFM().equals(AFM)) {
-                found.add(rental);
-            }
-        }
-        return found;
-    }
-
     @Override
     public ArrayList<Rental> getList() {
-        return new ArrayList<>(this.rentals); //encapsulation - defensive copying
+        return rentals; //encapsulation - defensive copying
     }
 
     @Override
@@ -78,7 +108,7 @@ public class RentalManager implements Manager<Rental>, ReadWriteCSV {
         }
     }
 
-    public ArrayList<Rental> search(String plate, String AFM) {
+    public ArrayList<Rental> search (String plate, String AFM) {
         ArrayList<Rental> foundRentals = new ArrayList<>();
 
         for (Rental rental : rentals) { //null proofing (protection from NullPointerExceptions)
@@ -93,4 +123,20 @@ public class RentalManager implements Manager<Rental>, ReadWriteCSV {
         return foundRentals;
     }
 
+    public Rental findByCode(int code) {
+        for (Rental r : rentals) {
+            if (r.getRentCode() == code) return r;
+        }
+        return null;
+    }
+
+    public ArrayList<Rental> searchByClientAFM(String AFM) {
+        ArrayList<Rental> found = new ArrayList<>();
+        for (Rental rental : rentals) {
+            if (rental.getClient().getAFM().equals(AFM)) {
+                found.add(rental);
+            }
+        }
+        return found;
+    }
 }

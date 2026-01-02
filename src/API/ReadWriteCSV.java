@@ -2,6 +2,7 @@ package API;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public interface ReadWriteCSV {
@@ -9,12 +10,15 @@ public interface ReadWriteCSV {
     default void readCSV(CarManager carManager, ClientManager clientManager, EmployeeManager employeeManager, String filename, ArrayList<Rental> list) {
         String line;
         String delimiter = ",";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
 
         try (BufferedReader in = new BufferedReader(new FileReader(filename))) {
             in.readLine(); //skips the first line because it's a header
 
             while ((line = in.readLine()) != null) {
                 String[] data = line.split(delimiter);
+
+                if (data.length < 6) continue;
 
                 int rentCode = Integer.parseInt(data[0].trim());
                 String plate = data[1].trim();
@@ -23,8 +27,8 @@ public interface ReadWriteCSV {
                 String end = data[4].trim();
                 String employeeUsername = data[5].trim();
 
-                LocalDate startDate = LocalDate.parse(start);
-                LocalDate endDate = LocalDate.parse(end);
+                LocalDate startDate = LocalDate.parse(start, formatter);
+                LocalDate endDate = LocalDate.parse(end, formatter);
 
                 Client client = clientManager.findByAFM(clientAFM);
                 Car rentCar = carManager.findByPlate(plate);
@@ -33,7 +37,7 @@ public interface ReadWriteCSV {
                 if (client != null && rentCar != null && employee != null) {
                     Rental rental = new Rental(rentCode, rentCar, client, startDate, endDate, employee);
                     list.add(rental);
-                    if (endDate.isAfter(LocalDate.now())) {
+                    if (endDate.isAfter(LocalDate.now()) || endDate.isEqual(LocalDate.now())) {
                         rentCar.setCarStatus(CarStatus.RENTED);
                     }
                 } else {
@@ -52,6 +56,8 @@ public interface ReadWriteCSV {
 
     default void writeCSV(String filename, ArrayList<Rental> list) {
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
+
         try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
 
             String header = "κωδικός ενοικίασης,πινακίδα,ΑΦΜ πελάτη,ημέρα έναρξης,ημέρα λήξης,όνομα εργαζόμενου";
@@ -59,11 +65,15 @@ public interface ReadWriteCSV {
             out.newLine();
 
             for (Rental rental : list) {
+
+                String sDate = rental.getStartDate().format(formatter);
+                String eDate = rental.getEndDate().format(formatter);
+
                 String line = rental.getRentCode() + "," +
                         rental.getRentCar().getPlate() + "," +
                         rental.getClient().getAFM() + "," +
-                        rental.getStartDate() + "," +
-                        rental.getEndDate() + "," +
+                        sDate + "," +
+                        eDate + "," +
                         rental.getEmployee().getUsername();
 
                 out.write(line);

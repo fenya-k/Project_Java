@@ -14,7 +14,7 @@ public class TableClient extends JDialog implements StyleEditRemoveHistory, Styl
     private final DefaultTableModel model;
 
     // For search
-    private final JTextField nameField, surnameField, afmField, phoneField;
+    private final JTextField nameField, surnameField, afmField, phoneField, emailField;
 
     public TableClient(JFrame parent, ManagementService service) {
         super(parent, "Διαχείριση Πελατών", true); // true = modal
@@ -37,6 +37,7 @@ public class TableClient extends JDialog implements StyleEditRemoveHistory, Styl
         fieldsPanel.add(new JLabel("Επώνυμο:"));
         fieldsPanel.add(new JLabel("ΑΦΜ:"));
         fieldsPanel.add(new JLabel("Τηλέφωνο:"));
+        fieldsPanel.add(new JLabel("Email:"));
 
         // FIELDS //
         nameField = new JTextField();
@@ -47,6 +48,8 @@ public class TableClient extends JDialog implements StyleEditRemoveHistory, Styl
         fieldsPanel.add(afmField);
         phoneField = new JTextField();
         fieldsPanel.add(phoneField);
+        emailField = new JTextField();
+        fieldsPanel.add(emailField);
 
         searchPanel.add(fieldsPanel);
 
@@ -63,6 +66,7 @@ public class TableClient extends JDialog implements StyleEditRemoveHistory, Styl
             surnameField.setText("");
             afmField.setText("");
             phoneField.setText("");
+            emailField.setText("");
             performSearch();
         });
 
@@ -128,6 +132,7 @@ public class TableClient extends JDialog implements StyleEditRemoveHistory, Styl
         String surname = isEmpty(surnameField) ? null : surnameField.getText().trim();
         String afm = isEmpty(afmField) ? null : afmField.getText().trim();
         String phone = isEmpty(phoneField) ? null : phoneField.getText().trim();
+        String email = isEmpty(emailField) ? null : emailField.getText().trim();
 
         // ΚΛΗΣΗ ΤΗΣ SEARCH ΤΟΥ MANAGER
         ArrayList<Client> results = service.getClientManager().search(name, surname, afm, phone);
@@ -141,6 +146,7 @@ public class TableClient extends JDialog implements StyleEditRemoveHistory, Styl
                         c.getSurname(),
                         c.getAFM(),
                         c.getPhone(),
+                        c.getEmail()
                 });
             }
         }

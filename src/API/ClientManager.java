@@ -76,7 +76,7 @@ public class ClientManager implements Manager<Client> {
 
     @Override
     public ArrayList<Client> getList() {
-        return new ArrayList<>(this.clients); //encapsulation - defensive copying
+        return clients; //encapsulation - defensive copying
     }
 
     @Override

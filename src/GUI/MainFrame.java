@@ -83,11 +83,11 @@ public class MainFrame extends JFrame {
         // RENTALS //
         JMenu rentalsMenu = new JMenu("Ενοικιάσεις");
         JMenuItem addRental = new JMenuItem("Προσθήκη Ενοικίασης");
-        JMenuItem removeRental = new JMenuItem("Επιστροφή Οχήματος");
+        //JMenuItem removeRental = new JMenuItem("Επιστροφή Οχήματος");
         JMenuItem listRental = new JMenuItem("Λίστα Ενοικιάσεων");
         rentalsMenu.add(addRental);
-        rentalsMenu.add(removeRental);
-        rentalsMenu.addSeparator();
+        //rentalsMenu.add(removeRental);
+        //rentalsMenu.addSeparator();
         rentalsMenu.add(listRental);
         //ADD RENTAL
         addRental.addActionListener(e -> {
@@ -95,11 +95,11 @@ public class MainFrame extends JFrame {
             dialog.setVisible(true);
         });
         //RETURN CAR
-        removeRental.addActionListener(e -> {
-            TableRental dialog = new TableRental(this, service);
-            dialog.setVisible(true);
-            JOptionPane.showMessageDialog(dialog, "Επιλέξτε μια ενοικίαση και πατήστε 'Επιστροφή'");
-        });
+//        removeRental.addActionListener(e -> {
+//            TableRental dialog = new TableRental(this, service);
+//            dialog.setVisible(true);
+//            JOptionPane.showMessageDialog(dialog, "Επιλέξτε μια ενοικίαση και πατήστε 'Επιστροφή'");
+//        });
         //LIST RENTAL
         listRental.addActionListener(e -> {
             TableRental dialog = new TableRental(this, service);

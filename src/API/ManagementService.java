@@ -1,5 +1,7 @@
 package API;
 
+import java.time.LocalDate;
+
 public class ManagementService {
 
     //FILE NAMES
@@ -102,6 +104,17 @@ public class ManagementService {
             return check;
         }
         employeeManager.edit(username, name, surname, email);
+        return  "Επιτυχής καταχώρηση.";
+    }
+
+    //EDITS AN EXISTING RENTAL
+    public String editExistingRental(int code, Car rentCar, Client client, LocalDate startDate, LocalDate endDate, Employee employee) {
+        String check = rentalManager.isValidRental(code, rentCar, client, startDate, endDate, employee);
+        System.out.println(check);
+        if (!check.equals("Επιτυχής καταχώρηση.")) {
+            return check;
+        }
+        rentalManager.edit(code, rentCar, client, startDate, endDate, employee);
         return  "Επιτυχής καταχώρηση.";
     }
 
