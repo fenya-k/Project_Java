@@ -138,6 +138,7 @@ public class MainFrame extends JFrame {
                     JOptionPane.YES_NO_OPTION
             );
             if (confirm == JOptionPane.YES_OPTION) {
+                saveOnExit();
                 dispose(); // Κλείνει το MainFrame
                 new Login(service); // Ανοίγει το Login
             }
@@ -168,16 +169,18 @@ public class MainFrame extends JFrame {
                         JOptionPane.QUESTION_MESSAGE);
 
                 if (choice == JOptionPane.YES_OPTION) {
-                    System.out.println("Saving...");
-
-                    service.writeAllCSV();
-
-                    System.out.println("Saved. Bye!");
+                    saveOnExit();
                     System.exit(0);
                 }
             }
         });
 
         setVisible(true);
+    }
+
+    void saveOnExit() {
+        System.out.println("Saving...");
+        service.writeAllCSV();
+        System.out.println("Saved. Bye!");
     }
 }
