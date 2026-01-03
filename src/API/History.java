@@ -2,16 +2,24 @@ package API;
 
 import java.util.ArrayList;
 
+/**
+ * This interface has to be used by classes that need a rental history like Car and Client
+ * Store and retrieve history are the necessary methods to be implemented
+ */
 public interface History {
+
     /**
-     * Adds a rental record to the entity's personal history.
-     * @param rental The rental to add.
-     * @return true if added successfully, false if duplicate.
+     * Adds a new rental to the history
+     * after checking if it already exists
+     * @param rental The rental to be added
+     * @return true if successful, false otherwise
      */
     boolean addRental(Rental rental);
 
-    void printRentals();
-
+    /**
+     * Retrieves the history list
+     * @return An ArrayList of the rental history
+     */
     ArrayList<Rental> returnList();
 
 }
