@@ -35,8 +35,8 @@ public class AdminMenuFrame extends JFrame {
         //button for EXIT
         JButton logoutButton = new JButton("Logout");
         logoutButton.addActionListener(e -> {
-            new MainFrame(service).setVisible(true);
             dispose();
+            new Login(service);
         });
 
         add(carsButton);

@@ -1,5 +1,6 @@
 package GUI;
 
+import API.Employee;
 import API.ManagementService;
 
 import javax.swing.*;
@@ -11,11 +12,14 @@ public class MainFrame extends JFrame {
 
     private final ManagementService service;
 
-    public MainFrame(ManagementService service) {
+    private final Employee currentUser;
+
+    public MainFrame(ManagementService service,Employee user) {
         this.service = service;
+        this.currentUser=user;
 
         // FRAME
-        setTitle("Σύστημα Ενοικιάσεων Αυτοκινήτων");                 //τίτλος
+        setTitle("Σύστημα Ενοικιάσεων Αυτοκινήτων-Χρήστης"+user.getUsername());                 //τίτλος
         setSize(900, 600);                             //μέγεθος
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);            //κλείσιμο στην έξοδο
         setLocationRelativeTo(null);                              //κεντράρισμα
@@ -91,7 +95,7 @@ public class MainFrame extends JFrame {
         rentalsMenu.add(listRental);
         //ADD RENTAL
         addRental.addActionListener(e -> {
-            AddRentalDialog dialog = new AddRentalDialog(this, service);
+            AddRentalDialog dialog = new AddRentalDialog(this, service,currentUser);
             dialog.setVisible(true);
         });
         //RETURN CAR

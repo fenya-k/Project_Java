@@ -18,7 +18,7 @@ public class Main {
         // LAUNCH GUI (in the Swing Event Dispatch Thread)
         SwingUtilities.invokeLater(() -> {
             //new Login(service);
-           new MainFrame(service);
+           new Login(service);
 
         });
     }

@@ -57,7 +57,7 @@ public class Login extends JFrame {
         loginPanel.add(passwordLabel);
 
         passwordField = new JPasswordField(11);
-        passwordLabel.setFont(regularFont);
+        passwordField.setFont(regularFont);
         loginPanel.add(passwordField);
 
         // LOGIN BUTTON
@@ -93,7 +93,7 @@ public class Login extends JFrame {
         if (employee != null) {
             JOptionPane.showMessageDialog(this, "Επιτυχής σύνδεση!");
             dispose();
-            new MainFrame(service);
+            new MainFrame(service,employee);
         } else {
             JOptionPane.showMessageDialog(this, "Σφάλμα σύνδεσης!", "Σφάλμα", JOptionPane.ERROR_MESSAGE);
         }
