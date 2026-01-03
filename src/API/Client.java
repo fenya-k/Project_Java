@@ -44,7 +44,7 @@ public class Client extends Person implements History, ReadWriteCSV {
         return true;
     }
 
-    @Override
+
     public void printRentals() {
         if (clientRentals.isEmpty()) {
             System.out.println("No rentals found");

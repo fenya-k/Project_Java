@@ -4,11 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="35b9289b-614b-4ad3-ae10-3e9c21368406" name="Changes" comment="Finalize Rental UI: Auto-employee, smart filtering, and Login flow">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataBase/ManagerFiles/rentals.csv" beforeDir="false" afterPath="$PROJECT_DIR$/DataBase/ManagerFiles/rentals.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataBase/ManagerFiles/vehicles.csv" beforeDir="false" afterPath="$PROJECT_DIR$/DataBase/ManagerFiles/vehicles.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/EditRentalDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/EditRentalDialog.java" afterDir="false" />
+    <list default="true" id="35b9289b-614b-4ad3-ae10-3e9c21368406" name="Changes" comment="edit rental αλλαγες">
+      <change beforePath="$PROJECT_DIR$/out/production/Project_Java/API/Car.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Project_Java/API/CarManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Project_Java/API/CarStatus.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Project_Java/API/Client.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Project_Java/API/ClientManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Project_Java/API/EmployeeManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Project_Java/API/History.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Project_Java/API/RentalManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Project_Java/Main.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,7 +180,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767426680681</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="edit rental αλλαγες">
+      <option name="closed" value="true" />
+      <created>1767473419276</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1767473419276</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -199,6 +212,7 @@
     <MESSAGE value=" gui for login" />
     <MESSAGE value="ClientDialog add and edit.TableRental" />
     <MESSAGE value="Finalize Rental UI: Auto-employee, smart filtering, and Login flow" />
-    <option name="LAST_COMMIT_MESSAGE" value="Finalize Rental UI: Auto-employee, smart filtering, and Login flow" />
+    <MESSAGE value="edit rental αλλαγες" />
+    <option name="LAST_COMMIT_MESSAGE" value="edit rental αλλαγες" />
   </component>
 </project>
