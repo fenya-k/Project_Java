@@ -1,14 +1,28 @@
 package API;
 
 import java.io.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Client extends Person implements History, ReadWriteCSV {
-    private String AFM;
+/**
+ * Represents a client with access to the rental system.
+ * Manages the client's personal details.
+ * Extends the {@link Person} abstract class.
+ * Implements the {@link History} interface.
+ */
+public class Client extends Person implements History {
+    private final String AFM;
     private String phone;
     ArrayList<Rental> clientRentals;
 
+    /**
+     * Creates a new client
+     *
+     * @param name    Client's first name
+     * @param surname Client's last name
+     * @param AFM     Client's afm
+     * @param phone   Client's phone
+     * @param email   Client's email
+     */
     public Client(String name, String surname, String AFM, String phone, String email) {
         super(name, surname, email);
         this.AFM = AFM;
@@ -16,12 +30,10 @@ public class Client extends Person implements History, ReadWriteCSV {
         clientRentals = new ArrayList<>();
     }
 
+    // --- GETTERS - SETTERS ---
+
     public String getAFM() {
         return AFM;
-    }
-
-    public void setAFM(String AFM) {
-        this.AFM = AFM;
     }
 
     public String getPhone() {
@@ -32,6 +44,16 @@ public class Client extends Person implements History, ReadWriteCSV {
         this.phone = phone;
     }
 
+    // --- LOGIC METHODS ---
+
+    /**
+     * From interface History
+     * Adds a rental record to the client's history.
+     * Checks for duplicate rental codes before adding.
+     *
+     * @param rental The rental object to add.
+     * @return true if added successfully, false if a rental with the same code exists.
+     */
     @Override
     public boolean addRental(Rental rental) {
         for (Rental r : clientRentals) {
@@ -44,75 +66,19 @@ public class Client extends Person implements History, ReadWriteCSV {
         return true;
     }
 
+    /**
+     * From interface History
+     * Returns a defensive copy of the client's rental history.
+     *
+     * @return An ArrayList containing the rental records.
+     */
     @Override
     public ArrayList<Rental> returnList() {
         return new ArrayList<>(this.clientRentals); //encapsulation - defensive copying
     }
 
-    @Override
-    public  void readCSV(CarManager CM,ClientManager CLM,EmployeeManager EM,String filename, ArrayList<Rental> list) {
-        String line;
-        String delimiter = ",";
+    // --- TO STRING ---
 
-        try (BufferedReader in = new BufferedReader(new FileReader(filename))) {
-            in.readLine(); //skips the first line because it's a header
-
-            while ((line = in.readLine()) != null) {
-                String[] data = line.split(delimiter);
-
-                if (data.length >= 6) {
-                    String AFMrecord = data[2].trim();
-
-                    if (AFMrecord.equalsIgnoreCase(this.AFM)) {
-                        try {
-                            int rentCode = Integer.parseInt(data[0].trim());
-                            String plate = data[1].trim();
-                            LocalDate start = LocalDate.parse(data[3].trim());
-                            LocalDate end = LocalDate.parse(data[4].trim());
-                            String userEmp = data[5].trim();
-
-                            Car car=CM.findByPlate(plate);
-                            Employee employee = EM.findByUsername(userEmp);
-
-                            if (car != null && employee != null) {
-                                Rental rental = new Rental(rentCode, car, this, start, end, employee);
-                                this.addRental(rental);
-                            }
-                        } catch (Exception e) {
-                            System.out.println("Error");
-                        }
-                    }
-                }
-            }
-        }catch (IOException e){
-            System.err.println("File not found");
-        }
-    }
-
-    public void writeCSV(String filename,ArrayList<Rental> list) {
-        String line;
-        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("d/M/yyyy");
-
-        try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
-
-            for (Rental rental : clientRentals) {
-                String sDate = rental.getStartDate().format(formatter);
-                String eDate = rental.getEndDate().format(formatter);
-
-                line = rental.getRentCode() + "," +
-                        rental.getRentCar().getPlate() + "," +
-                        this.getAFM() + "," +
-                        sDate + "," +
-                        eDate + "," +
-                        rental.getEmployee().getUsername();
-
-                out.write(line);
-                out.newLine();
-            }
-        } catch (IOException e) {
-            System.err.println("Error writing car history");
-        }
-    }
     @Override
     public String toString() {
         return "Client: " +
@@ -122,5 +88,4 @@ public class Client extends Person implements History, ReadWriteCSV {
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'';
     }
-
 }

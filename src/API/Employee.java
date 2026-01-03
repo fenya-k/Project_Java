@@ -2,8 +2,8 @@ package API;
 
 /**
  * Represents an employee with access to the rental system.
- * Manages the employee's personal details and login credentials
- * Extends the {@link Person}  abstract class,
+ * Manages the employee's personal details and login credentials.
+ * Extends the {@link Person} abstract class.
  */
 public class Employee extends Person {
     /** Unique username for system login */

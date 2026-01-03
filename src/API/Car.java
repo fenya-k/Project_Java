@@ -1,19 +1,20 @@
 package API;
 
 import java.io.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
  * Represents a vehicle in the rental system.
  * Manages the vehicle's characteristics, its availability status,
  * and maintains a history list of its rentals.
- * Implements the {@link History} and {@link ReadWriteCSV} interfaces.
+ * Implements the {@link History} interface.
  */
-public class Car implements History, ReadWriteCSV {
+public class Car implements History {
     private static int counter = 1;
 
-    /** Unique Identifier for the vehicle. */
+    /**
+     * Unique Identifier for the vehicle.
+     */
     private final int id;
 
     // Vehicle characteristics
@@ -24,10 +25,14 @@ public class Car implements History, ReadWriteCSV {
     private String year;
     private String color;
 
-    /** Current status of the vehicle (AVAILABLE, RENTED). */
+    /**
+     * Current status of the vehicle (AVAILABLE, RENTED).
+     */
     private CarStatus carStatus;
 
-    /** List containing the rental history specific to this vehicle. */
+    /**
+     * List containing the rental history specific to this vehicle.
+     */
     ArrayList<Rental> carRentals;
 
     /**
@@ -184,97 +189,6 @@ public class Car implements History, ReadWriteCSV {
     @Override
     public ArrayList<Rental> returnList() {
         return new ArrayList<>(this.carRentals); // encapsulation - defensive copying
-    }
-
-    // --- CSV METHODS FOR HISTORY ---
-
-    /**
-     * From interface ReadWriteCSV
-     * Reads the rental history from a CSV file.
-     * Overrides the default method to filter only records matching this vehicle's plate.
-     * Uses "d/M/yyyy" date format.
-     *
-     * @param CM       Car Manager instance.
-     * @param CLM      Client Manager instance.
-     * @param EM       Employee Manager instance.
-     * @param filename Path to the CSV file.
-     * @param list     (Ignored in this implementation, uses carRentals list).
-     */
-    @Override
-    public void readCSV(CarManager CM, ClientManager CLM, EmployeeManager EM, String filename, ArrayList<Rental> list) {
-        String line;
-        String delimiter = ",";
-        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("d/M/yyyy");
-
-        try (BufferedReader in = new BufferedReader(new FileReader(filename))) {
-            in.readLine();
-
-            while ((line = in.readLine()) != null) {
-                String[] data = line.split(delimiter);
-
-                if (data.length >= 6) {
-                    String plateRecord = data[1].trim();
-
-                    // Load only if the record belongs to this car
-                    if (plateRecord.equalsIgnoreCase(this.plate)) {
-                        try {
-                            int rentCode = Integer.parseInt(data[0].trim());
-                            String afmClient = data[2].trim();
-
-                            LocalDate start = LocalDate.parse(data[3].trim(), formatter);
-                            LocalDate end = LocalDate.parse(data[4].trim(), formatter);
-
-                            String userEmp = data[5].trim();
-
-                            Client client = CLM.findByAFM(afmClient);
-                            Employee employee = EM.findByUsername(userEmp);
-
-                            if (client != null && employee != null) {
-                                Rental rental = new Rental(rentCode, this, client, start, end, employee);
-                                this.addRental(rental);
-                            }
-                        } catch (Exception e) {
-                            System.out.println("Error parsing history line for car: " + this.plate);
-                        }
-                    }
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("File not found: " + filename);
-        }
-    }
-
-    /**
-     * From interface ReadWriteCSV
-     * Writes the vehicle's rental history to a CSV file.
-     *
-     * @param filename Path to the CSV file.
-     * @param list     (Ignored, writes the carRentals list).
-     */
-    @Override
-    public void writeCSV(String filename, ArrayList<Rental> list) {
-        String line;
-        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("d/M/yyyy");
-
-        try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
-
-            for (Rental rental : carRentals) {
-                String sDate = rental.getStartDate().format(formatter);
-                String eDate = rental.getEndDate().format(formatter);
-
-                line = rental.getRentCode() + "," +
-                        this.getPlate() + "," +
-                        rental.getClient().getAFM() + "," +
-                        sDate + "," +
-                        eDate + "," +
-                        rental.getEmployee().getUsername();
-
-                out.write(line);
-                out.newLine();
-            }
-        } catch (IOException e) {
-            System.err.println("Error writing car history");
-        }
     }
 
     // --- TO STRING ---
