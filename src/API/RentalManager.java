@@ -108,14 +108,21 @@ public class RentalManager implements Manager<Rental>, ReadWriteCSV {
         }
     }
 
-    public ArrayList<Rental> search (String plate, String AFM) {
+    public ArrayList<Rental> search (int code, String plate, String AFM, String username) {
+
         ArrayList<Rental> foundRentals = new ArrayList<>();
 
-        for (Rental rental : rentals) { //null proofing (protection from NullPointerExceptions)
+        for (Rental rental : rentals) {
+            if (username != null && !username.isEmpty() && !rental.getEmployee().getUsername().equalsIgnoreCase(username)) {
+                continue;
+            }
             if (plate != null && !plate.isEmpty() && !rental.getRentCar().getPlate().equalsIgnoreCase(plate)) {
                 continue;
             }
             if (AFM != null && !AFM.isEmpty() && !rental.getClient().getAFM().equalsIgnoreCase(AFM)) {
+                continue;
+            }
+            if (code >0 && rental.getRentCode()!=code) {
                 continue;
             }
             foundRentals.add(rental);

@@ -1,5 +1,6 @@
 package GUI;
 
+import API.Car;
 import API.ManagementService;
 import API.Rental;
 
@@ -9,19 +10,71 @@ import java.awt.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class TableRental extends JDialog implements StyleEditRemoveHistory {
+public class TableRental extends JDialog implements StyleEditRemoveHistory, StyleTwoOptions {
     private final ManagementService service;
     private final JTable table;
     private final DefaultTableModel model;
+
+    // For search
+    private final JTextField codeField, plateField, afmField, employeeField;
 
     public TableRental(JFrame parent, ManagementService service) {
         super(parent, "Λίστα Ενοικιάσεων και Επιστροφές", true);
         this.service = service;
 
+        // DIALOG
         setSize(1000, 700);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
+
+        // SEARCH PANEL
+        JPanel searchPanel = new JPanel();
+        searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.Y_AXIS));
+        searchPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        JPanel fieldsPanel = new JPanel(new GridLayout(2, 6, 10, 5));
+
+        // LABELS //
+        fieldsPanel.add(new JLabel("Κωδικός:"));
+        fieldsPanel.add(new JLabel("Πινακίδα:"));
+        fieldsPanel.add(new JLabel("ΑΦΜ Πελάτη:"));
+        fieldsPanel.add(new JLabel("Υπάλληλος:"));
+
+        // FIELDS //
+        codeField = new JTextField();
+        fieldsPanel.add(codeField);
+        plateField = new JTextField();
+        fieldsPanel.add(plateField);
+        afmField = new JTextField();
+        fieldsPanel.add(afmField);
+        employeeField = new JTextField();
+        fieldsPanel.add(employeeField);
+
+        searchPanel.add(fieldsPanel);
+
+        // SEARCH BUTTONS //
+        JPanel searchButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+        JButton buttonSearch = new JButton("Αναζήτηση");
+        styleButtonOptionOne(buttonSearch);
+        buttonSearch.addActionListener(e -> performSearch());
+
+        JButton buttonReset = new JButton("Καθαρισμός Φίλτρων");
+        styleButtonOptionTwo(buttonReset);
+        buttonReset.addActionListener(e -> {
+            codeField.setText("");
+            plateField.setText("");
+            afmField.setText("");
+            employeeField.setText("");
+            performSearch();
+        });
+
+        searchButtonPanel.add(buttonSearch);
+        searchButtonPanel.add(Box.createHorizontalStrut(26));
+        searchButtonPanel.add(buttonReset);
+        searchPanel.add(searchButtonPanel);
+
+        add(searchPanel, BorderLayout.NORTH);
 
         // TABLE
         String[] columns = {"Κωδικός", "Πινακίδα", "ΑΦΜ Πελάτη", "Έναρξη", "Λήξη", "Υπάλληλος"};
@@ -67,6 +120,43 @@ public class TableRental extends JDialog implements StyleEditRemoveHistory {
         refreshTable();
     }
 
+    private void performSearch() {
+        // Λήψη τιμών από τα πεδία
+        int code = isEmpty(codeField) ? -1 : Integer.parseInt(codeField.getText().trim());
+        String plate = isEmpty(plateField) ? null : plateField.getText().trim();
+        String afm = isEmpty(afmField) ? null : afmField.getText().trim();
+        String username = isEmpty(employeeField) ? null : employeeField.getText().trim();
+
+        // Κλήση αναζήτησης
+        ArrayList<Rental> results = service.getRentalManager().search(code, plate, afm, username);
+
+        // Καθαρισμός πίνακα
+        model.setRowCount(0);
+
+        // Formatter για τις ημερομηνίες
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
+
+        if (results != null) {
+            for (Rental rental : results) {
+                String rPlate = (rental.getRentCar() != null) ? rental.getRentCar().getPlate() : "-";
+                String rAfm = (rental.getClient() != null) ? rental.getClient().getAFM() : "-";
+                String rUser = (rental.getEmployee() != null) ? rental.getEmployee().getUsername() : "-";
+                String start = (rental.getStartDate() != null) ? rental.getStartDate().format(formatter) : "-";
+                String end = (rental.getEndDate() != null) ? rental.getEndDate().format(formatter) : "-";
+
+                model.addRow(new Object[]{
+                        rental.getRentCode(),
+                        rPlate,
+                        rAfm,
+                        start,
+                        end,
+                        rUser
+                });
+            }
+        }
+    }
+
+    // Βοηθητική για έλεγχο κενού πεδίου
     private boolean isEmpty(JTextField field) {
         return field.getText().trim().isEmpty();
     }

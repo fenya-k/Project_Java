@@ -213,7 +213,6 @@ public class CarManager implements Manager<Car> {
 
     public ArrayList<Car> search(String plate, String brand, String type, String model, String color, Boolean available) {
         ArrayList<Car> foundCars = new ArrayList<>();
-
         /* Τα αυτοκίνητα μπαίνουν στη for με τη σειρά, έπειτα γίνεται έλεγχος σε κάθε if αν έχει δοθεί τιμή για σύγκριση
          αν δεν έχει δοθεί τιμή (null) τότε προχωράει στην επόμενη if χωρίς να μπει στο σώμα της
          αν έχει δοθεί τιμή τότε τη συγκρίνει με αυτή του εκάστοτε αυτοκινήτου και

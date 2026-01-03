@@ -20,10 +20,10 @@ public class AddRentalDialog extends JDialog implements StyleAddCancel {
     private JTextField endField;
     private JLabel empLabel;
 
-    public AddRentalDialog(JFrame parent, ManagementService service,Employee currentUser) {
+    public AddRentalDialog(JFrame parent, ManagementService service, Employee currentUser) {
         super(parent, "Προσθήκη Νέας Ενοικίασης", true);
         this.service = service;
-        this.currentUser=currentUser;
+        this.currentUser = currentUser;
 
         // DIALOG
         setSize(600, 460);
@@ -34,14 +34,14 @@ public class AddRentalDialog extends JDialog implements StyleAddCancel {
         addRentalPanel.setBorder(BorderFactory.createEmptyBorder(40, 70, 40, 70));
 
         //CAR SELECTION
-       addRentalPanel.add(new JLabel("Επιλογή Οχήματος (Διαθέσιμα):"));
-       carCombo=new JComboBox<>();
-       populateCars();
-       addRentalPanel.add(carCombo);
+        addRentalPanel.add(new JLabel("Επιλογή Οχήματος (Διαθέσιμα):"));
+        carCombo = new JComboBox<>();
+        populateCars();
+        addRentalPanel.add(carCombo);
 
-       //CLIENT SELECTION
+        //CLIENT SELECTION
         addRentalPanel.add(new JLabel("Επιλογή Πελάτη (ΑΦΜ - Όνομα):"));
-        clientCombo=new JComboBox<>();
+        clientCombo = new JComboBox<>();
         populateClients();
         addRentalPanel.add(clientCombo);
 
@@ -53,8 +53,8 @@ public class AddRentalDialog extends JDialog implements StyleAddCancel {
         endField = new JTextField();
         addRentalPanel.add(endField);
 
-        addRentalPanel.add(new JLabel("Υπάλληλος (Αυτόματα):"));
-        empLabel=new JLabel(currentUser.getUsername()+" ("+currentUser.getSurname()+")");
+        addRentalPanel.add(new JLabel("Υπάλληλος:"));
+        empLabel = new JLabel(currentUser.getUsername() + " (" + currentUser.getSurname() + ")");
         empLabel.setForeground(Color.BLUE);
         addRentalPanel.add(empLabel);
 
@@ -82,7 +82,6 @@ public class AddRentalDialog extends JDialog implements StyleAddCancel {
             }
         }
 
-
         add(addRentalPanel, BorderLayout.CENTER);
 
         //BUTTONS
@@ -103,54 +102,54 @@ public class AddRentalDialog extends JDialog implements StyleAddCancel {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    private void populateClients(){
-        ArrayList<Client> clients =service.getClientManager().getList();
-        for (Client client : clients){
-                clientCombo.addItem(client.getAFM()+" - "+ client.getName()+" "+ client.getSurname());
+    private void populateClients() {
+        ArrayList<Client> clients = service.getClientManager().getList();
+        for (Client client : clients) {
+            clientCombo.addItem(client.getAFM() + " - " + client.getName() + " " + client.getSurname());
         }
-        if (clients.isEmpty()){
+        if (clients.isEmpty()) {
             clientCombo.addItem("Δεν υπάρχουν πελάτες");
             clientCombo.setEnabled(false);
         }
     }
 
-    private void populateCars(){
-        ArrayList<Car> cars=service.getCarManager().getList();
-        boolean found=false;
-        for (Car car:cars){
-            if(car.isAvailable()){
-                carCombo.addItem(car.getPlate()+" ("+car.getBrand()+" "+car.getModel()+")");
-                found=true;
+    private void populateCars() {
+        ArrayList<Car> cars = service.getCarManager().getList();
+        boolean found = false;
+        for (Car car : cars) {
+            if (car.isAvailable()) {
+                carCombo.addItem(car.getPlate() + " (" + car.getBrand() + " " + car.getModel() + ")");
+                found = true;
             }
         }
-        if (!found){
+        if (!found) {
             carCombo.addItem("Δεν υπάρχουν διαθέσιμα οχήματα");
             carCombo.setEnabled(false);
         }
     }
 
-    private void saveRental(){
+    private void saveRental() {
         try {
-            if(!carCombo.isEnabled() || !clientCombo.isEnabled()){
-                JOptionPane.showMessageDialog(this,"Δεν υπάρχουν διαθέσιμα στοιχεία","Σφάλμα",JOptionPane.ERROR_MESSAGE);
+            if (!carCombo.isEnabled() || !clientCombo.isEnabled()) {
+                JOptionPane.showMessageDialog(this, "Δεν υπάρχουν διαθέσιμα στοιχεία", "Σφάλμα", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            String carSelection=(String) carCombo.getSelectedItem();
-            String plate=carSelection.split(" ")[0];
+            String carSelection = (String) carCombo.getSelectedItem();
+            String plate = carSelection.split(" ")[0];
 
-            String clientSelection =(String) clientCombo.getSelectedItem();
-            String afm= clientSelection.split(" - ")[0];
+            String clientSelection = (String) clientCombo.getSelectedItem();
+            String afm = clientSelection.split(" - ")[0];
 
             String startString = startField.getText().trim();
             String endString = endField.getText().trim();
 
-            Employee employee=this.currentUser;
-            Car car=service.getCarManager().findByPlate(plate);
-            Client client=service.getClientManager().findByAFM(afm);
+            Employee employee = this.currentUser;
+            Car car = service.getCarManager().findByPlate(plate);
+            Client client = service.getClientManager().findByAFM(afm);
 
-            if(car==null || client==null){
-                JOptionPane.showMessageDialog(this,"Σφάλμα επιλογής","Σφάλμα",JOptionPane.ERROR_MESSAGE);
+            if (car == null || client == null) {
+                JOptionPane.showMessageDialog(this, "Σφάλμα επιλογής", "Σφάλμα", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -164,14 +163,18 @@ public class AddRentalDialog extends JDialog implements StyleAddCancel {
             Rental rental = new Rental(car, client, start, end, employee);
             service.rentCar(rental);
 
-            JOptionPane.showMessageDialog(this, "Η ενοικίαση ολοκληρώθηκε", "Επιτυχία", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Η ενοικίαση ολοκληρώθηκε",
+                    "Επιτυχία", JOptionPane.INFORMATION_MESSAGE);
             dispose();
-        }catch (DateTimeException ex){
-            JOptionPane.showMessageDialog(this,"Λάθος μορφή ημερομηνίας! (YYYY-MM-DD)", "Σφάλμα",JOptionPane.ERROR_MESSAGE);
-        }catch (Exception ex){
-            JOptionPane.showMessageDialog(this,"Σφάλμα:"+ ex.getMessage(),"Σφάλμα",JOptionPane.ERROR_MESSAGE);
+        } catch (DateTimeException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Λάθος μορφή ημερομηνίας! (YYYY-MM-DD)",
+                    "Σφάλμα", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Σφάλμα:" + ex.getMessage(),
+                    "Σφάλμα", JOptionPane.ERROR_MESSAGE);
         }
-
     }
-
 }

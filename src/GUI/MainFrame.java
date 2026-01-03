@@ -14,12 +14,12 @@ public class MainFrame extends JFrame {
 
     private final Employee currentUser;
 
-    public MainFrame(ManagementService service,Employee user) {
+    public MainFrame(ManagementService service, Employee user) {
         this.service = service;
-        this.currentUser=user;
+        this.currentUser = user;
 
         // FRAME
-        setTitle("Σύστημα Ενοικιάσεων Αυτοκινήτων-Χρήστης"+user.getUsername());                 //τίτλος
+        setTitle("Σύστημα Ενοικιάσεων Αυτοκινήτων - Χρήστης " + user.getUsername()); //τίτλος
         setSize(900, 600);                             //μέγεθος
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);            //κλείσιμο στην έξοδο
         setLocationRelativeTo(null);                              //κεντράρισμα
@@ -95,7 +95,7 @@ public class MainFrame extends JFrame {
         rentalsMenu.add(listRental);
         //ADD RENTAL
         addRental.addActionListener(e -> {
-            AddRentalDialog dialog = new AddRentalDialog(this, service,currentUser);
+            AddRentalDialog dialog = new AddRentalDialog(this, service, currentUser);
             dialog.setVisible(true);
         });
         //RETURN CAR
