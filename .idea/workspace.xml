@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="35b9289b-614b-4ad3-ae10-3e9c21368406" name="Changes" comment="ClientDialog add and edit.TableRental">
-      <change afterPath="$PROJECT_DIR$/src/GUI/AddEmployeeDialog.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI/AddRentalDialog.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI/TableEmployee.java" afterDir="false" />
+    <list default="true" id="35b9289b-614b-4ad3-ae10-3e9c21368406" name="Changes" comment="Finalize Rental UI: Auto-employee, smart filtering, and Login flow">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/MainFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/TableRental.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/TableRental.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataBase/ManagerFiles/rentals.csv" beforeDir="false" afterPath="$PROJECT_DIR$/DataBase/ManagerFiles/rentals.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataBase/ManagerFiles/vehicles.csv" beforeDir="false" afterPath="$PROJECT_DIR$/DataBase/ManagerFiles/vehicles.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/EditRentalDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/EditRentalDialog.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -169,7 +167,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766314628177</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Finalize Rental UI: Auto-employee, smart filtering, and Login flow">
+      <option name="closed" value="true" />
+      <created>1767426680681</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1767426680681</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -192,6 +198,7 @@
     <MESSAGE value=" gui" />
     <MESSAGE value=" gui for login" />
     <MESSAGE value="ClientDialog add and edit.TableRental" />
-    <option name="LAST_COMMIT_MESSAGE" value="ClientDialog add and edit.TableRental" />
+    <MESSAGE value="Finalize Rental UI: Auto-employee, smart filtering, and Login flow" />
+    <option name="LAST_COMMIT_MESSAGE" value="Finalize Rental UI: Auto-employee, smart filtering, and Login flow" />
   </component>
 </project>
