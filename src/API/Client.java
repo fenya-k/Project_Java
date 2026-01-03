@@ -45,17 +45,6 @@ public class Client extends Person implements History, ReadWriteCSV {
     }
 
     @Override
-    public void printRentals() {
-        if (clientRentals.isEmpty()) {
-            System.out.println("No rentals found");
-        } else {
-            for (Rental rental : clientRentals) {
-                System.out.println(rental.toString());
-            }
-        }
-    }
-
-    @Override
     public ArrayList<Rental> returnList() {
         return new ArrayList<>(this.clientRentals); //encapsulation - defensive copying
     }
@@ -102,14 +91,19 @@ public class Client extends Person implements History, ReadWriteCSV {
 
     public void writeCSV(String filename,ArrayList<Rental> list) {
         String line;
-        try (BufferedWriter out = new BufferedWriter(new FileWriter(filename, true))) {
+        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("d/M/yyyy");
+
+        try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
 
             for (Rental rental : clientRentals) {
+                String sDate = rental.getStartDate().format(formatter);
+                String eDate = rental.getEndDate().format(formatter);
+
                 line = rental.getRentCode() + "," +
                         rental.getRentCar().getPlate() + "," +
                         this.getAFM() + "," +
-                        rental.getStartDate() + "," +
-                        rental.getEndDate() + "," +
+                        sDate + "," +
+                        eDate + "," +
                         rental.getEmployee().getUsername();
 
                 out.write(line);

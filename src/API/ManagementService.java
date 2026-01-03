@@ -9,8 +9,6 @@ public class ManagementService {
     private final String filenameClients = "DataBase/ManagerFiles/clients.csv";
     private final String filenameEmployees = "DataBase/ManagerFiles/users.csv";
     private final String filenameRentals = "DataBase/ManagerFiles/rentals.csv";
-    private final String filenameCarRentals = "DataBase/HistoryCars/carRentals.csv";
-    private final String filenameClientRentals = "DataBase/HistoryClients/clientRentals.csv";
 
     //ALL MANAGERS
     private final CarManager carManager;
@@ -32,12 +30,6 @@ public class ManagementService {
         clientManager.readCSV(filenameClients);
         employeeManager.readCSV(filenameEmployees);
         rentalManager.readCSV(carManager, clientManager, employeeManager, filenameRentals, rentalManager.getList());
-        for (Car car : carManager.getList()) {
-            car.readCSV(carManager, clientManager, employeeManager, filenameCarRentals, car.returnList());
-        }
-        for (Client client : clientManager.getList()) {
-            client.readCSV(carManager, clientManager, employeeManager, filenameClientRentals, client.returnList());
-        }
     }
 
     //ADDS A NEW CAR
@@ -149,12 +141,6 @@ public class ManagementService {
         clientManager.writeCSV(filenameClients);
         employeeManager.writeCSV(filenameEmployees);
         rentalManager.writeCSV(filenameRentals, rentalManager.getList());
-        for (Car car : carManager.getList()) {
-            car.writeCSV(filenameCarRentals, car.returnList());
-        }
-        for (Client client : clientManager.getList()) {
-            client.writeCSV(filenameClientRentals, client.returnList());
-        }
     }
 
     // GETTERS FOR TESTS

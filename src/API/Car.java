@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
- * This class represents a vehicle in the rental system.
+ * Represents a vehicle in the rental system.
  * Manages the vehicle's characteristics, its availability status,
  * and maintains a history list of its rentals.
  * Implements the {@link History} and {@link ReadWriteCSV} interfaces.
@@ -219,14 +219,14 @@ public class Car implements History, ReadWriteCSV {
                     if (plateRecord.equalsIgnoreCase(this.plate)) {
                         try {
                             int rentCode = Integer.parseInt(data[0].trim());
-                            String AFMclient = data[2].trim();
+                            String afmClient = data[2].trim();
 
                             LocalDate start = LocalDate.parse(data[3].trim(), formatter);
                             LocalDate end = LocalDate.parse(data[4].trim(), formatter);
 
                             String userEmp = data[5].trim();
 
-                            Client client = CLM.findByAFM(AFMclient);
+                            Client client = CLM.findByAFM(afmClient);
                             Employee employee = EM.findByUsername(userEmp);
 
                             if (client != null && employee != null) {
@@ -247,7 +247,6 @@ public class Car implements History, ReadWriteCSV {
     /**
      * From interface ReadWriteCSV
      * Writes the vehicle's rental history to a CSV file.
-     * Overrides the default method to use append mode and specific date formatting.
      *
      * @param filename Path to the CSV file.
      * @param list     (Ignored, writes the carRentals list).
@@ -257,8 +256,7 @@ public class Car implements History, ReadWriteCSV {
         String line;
         java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("d/M/yyyy");
 
-        // Use append=true to avoid overwriting existing history
-        try (BufferedWriter out = new BufferedWriter(new FileWriter(filename, true))) {
+        try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
 
             for (Rental rental : carRentals) {
                 String sDate = rental.getStartDate().format(formatter);

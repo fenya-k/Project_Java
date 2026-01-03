@@ -60,8 +60,10 @@ public interface ReadWriteCSV {
                 if (client != null && rentCar != null && employee != null) {
                     //creates the new rental with the constructor
                     Rental rental = new Rental(rentCode, rentCar, client, startDate, endDate, employee);
-                    //adds the rental to the provided list
+                    //adds the rental to the provided list and to car and client history
                     list.add(rental);
+                    rentCar.addRental(rental);
+                    client.addRental(rental);
                     //checks the date and decided if the car is available or rented
                     if (endDate.isAfter(LocalDate.now()) || endDate.isEqual(LocalDate.now())) {
                         rentCar.setCarStatus(CarStatus.RENTED);

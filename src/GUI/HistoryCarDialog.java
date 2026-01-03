@@ -111,7 +111,6 @@ public class HistoryCarDialog extends JDialog implements StyleEditRemoveHistory,
         if (employee != null) {
             String message = "Όνομα: " + employee.getName() + "\n" +
                     "Επώνυμο: " + employee.getSurname() + "\n" +
-                    "ΑΦΜ: " + employee.getUsername() + "\n" +
                     "Email: " + employee.getEmail() + "\n";
 
             JOptionPane.showMessageDialog(this,

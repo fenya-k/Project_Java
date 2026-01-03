@@ -232,16 +232,6 @@ public class TableClient extends JDialog implements StyleEditRemoveHistory, Styl
     }
 
     private void refreshTable() {
-
         performSearch();
-        /*
-        model.setRowCount(0);
-
-        ArrayList<Client> list = service.getClientManager().getList();
-        for (Client client : list) {
-            model.addRow(new Object[]{
-                    client.getName(), client.getSurname(), client.getAFM(), client.getPhone(), client.getEmail()
-            });
-        }*/
     }
 }
