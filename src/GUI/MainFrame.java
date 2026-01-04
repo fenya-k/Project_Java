@@ -6,14 +6,39 @@ import API.ManagementService;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The main window of the Car Rental System application.
+ * Serves as the central hub for navigation, providing access to:
+ * - Vehicle Management (Cars)
+ * - Client Management
+ * - Rental Management
+ * - Employee Management
+ * Handles the user session and ensures data persistence upon exit.
+ */
 public class MainFrame extends JFrame {
 
+    /**
+     * Path to the application icon image.
+     */
     private final String iconPath = "Database/Images/login icon.png";
 
+    /**
+     * Reference to the backend service handling data logic.
+     */
     private final ManagementService service;
 
+    /**
+     * The employee currently logged into the system.
+     */
     private final Employee currentUser;
 
+    /**
+     * Constructs the Main Frame and initializes the GUI components.
+     * Sets up the menu bar, welcome panel, and event listeners.
+     *
+     * @param service The instance of ManagementService for data access.
+     * @param user    The Employee object representing the currently logged-in user.
+     */
     public MainFrame(ManagementService service, Employee user) {
         this.service = service;
         this.currentUser = user;
@@ -32,12 +57,14 @@ public class MainFrame extends JFrame {
         mainPage.setLayout(new BoxLayout(mainPage, BoxLayout.Y_AXIS));
         mainPage.setBorder(BorderFactory.createEmptyBorder(50, 10, 20, 10));
 
+        //WELCOME LABEL
         JLabel welcomeLabel = new JLabel("Καλωσήρθατε!");
         Font font = new Font("Segoe UI", Font.BOLD | Font.ITALIC, 25);
         welcomeLabel.setFont(font);
         welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         welcomeLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
 
+        //LOGO
         Image scaledIcon = icon.getScaledInstance(256, 160, Image.SCALE_SMOOTH);
         JLabel iconLabel = new JLabel(new ImageIcon(scaledIcon));
         iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -50,7 +77,7 @@ public class MainFrame extends JFrame {
         // MENU BAR
         JMenuBar menuBar = new JMenuBar();
 
-        // CAR //
+        // CAR MANAGEMENT//
         JMenu carsMenu = new JMenu("Οχήματα");
         JMenuItem addCar = new JMenuItem("Προσθήκη Οχήματος");
         JMenuItem listCars = new JMenuItem("Λίστα Οχημάτων");
@@ -67,7 +94,7 @@ public class MainFrame extends JFrame {
             dialog.setVisible(true);
         });
 
-        // CLIENT //
+        // CLIENT MANAGEMENT//
         JMenu clientsMenu = new JMenu("Πελάτες");
         JMenuItem addClient = new JMenuItem("Προσθήκη Πελάτη");
         JMenuItem listClients = new JMenuItem("Λίστα Πελατών");
@@ -87,30 +114,23 @@ public class MainFrame extends JFrame {
         // RENTALS //
         JMenu rentalsMenu = new JMenu("Ενοικιάσεις");
         JMenuItem addRental = new JMenuItem("Προσθήκη Ενοικίασης");
-        //JMenuItem removeRental = new JMenuItem("Επιστροφή Οχήματος");
         JMenuItem listRental = new JMenuItem("Λίστα Ενοικιάσεων");
         rentalsMenu.add(addRental);
-        //rentalsMenu.add(removeRental);
-        //rentalsMenu.addSeparator();
         rentalsMenu.add(listRental);
+
         //ADD RENTAL
         addRental.addActionListener(e -> {
             AddRentalDialog dialog = new AddRentalDialog(this, service, currentUser);
             dialog.setVisible(true);
         });
-        //RETURN CAR
-//        removeRental.addActionListener(e -> {
-//            TableRental dialog = new TableRental(this, service);
-//            dialog.setVisible(true);
-//            JOptionPane.showMessageDialog(dialog, "Επιλέξτε μια ενοικίαση και πατήστε 'Επιστροφή'");
-//        });
+
         //LIST RENTAL
         listRental.addActionListener(e -> {
             TableRental dialog = new TableRental(this, service);
             dialog.setVisible(true);
         });
 
-        // EMPLOYEES //
+        // EMPLOYEE MANAGEMENT //
         JMenu employeesMenu = new JMenu("Υπάλληλοι");
         JMenuItem addEmployee = new JMenuItem("Προσθήκη Υπάλληλου");
         JMenuItem listEmployee = new JMenuItem("Λίστα Υπαλλήλων");
@@ -126,7 +146,7 @@ public class MainFrame extends JFrame {
             dialog.setVisible(true);
         });
 
-        // LOGOUT //
+        // LOGOUT BUTTON//
         JButton logoutButton = new JButton("Αποσύνδεση");
         logoutButton.setFocusPainted(false);
         logoutButton.setContentAreaFilled(false);
@@ -183,6 +203,11 @@ public class MainFrame extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Saves all system data (Cars, Clients, Rentals, Employees) to CSV files.
+     * This method is triggered during logout or application exit to ensure
+     * data persistence.
+     */
     void saveOnExit() {
         System.out.println("Saving...");
         service.writeAllCSV();

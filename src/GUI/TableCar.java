@@ -8,16 +8,42 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * A management dialog for the Vehicle Fleet.
+ * <p>
+ * This class provides a comprehensive view of all vehicles in the system.
+ * Key features include:
+ * <ul>
+ * <li><b>Search Panel:</b> Allows filtering cars by plate, brand, type, model, color, and availability status.</li>
+ * <li><b>Data Table:</b> Displays vehicle details in a tabular format.</li>
+ * <li><b>Action Buttons:</b> Provides options to <b>Edit</b>, <b>Remove</b>, or view the <b>History</b> of a selected car.</li>
+ * </ul>
+ * </p>
+ * Implements {@link StyleEditRemoveHistory} for action buttons and {@link StyleTwoOptions} for search buttons.
+ */
 public class TableCar extends JDialog implements StyleEditRemoveHistory, StyleTwoOptions {
 
+    /**
+     * Reference to the backend service.
+     */
     private final ManagementService service;
+
+    // UI Components
     private final JTable table;
     private final DefaultTableModel model;
 
-    // For search
+    // Search Filter Components
     private final JTextField plateField, brandField, typeField, modelField, colorField;
     private final JComboBox<String> availabilityBox;
 
+    /**
+     * Constructs the Car Management Table Dialog.
+     * Initializes the window, builds the search filter panel, sets up the JTable,
+     * and configures the action buttons.
+     *
+     * @param parent  The parent JFrame (MainFrame).
+     * @param service The ManagementService instance for data operations.
+     */
     public TableCar(JFrame parent, ManagementService service) {
         super(parent, "Διαχείριση Οχημάτων", true); // true = modal
         this.service = service;
@@ -54,6 +80,7 @@ public class TableCar extends JDialog implements StyleEditRemoveHistory, StyleTw
         colorField = new JTextField();
         fieldsPanel.add(colorField);
 
+        // Availability Dropdown
         String[] options = {"Όλα", "Διαθέσιμα", "Ενοικιασμένα"};
         availabilityBox = new JComboBox<>(options);
         fieldsPanel.add(availabilityBox);
@@ -61,7 +88,7 @@ public class TableCar extends JDialog implements StyleEditRemoveHistory, StyleTw
         searchPanel.add(fieldsPanel);
         searchPanel.add(Box.createVerticalStrut(10));
 
-        // SEARCH BUTTONS //
+        // SEARCH BUTTONS
         JPanel searchButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton buttonSearch = new JButton("Αναζήτηση");
         styleButtonOptionOne(buttonSearch);
@@ -136,6 +163,13 @@ public class TableCar extends JDialog implements StyleEditRemoveHistory, StyleTw
         refreshTable();
     }
 
+    /**
+     * Executes the search query based on the filters in the search panel.
+     * <p>
+     * Collects text from all fields, determines the availability status from the dropdown,
+     * calls {@link API.CarManager#search}, and updates the table model with the results.
+     * </p>
+     */
     private void performSearch() {
         String plate = isEmpty(plateField) ? null : plateField.getText().trim();
         String brand = isEmpty(brandField) ? null : brandField.getText().trim();
@@ -143,13 +177,15 @@ public class TableCar extends JDialog implements StyleEditRemoveHistory, StyleTw
         String model = isEmpty(modelField) ? null : modelField.getText().trim();
         String color = isEmpty(colorField) ? null : colorField.getText().trim();
 
+        // Convert ComboBox index to Boolean (null=All, true=Available, false=Rented)
         Boolean available = null;
         if (availabilityBox.getSelectedIndex() == 1) available = true;
         if (availabilityBox.getSelectedIndex() == 2) available = false;
 
-        // ΚΛΗΣΗ ΤΗΣ SEARCH ΤΟΥ MANAGER
+        // Perform search via Manager
         ArrayList<Car> results = service.getCarManager().search(plate, brand, type, model, color, available);
 
+        // Update Table
         ((DefaultTableModel) table.getModel()).setRowCount(0);
 
         if (results != null) {
@@ -167,11 +203,17 @@ public class TableCar extends JDialog implements StyleEditRemoveHistory, StyleTw
         }
     }
 
-    // Βοηθητική για έλεγχο κενού πεδίου
+    /**
+     * Helper method to check if a text field is empty.
+     */
     private boolean isEmpty(JTextField field) {
         return field.getText().trim().isEmpty();
     }
 
+    /**
+     * Opens the {@link EditCarDialog} for the selected vehicle.
+     * Validates that a row is selected before proceeding.
+     */
     private void edit() {
         int row = table.getSelectedRow();
         if (row == -1) {
@@ -191,6 +233,13 @@ public class TableCar extends JDialog implements StyleEditRemoveHistory, StyleTw
         refreshTable();
     }
 
+    /**
+     * Removes the selected vehicle from the system.
+     * <p>
+     * Prompts the user for confirmation before deleting. Displays a success or error
+     * message based on the operation result.
+     * </p>
+     */
     private void remove() {
         int row = table.getSelectedRow();
         if (row == -1) {
@@ -228,6 +277,9 @@ public class TableCar extends JDialog implements StyleEditRemoveHistory, StyleTw
         }
     }
 
+    /**
+     * Opens the {@link HistoryCarDialog} to show the rental history of the selected vehicle.
+     */
     private void history() {
         int row = table.getSelectedRow();
         if (row == -1) {
@@ -246,6 +298,9 @@ public class TableCar extends JDialog implements StyleEditRemoveHistory, StyleTw
         refreshTable();
     }
 
+    /**
+     * Refreshes the table data by re-applying current search filters.
+     */
     private void refreshTable() {
         performSearch();
     }

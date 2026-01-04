@@ -9,11 +9,40 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * A management dialog for the Employee (User) Database.
+ * <p>
+ * This class provides a tabular view of all registered system users (employees).
+ * Unlike other management tables, this view is simplified (no search filters) as the
+ * number of employees is typically small.
+ * <br>
+ * It provides administrative functions to:
+ * <ul>
+ * <li><b>Edit:</b> Modify employee details (Name, Surname, Email).</li>
+ * <li><b>Delete:</b> Remove an employee account from the system.</li>
+ * </ul>
+ * </p>
+ * Implements {@link StyleEditRemoveHistory} for consistent button styling.
+ */
 public class TableEmployee extends JDialog implements StyleEditRemoveHistory {
+
+    /**
+     * Reference to the backend service.
+     */
     private final ManagementService service;
+
+    // UI Components
     private JTable table;
     private DefaultTableModel model;
 
+    /**
+     * Constructs the Employee Management Table Dialog.
+     * Initializes the window, sets up the JTable with employee columns,
+     * and configures the Edit and Remove buttons.
+     *
+     * @param parent  The parent JFrame (MainFrame).
+     * @param service The ManagementService instance for data operations.
+     */
     public TableEmployee(JFrame parent, ManagementService service) {
         super(parent, "Λίστα Υπαλλήλων", true); // true = modal
         this.service = service;
@@ -31,7 +60,7 @@ public class TableEmployee extends JDialog implements StyleEditRemoveHistory {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
-            }
+            }  // Disable direct editing
         };
 
         table = new JTable(model);
@@ -68,6 +97,13 @@ public class TableEmployee extends JDialog implements StyleEditRemoveHistory {
         refreshTable();
     }
 
+    /**
+     * Opens the {@link EditEmployeeDialog} for the selected employee.
+     * <p>
+     * Retrieves the Username (unique ID) from the selected row, finds the
+     * Employee object, and opens the edit form.
+     * </p>
+     */
     private void edit() {
         int row = table.getSelectedRow();
         if (row == -1) {
@@ -88,6 +124,13 @@ public class TableEmployee extends JDialog implements StyleEditRemoveHistory {
         }
     }
 
+    /**
+     * Permanently deletes the selected employee account.
+     * <p>
+     * Prompts for confirmation before calling {@link API.EmployeeManager#remove}.
+     * Refreshes the table upon success.
+     * </p>
+     */
     private void remove() {
         int row = table.getSelectedRow();
         if (row == -1) {
@@ -111,6 +154,10 @@ public class TableEmployee extends JDialog implements StyleEditRemoveHistory {
         }
     }
 
+    /**
+     * Refreshes the table data by retrieving the full list of employees
+     * from the manager.
+     */
     private void refreshTable() {
 
         model.setRowCount(0);

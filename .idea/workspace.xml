@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="35b9289b-614b-4ad3-ae10-3e9c21368406" name="Changes" comment="ClientDialog add and edit.TableRental">
-      <change afterPath="$PROJECT_DIR$/src/GUI/AddEmployeeDialog.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI/AddRentalDialog.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI/TableEmployee.java" afterDir="false" />
+    <list default="true" id="35b9289b-614b-4ad3-ae10-3e9c21368406" name="Changes" comment="Comments for GUI">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/MainFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/TableEmployee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/TableEmployee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/TableFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/TableFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GUI/TableRental.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/TableRental.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -169,7 +167,47 @@
       <option name="project" value="LOCAL" />
       <updated>1766314628177</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Finalize Rental UI: Auto-employee, smart filtering, and Login flow">
+      <option name="closed" value="true" />
+      <created>1767426680681</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1767426680681</updated>
+    </task>
+    <task id="LOCAL-00014" summary="edit rental αλλαγες">
+      <option name="closed" value="true" />
+      <created>1767473419276</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1767473419276</updated>
+    </task>
+    <task id="LOCAL-00015" summary="μικρη αλλαγη, τωρα τρεχει κανονικα">
+      <option name="closed" value="true" />
+      <created>1767474033254</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1767474033254</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Comments for GUI: mainframe, 4 adddialog classes and adminmenuframre">
+      <option name="closed" value="true" />
+      <created>1767479398148</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1767479398148</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Comments for GUI">
+      <option name="closed" value="true" />
+      <created>1767516278781</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1767516278781</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -192,6 +230,32 @@
     <MESSAGE value=" gui" />
     <MESSAGE value=" gui for login" />
     <MESSAGE value="ClientDialog add and edit.TableRental" />
-    <option name="LAST_COMMIT_MESSAGE" value="ClientDialog add and edit.TableRental" />
+    <MESSAGE value="Finalize Rental UI: Auto-employee, smart filtering, and Login flow" />
+    <MESSAGE value="edit rental αλλαγες" />
+    <MESSAGE value="μικρη αλλαγη, τωρα τρεχει κανονικα" />
+    <MESSAGE value="Comments for GUI: mainframe, 4 adddialog classes and adminmenuframre" />
+    <MESSAGE value="Comments for GUI" />
+    <option name="LAST_COMMIT_MESSAGE" value="Comments for GUI" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/GUI/AddCarDialog.java</url>
+          <line>88</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/GUI/EditClientDialog.java</url>
+          <line>86</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/GUI/EditRentalDialog.java</url>
+          <line>204</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

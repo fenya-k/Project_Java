@@ -10,12 +10,16 @@ import java.awt.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+/**
+ * A Dialog window that displays the history of rentals.
+ * Allows the user to search/filter rentals, edit dates, and process car returns.
+ */
 public class TableRental extends JDialog implements StyleEditRemoveHistory, StyleTwoOptions {
     private final ManagementService service;
     private final JTable table;
     private final DefaultTableModel model;
 
-    // For search
+    // Input fields for search filtering
     private final JTextField codeField, plateField, afmField, employeeField;
 
     public TableRental(JFrame parent, ManagementService service) {
@@ -34,13 +38,13 @@ public class TableRental extends JDialog implements StyleEditRemoveHistory, Styl
         searchPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         JPanel fieldsPanel = new JPanel(new GridLayout(2, 6, 10, 5));
 
-        // LABELS //
+        // LABELS
         fieldsPanel.add(new JLabel("Κωδικός:"));
         fieldsPanel.add(new JLabel("Πινακίδα:"));
         fieldsPanel.add(new JLabel("ΑΦΜ Πελάτη:"));
         fieldsPanel.add(new JLabel("Υπάλληλος:"));
 
-        // FIELDS //
+        // FIELDS
         codeField = new JTextField();
         fieldsPanel.add(codeField);
         plateField = new JTextField();
@@ -52,7 +56,7 @@ public class TableRental extends JDialog implements StyleEditRemoveHistory, Styl
 
         searchPanel.add(fieldsPanel);
 
-        // SEARCH BUTTONS //
+        // SEARCH BUTTONS
         JPanel searchButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
         JButton buttonSearch = new JButton("Αναζήτηση");
@@ -79,6 +83,7 @@ public class TableRental extends JDialog implements StyleEditRemoveHistory, Styl
         // TABLE
         String[] columns = {"Κωδικός", "Πινακίδα", "ΑΦΜ Πελάτη", "Έναρξη", "Λήξη", "Υπάλληλος"};
 
+        //Define model with read-only cells
         model = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -94,6 +99,7 @@ public class TableRental extends JDialog implements StyleEditRemoveHistory, Styl
         JScrollPane scroll = new JScrollPane(table);
         add(scroll, BorderLayout.CENTER);
 
+        // Panel to hold the table with padding
         JPanel tablePanel = new JPanel(new BorderLayout());
         tablePanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
         tablePanel.add(scroll, BorderLayout.CENTER);
@@ -120,22 +126,25 @@ public class TableRental extends JDialog implements StyleEditRemoveHistory, Styl
         refreshTable();
     }
 
+    /**
+     * Filters the table based on the input fields.
+     */
     private void performSearch() {
-        // Λήψη τιμών από τα πεδία
+        // Parse inputs (handle empty strings)
         int code = isEmpty(codeField) ? -1 : Integer.parseInt(codeField.getText().trim());
         String plate = isEmpty(plateField) ? null : plateField.getText().trim();
         String afm = isEmpty(afmField) ? null : afmField.getText().trim();
         String username = isEmpty(employeeField) ? null : employeeField.getText().trim();
 
-        // Κλήση αναζήτησης
+        // Call backend search logic
         ArrayList<Rental> results = service.getRentalManager().search(code, plate, afm, username);
 
-        // Καθαρισμός πίνακα
+        // Clear existing rows
         model.setRowCount(0);
 
-        // Formatter για τις ημερομηνίες
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
 
+        // Repopulate table with search results
         if (results != null) {
             for (Rental rental : results) {
                 String rPlate = (rental.getRentCar() != null) ? rental.getRentCar().getPlate() : "-";
@@ -156,11 +165,14 @@ public class TableRental extends JDialog implements StyleEditRemoveHistory, Styl
         }
     }
 
-    // Βοηθητική για έλεγχο κενού πεδίου
+    // Helper to check if a text field is effectively empty
     private boolean isEmpty(JTextField field) {
         return field.getText().trim().isEmpty();
     }
 
+    /**
+     * Opens the Edit Dialog for the selected rental.
+     */
     private void edit() {
         int row = table.getSelectedRow();
         if (row == -1) {
@@ -181,6 +193,9 @@ public class TableRental extends JDialog implements StyleEditRemoveHistory, Styl
         }
     }
 
+    /**
+     * Handles the logic for returning a vehicle.
+     */
     private void returnCar() {
         int row = table.getSelectedRow();
         if (row == -1) {
@@ -216,12 +231,14 @@ public class TableRental extends JDialog implements StyleEditRemoveHistory, Styl
         }
     }
 
+    /**
+     * Reloads all data from the service into the table.
+     */
     private void refreshTable() {
         model.setRowCount(0);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
         ArrayList<Rental> list = service.getRentalManager().getList();
 
-        // Debug για να δούμε αν φτάνουν τα δεδομένα στο GUI
         System.out.println("GUI DEBUG: Το παράθυρο βλέπει " + list.size() + " ενοικιάσεις.");
 
         for (Rental rental : list) {
