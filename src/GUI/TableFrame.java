@@ -10,12 +10,23 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 
+// Represents a window (JFrame) that displays a list of entities (Cars, Clients, or Rentals) in a table
 public class TableFrame extends JFrame {
+
+    /**
+     * Constructor to create the table window.
+     *
+     * @param service The management service instance to retrieve data from.
+     * @param type    The type of data to display ("CARS", "CLIENTS", or "RENTALS").
+     */
     public TableFrame(ManagementService service, String type) {
         setSize(900, 500);
         setLocationRelativeTo(null);
+
+        // Dispose the window on close (closes only this frame, not the whole app)
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+        // Create the table model. This holds the actual data and column names.
         DefaultTableModel model = new DefaultTableModel();
 
         //table for CARS
