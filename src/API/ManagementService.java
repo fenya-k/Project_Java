@@ -51,14 +51,20 @@ public class ManagementService {
         rentalManager.writeCSV(filenameRentals);
     }
 
+    // --- CAR MANAGEMENT ---
+
     //ADDS A NEW CAR
     public String addNewCar(String plate, String brand, String type, String model, String year, String color) {
+        //checks according to the parameters if the car is valid
         String check = carManager.isValidCar(plate, brand, type, model, year, color);
+        //prints the message from the manager
         System.out.println(check);
         if (!check.equals("Τα στοιχεία είναι πλήρη.")) {
             return check;
         }
+        //if car is valid, a new car is created
         Car newCar = new Car(plate, brand, type, model, year, color);
+        //adds the car and gets confirmation from the manager
         boolean isAdded = carManager.add(newCar);
         if (isAdded) {
             return "Επιτυχής καταχώρηση.";
@@ -69,29 +75,36 @@ public class ManagementService {
 
     //EDITS AN EXISTING CAR
     public String editExistingCar(String plate, String brand, String type, String model, String year, String color) {
-            String check = carManager.isValidCar(plate, brand, type, model, year, color);
+        String check = carManager.isValidCar(plate, brand, type, model, year, color);
         System.out.println(check);
         if (!check.equals("Τα στοιχεία είναι πλήρη.")) {
             return check;
         }
-        carManager.edit(plate, brand, type, model, year, color);
-        return "Επιτυχής καταχώρηση.";
+        boolean success = carManager.edit(plate, brand, type, model, year, color);
+        if (success) {
+            return "Επιτυχής επεξεργασία.";
+        } else {
+            return "Δεν βρέθηκε αυτοκίνητο με αυτή την πινακίδα.";
+        }
     }
+
+    // --- CLIENT MANAGEMENT ---
 
     //ADDS A NEW CLIENT
     public String addNewClient(String name, String surname, String AFM, String phone, String email) {
+        //checks according to the parameters if the client is valid
         String check = clientManager.isValidClient(name, surname, AFM, phone, email);
         System.out.println(check);
         if (!check.equals("Επιτυχής καταχώρηση.")) {
             return check;
         }
-
+        //if client is valid, a new client is created
         Client newClient = new Client(name, surname, AFM, phone, email);
         boolean isAdded = clientManager.add(newClient);
 
-        if(isAdded){
-            return  "Επιτυχής καταχώρηση.";
-        } else{
+        if (isAdded) {
+            return "Επιτυχής καταχώρηση.";
+        } else {
             return "Υπάρχει ήδη πελάτης με αυτό το ΑΦΜ.";
         }
     }
@@ -103,9 +116,15 @@ public class ManagementService {
         if (!check.equals("Επιτυχής καταχώρηση.")) {
             return check;
         }
-        clientManager.edit(name, surname, AFM, phone, email);
-        return  "Επιτυχής καταχώρηση.";
+        boolean success = clientManager.edit(name, surname, AFM, phone, email);
+        if (success) {
+            return "Επιτυχής επεξεργασία.";
+        } else {
+            return "Δεν βρέθηκε πελάτης με αυτό το ΑΦΜ.";
+        }
     }
+
+    // --- EMPLOYEE MANAGEMENT ---
 
     //EDITS AN EXISTING EMPLOYEE
     public String editExistingEmployee(String username, String name, String surname, String email) {
@@ -114,9 +133,15 @@ public class ManagementService {
         if (!check.equals("Επιτυχής καταχώρηση.")) {
             return check;
         }
-        employeeManager.edit(username, name, surname, email);
-        return  "Επιτυχής καταχώρηση.";
+        boolean success = employeeManager.edit(username, name, surname, email);
+        if (success) {
+            return "Επιτυχής επεξεργασία.";
+        } else {
+            return "Δεν βρέθηκε εργαζόμενος με αυτό το username.";
+        }
     }
+
+    // --- RENTAL MANAGEMENT ---
 
     //EDITS AN EXISTING RENTAL
     public String editExistingRental(int code, Car rentCar, Client client, LocalDate startDate, LocalDate endDate, Employee employee) {
@@ -125,36 +150,44 @@ public class ManagementService {
         if (!check.equals("Επιτυχής καταχώρηση.")) {
             return check;
         }
-        rentalManager.edit(code, rentCar, client, startDate, endDate, employee);
-        return  "Επιτυχής καταχώρηση.";
+        boolean success = rentalManager.edit(code, rentCar, client, startDate, endDate, employee);
+        if (success) {
+            return "Επιτυχής επεξεργασία.";
+        } else {
+            return "Δεν βρέθηκε ενοικίαση με αυτόν τον κωδικό.";
+        }
     }
 
     /**
      * Performs the car rental process.
      * 1. Adds rental to the global list.
-     * 2. Updates the car status, RENTED.
-     * 3. Adds rental to the car's history.
-     * 4. Adds rental to the client's history.
-     * * @param rental The rental object to be processed.
+     * 2. Adds rental to the car's history.
+     * 3. Adds rental to the client's history.
+     * @param rental The rental object to be processed.
      */
     //MAKES A RENTAL AND UPDATES HISTORY
     public void rentCar(Rental rental) {
-        rentalManager.add(rental);
-        Car rentedCar = carManager.findByPlate(rental.getRentCar().getPlate());
-        rentedCar.setCarStatus(CarStatus.RENTED); // update status
-        rentedCar.addRental(rental); //update history
-        Client client = clientManager.findByAFM(rental.getClient().getAFM());
-        client.addRental(rental); //update history
+        boolean isAdded = rentalManager.add(rental);
+
+        if (isAdded) {
+            Car rentedCar = carManager.findByPlate(rental.getRentCar().getPlate());
+            Client client = clientManager.findByAFM(rental.getClient().getAFM());
+
+            if (rentedCar != null) rentedCar.addRental(rental); //update history
+            if (client != null) client.addRental(rental); //update history
+        } else {
+            System.out.println("Η ενοικίαση απέτυχε (Το όχημα δεν είναι διαθέσιμο ή υπάρχει ήδη κωδικός).");
+        }
     }
 
     //MAKES A RETURN NO HISTORY UPDATE NEEDED
     public void returnCar(Rental rental) {
+        // rentalManager.remove() automatically sets the car status to AVAILABLE.
         rentalManager.remove(rental);
-        Car rentedCar = carManager.findByPlate(rental.getRentCar().getPlate());
-        rentedCar.setCarStatus(CarStatus.AVAILABLE); // update status
     }
 
-    // GETTERS FOR TESTS
+    // --- GETTERS FOR TESTS ---
+
     public CarManager getCarManager() {
         return carManager;
     }
