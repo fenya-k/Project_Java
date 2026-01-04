@@ -97,8 +97,8 @@ public class EmployeeManager implements Manager<Employee> {
     @Override
     public boolean remove(Employee employee) {
         int employeesSize = employees.size();
-        // We store the size to avoid recalculating it in the loop,
-        // although since we return immediately after removal, standard iteration is also safe no (IndexOutOfBoundsException)
+        // We store the size to avoid recalculating it in the loop.
+        // Since we return immediately after removal, standard iteration is safe.
         for (int i = 0; i < employeesSize; i++) {
             if (employees.get(i).getUsername().equalsIgnoreCase(employee.getUsername())) {
                 employees.remove(i);
@@ -108,21 +108,6 @@ public class EmployeeManager implements Manager<Employee> {
         }
         System.out.println("Cannot find employee with username: " + employee.getUsername());
         return false;
-    }
-
-    /**
-     * Prints the details of all employees in the list.
-     */
-    @Override
-    public void print() {
-        System.out.println("List of employees");
-        if (employees.isEmpty()) {
-            System.out.println("No employees found");
-        } else {
-            for (Employee employee : employees) {
-                System.out.println(employee.toString());
-            }
-        }
     }
 
     /**
@@ -143,6 +128,21 @@ public class EmployeeManager implements Manager<Employee> {
     @Override
     public int getSize() {
         return employees.size();
+    }
+
+    /**
+     * Prints the details of all employees in the list.
+     */
+    @Override
+    public void print() {
+        System.out.println("List of employees");
+        if (employees.isEmpty()) {
+            System.out.println("No employees found");
+        } else {
+            for (Employee employee : employees) {
+                System.out.println(employee.toString());
+            }
+        }
     }
 
     /**
@@ -198,6 +198,7 @@ public class EmployeeManager implements Manager<Employee> {
     private static Employee getEmployee(String line, String delimiter) {
         String[] data = line.split(delimiter);
 
+        // Safety check
         if (data.length < 5) return null;
 
         String name = data[0].trim();

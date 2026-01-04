@@ -2,9 +2,13 @@ package API;
 
 import java.time.LocalDate;
 
+/**
+ * The central service that coordinates all Managers.
+ * It acts as the bridge between the GUI and API.
+ */
 public class ManagementService {
 
-    //FILE NAMES
+    //FILE PATHS
     private final String filenameCars = "DataBase/ManagerFiles/vehicles.csv";
     private final String filenameClients = "DataBase/ManagerFiles/clients.csv";
     private final String filenameEmployees = "DataBase/ManagerFiles/users.csv";
@@ -16,7 +20,9 @@ public class ManagementService {
     private final EmployeeManager employeeManager;
     private final RentalManager rentalManager;
 
-    //CONSTRUCTOR
+    /**
+     * Constructor, initializes all managers.
+     */
     public ManagementService() {
         this.carManager = new CarManager();
         this.clientManager = new ClientManager();
@@ -24,12 +30,25 @@ public class ManagementService {
         this.rentalManager = new RentalManager();
     }
 
-    //READS ALL CSV OF ENTITIES AND HISTORY
+    /**
+     * Reads all CSV files.
+     * The order is important: Entities first (Cars, Clients, Employees), then Rentals (which link them).
+     */
     public void readAllCSV() {
         carManager.readCSV(filenameCars);
         clientManager.readCSV(filenameClients);
         employeeManager.readCSV(filenameEmployees);
-        rentalManager.readCSV(carManager, clientManager, employeeManager, filenameRentals, rentalManager.getList());
+        rentalManager.readCSV(carManager, clientManager, employeeManager, filenameRentals);
+    }
+
+    /**
+     * Saves all data to CSV files.
+     */
+    public void writeAllCSV() {
+        carManager.writeCSV(filenameCars);
+        clientManager.writeCSV(filenameClients);
+        employeeManager.writeCSV(filenameEmployees);
+        rentalManager.writeCSV(filenameRentals);
     }
 
     //ADDS A NEW CAR
@@ -133,14 +152,6 @@ public class ManagementService {
         rentalManager.remove(rental);
         Car rentedCar = carManager.findByPlate(rental.getRentCar().getPlate());
         rentedCar.setCarStatus(CarStatus.AVAILABLE); // update status
-    }
-
-    //WRITES ALL CSV OF ENTITIES AND HISTORY
-    public void writeAllCSV() {
-        carManager.writeCSV(filenameCars);
-        clientManager.writeCSV(filenameClients);
-        employeeManager.writeCSV(filenameEmployees);
-        rentalManager.writeCSV(filenameRentals, rentalManager.getList());
     }
 
     // GETTERS FOR TESTS
