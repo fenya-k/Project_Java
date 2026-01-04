@@ -23,7 +23,9 @@ public class Login extends JFrame {
     Font regularFont = new Font("Segoe UI", Font.PLAIN, 16);
     private final String iconPath = "Database/Images/login icon.png";
 
-    /** Reference to the backend service for authentication logic. */
+    /**
+     * Reference to the backend service for authentication logic.
+     */
     private final ManagementService service;
 
     // UI Components
@@ -123,7 +125,7 @@ public class Login extends JFrame {
         if (employee != null) {
             JOptionPane.showMessageDialog(this, "Επιτυχής σύνδεση!");
             dispose();
-            new MainFrame(service,employee);
+            new MainFrame(service, employee);
         } else {
             JOptionPane.showMessageDialog(this, "Σφάλμα σύνδεσης!", "Σφάλμα", JOptionPane.ERROR_MESSAGE);
         }

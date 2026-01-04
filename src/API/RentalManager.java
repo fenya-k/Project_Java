@@ -262,7 +262,8 @@ public class RentalManager implements Manager<Rental> {
                         // Add to main list
                         rentals.add(rental);
 
-                        // Add to the specific client's history
+                        // Add to the specific car's and client's history
+                        car.addRental(rental);
                         client.addRental(rental);
 
                         // Only mark as RENTED if the rental is still active (today is before or equal to end date)

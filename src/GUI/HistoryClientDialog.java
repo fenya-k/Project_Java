@@ -97,7 +97,6 @@ public class HistoryClientDialog extends JDialog implements StyleEditRemoveHisto
         refreshTable();
     }
 
-
     /**
      * Displays detailed information about the Car involved in the selected rental.
      * <p>
@@ -117,7 +116,6 @@ public class HistoryClientDialog extends JDialog implements StyleEditRemoveHisto
 
         String plate = (String) model.getValueAt(row, 1);
         Car car = service.getCarManager().findByPlate(plate);
-
 
         //Check if car exists
         if (car != null) {

@@ -142,10 +142,8 @@ public class EditCarDialog extends JDialog implements StyleAddCancel {
         String year = yearField.getText().trim();
         String colour = colorField.getText().trim();
 
-        // Pass updated data to service
         String check = service.editExistingCar(plate, brand, type, model, year, colour);
-
-        if (check.equals("Επιτυχής καταχώρηση.")) {
+        if (check.startsWith("Επιτυχής")) {
             JOptionPane.showMessageDialog(this, "Επιτυχής ενημέρωση.",
                     "Το όχημα ενημερώθηκε επιτυχώς!",
                     JOptionPane.INFORMATION_MESSAGE);

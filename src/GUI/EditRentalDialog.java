@@ -9,7 +9,6 @@ import API.ManagementService;
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
@@ -218,7 +217,7 @@ public class EditRentalDialog extends JDialog implements StyleAddCancel {
         // Perform update via service
         String check = service.editExistingRental(code, car, client, startDate, endDate, employee);
 
-        if (check.equals("Επιτυχής καταχώρηση.") || check.contains("Success")) {
+        if (check.startsWith("Επιτυχής") || check.contains("Success")) {
             JOptionPane.showMessageDialog(this, "Επιτυχής ενημέρωση.",
                     "Η ενοικίαση ενημερώθηκε επιτυχώς!",
                     JOptionPane.INFORMATION_MESSAGE);

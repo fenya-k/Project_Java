@@ -59,7 +59,7 @@ public class EditClientDialog extends JDialog implements StyleAddCancel {
 
 
         //read-only
-        addClientPanel.add(new JLabel("ΑΦΜ")); //δεν αλλάζει  -AFM
+        addClientPanel.add(new JLabel("ΑΦΜ")); //δεν αλλάζει-AFM
         afmField = new JTextField();
         afmField.setText(client.getAFM());
         afmField.setEditable(false);
@@ -140,7 +140,7 @@ public class EditClientDialog extends JDialog implements StyleAddCancel {
         // Pass updated data to service
         String check = service.editExistingClient(name, surname, afm, phone, email);
 
-        if (check.equals("Επιτυχής καταχώρηση.")) {
+        if (check.startsWith("Επιτυχής")) {
             JOptionPane.showMessageDialog(this, "Επιτυχής ενημέρωση.",
                     "Ο πελάτης ενημερώθηκε επιτυχώς!",
                     JOptionPane.INFORMATION_MESSAGE);

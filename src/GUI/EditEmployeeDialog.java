@@ -132,7 +132,7 @@ public class EditEmployeeDialog extends JDialog implements StyleAddCancel {
         // Pass updated data to service
         String check = service.editExistingEmployee(username, name, surname, email);
 
-        if (check.equals("Επιτυχής καταχώρηση.")) {
+        if (check.startsWith("Επιτυχής")) {
             JOptionPane.showMessageDialog(this, "Επιτυχής ενημέρωση.",
                     "Ο υπάλληλος ενημερώθηκε επιτυχώς!",
                     JOptionPane.INFORMATION_MESSAGE);

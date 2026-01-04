@@ -82,7 +82,7 @@ public class ManagementService {
         }
         boolean success = carManager.edit(plate, brand, type, model, year, color);
         if (success) {
-            return "Επιτυχής επεξεργασία.";
+            return "Επιτυχής καταχώρηση.";
         } else {
             return "Δεν βρέθηκε αυτοκίνητο με αυτή την πινακίδα.";
         }

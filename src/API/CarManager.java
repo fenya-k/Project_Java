@@ -238,12 +238,16 @@ public class CarManager implements Manager<Car> {
         String line;
         String delimiter = ",";
 
+        cars.clear();
+
         try (BufferedReader in = new BufferedReader(new FileReader(filename))) {
             in.readLine(); //skips the first line because it's a header
 
             while ((line = in.readLine()) != null) {
                 Car car = getCar(line, delimiter);
-                cars.add(car);
+                if (car != null) {
+                    cars.add(car);
+                }
             }
         } catch (FileNotFoundException e) {
             System.err.println("Error: File not found!");

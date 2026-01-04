@@ -134,5 +134,4 @@ public class AddEmployeeDialog extends JDialog implements StyleAddCancel {
         JOptionPane.showMessageDialog(this, "Ο υπάλληλος προστέθηκε επιτυχώς!");
         dispose();
     }
-
 }
