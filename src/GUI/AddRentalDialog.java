@@ -8,25 +8,9 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-/**
- * A modal dialog for creating a new rental transaction.
- * <p>
- * This class facilitates the process of renting a car to a client. It provides
- * dropdown menus (ComboBoxes) for selecting <b>available</b> cars and existing clients,
- * and input fields for the rental duration. It automatically assigns the
- * rental to the currently logged-in employee.
- * </p>
- */
 public class AddRentalDialog extends JDialog implements StyleAddCancel {
 
-    /**
-     * Reference to the backend service for data handling.
-     */
     private final ManagementService service;
-
-    /**
-     * The employee currently logged in, who is creating this rental.
-     */
     private final Employee currentUser;
 
     // UI Input Fields
@@ -37,15 +21,6 @@ public class AddRentalDialog extends JDialog implements StyleAddCancel {
     private JTextField endField;
     private JLabel empLabel;
 
-    /**
-     * Constructs the Add Rental Dialog.
-     * Initializes the UI, populates the dropdown lists with data from the service,
-     * and sets up the layout.
-     *
-     * @param parent      The parent JFrame.
-     * @param service     The ManagementService for data access.
-     * @param currentUser The Employee object representing the active user.
-     */
     public AddRentalDialog(JFrame parent, ManagementService service, Employee currentUser) {
         super(parent, "Προσθήκη Νέας Ενοικίασης", true);
         this.service = service;
@@ -132,11 +107,7 @@ public class AddRentalDialog extends JDialog implements StyleAddCancel {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    /**
-     * Populates the Client dropdown menu.
-     * Retrieves the list of clients and formats them as "AFM - Name Surname".
-     */
-    private void populateClients() {
+     private void populateClients() {
         ArrayList<Client> clients = service.getClientManager().getList();
         for (Client client : clients) {
             clientCombo.addItem(client.getAFM() + " - " + client.getName() + " " + client.getSurname());
@@ -147,11 +118,6 @@ public class AddRentalDialog extends JDialog implements StyleAddCancel {
         }
     }
 
-    /**
-     * Populates the Car dropdown menu.
-     * Filters the list to show <b>only available</b> cars (CarStatus.AVAILABLE).
-     * Formats the item as "Plate (Brand Model)".
-     */
     private void populateCars() {
         ArrayList<Car> cars = service.getCarManager().getList();
         boolean found = false;
@@ -167,17 +133,6 @@ public class AddRentalDialog extends JDialog implements StyleAddCancel {
         }
     }
 
-    /**
-     * Validates inputs, processes the rental transaction, and saves it.
-     * <p>
-     * Steps:
-     * 1. Checks if selections are made.
-     * 2. Parses selected items to extract Plate and AFM.
-     * 3. Parses and validates dates (Format YYYY-MM-DD, End date > Start date).
-     * 4. Creates a new {@link Rental} object.
-     * 5. Calls {@link ManagementService#rentCar(Rental)} to finalize the transaction.
-     * </p>
-     */
     private void saveRental() {
         try {
             if (!carCombo.isEnabled() || !clientCombo.isEnabled()) {

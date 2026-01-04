@@ -5,21 +5,8 @@ import API.ManagementService;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * A modal dialog window for adding a new client to the system.
- * <p>
- * This class provides a form interface for the user to input client details
- * (name, surname, AFM, phone, email). It handles the input collection
- * and communicates with the {@link ManagementService} to validate and store
- * the new client.
- * </p>
- * Implements {@link StyleAddCancel} for consistent UI styling.
- */
 public class AddClientDialog extends JDialog implements StyleAddCancel {
 
-    /**
-     * Reference to the backend service for data handling.
-     */
     private final ManagementService service;
 
     // UI Input Fields
@@ -29,14 +16,6 @@ public class AddClientDialog extends JDialog implements StyleAddCancel {
     private JTextField phoneField;
     private JTextField emailField;
 
-    /**
-     * Constructs the Add Client Dialog.
-     * Initializes the user interface, sets up the layout grid, applies styling,
-     * and defines the action listeners for saving and canceling.
-     *
-     * @param parent  The parent JFrame (MainFrame) to center the dialog relative to.
-     * @param service The ManagementService instance used to perform the add operation.
-     */
     public AddClientDialog(JFrame parent, ManagementService service) {
         super(parent, "Προσθήκη Νέου Πελάτη", true);
         this.service = service;
@@ -103,15 +82,6 @@ public class AddClientDialog extends JDialog implements StyleAddCancel {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    /**
-     * Collects input data from the form fields and attempts to save the new client.
-     * <p>
-     * Retrieves text inputs, trims whitespace, and calls
-     * {@link ManagementService#addNewClient(String, String, String, String, String)}.
-     * Displays a success message and closes the dialog upon successful addition,
-     * or an error message if the operation fails (e.g., duplicate AFM).
-     * </p>
-     */
     private void saveClient() {
 
         String name = nameField.getText().trim();

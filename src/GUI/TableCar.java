@@ -8,24 +8,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 
-/**
- * A management dialog for the Vehicle Fleet.
- * <p>
- * This class provides a comprehensive view of all vehicles in the system.
- * Key features include:
- * <ul>
- * <li><b>Search Panel:</b> Allows filtering cars by plate, brand, type, model, color, and availability status.</li>
- * <li><b>Data Table:</b> Displays vehicle details in a tabular format.</li>
- * <li><b>Action Buttons:</b> Provides options to <b>Edit</b>, <b>Remove</b>, or view the <b>History</b> of a selected car.</li>
- * </ul>
- * </p>
- * Implements {@link StyleEditRemoveHistory} for action buttons and {@link StyleTwoOptions} for search buttons.
- */
 public class TableCar extends JDialog implements StyleEditRemoveHistory, StyleTwoOptions {
 
-    /**
-     * Reference to the backend service.
-     */
     private final ManagementService service;
 
     // UI Components
@@ -36,14 +20,6 @@ public class TableCar extends JDialog implements StyleEditRemoveHistory, StyleTw
     private final JTextField plateField, brandField, typeField, modelField, colorField;
     private final JComboBox<String> availabilityBox;
 
-    /**
-     * Constructs the Car Management Table Dialog.
-     * Initializes the window, builds the search filter panel, sets up the JTable,
-     * and configures the action buttons.
-     *
-     * @param parent  The parent JFrame (MainFrame).
-     * @param service The ManagementService instance for data operations.
-     */
     public TableCar(JFrame parent, ManagementService service) {
         super(parent, "Διαχείριση Οχημάτων", true); // true = modal
         this.service = service;
@@ -163,13 +139,6 @@ public class TableCar extends JDialog implements StyleEditRemoveHistory, StyleTw
         refreshTable();
     }
 
-    /**
-     * Executes the search query based on the filters in the search panel.
-     * <p>
-     * Collects text from all fields, determines the availability status from the dropdown,
-     * calls {@link API.CarManager#search}, and updates the table model with the results.
-     * </p>
-     */
     private void performSearch() {
         String plate = isEmpty(plateField) ? null : plateField.getText().trim();
         String brand = isEmpty(brandField) ? null : brandField.getText().trim();
@@ -203,17 +172,10 @@ public class TableCar extends JDialog implements StyleEditRemoveHistory, StyleTw
         }
     }
 
-    /**
-     * Helper method to check if a text field is empty.
-     */
-    private boolean isEmpty(JTextField field) {
+     private boolean isEmpty(JTextField field) {
         return field.getText().trim().isEmpty();
     }
 
-    /**
-     * Opens the {@link EditCarDialog} for the selected vehicle.
-     * Validates that a row is selected before proceeding.
-     */
     private void edit() {
         int row = table.getSelectedRow();
         if (row == -1) {
@@ -233,14 +195,7 @@ public class TableCar extends JDialog implements StyleEditRemoveHistory, StyleTw
         refreshTable();
     }
 
-    /**
-     * Removes the selected vehicle from the system.
-     * <p>
-     * Prompts the user for confirmation before deleting. Displays a success or error
-     * message based on the operation result.
-     * </p>
-     */
-    private void remove() {
+ private void remove() {
         int row = table.getSelectedRow();
         if (row == -1) {
             JOptionPane.showMessageDialog(this,
@@ -277,10 +232,7 @@ public class TableCar extends JDialog implements StyleEditRemoveHistory, StyleTw
         }
     }
 
-    /**
-     * Opens the {@link HistoryCarDialog} to show the rental history of the selected vehicle.
-     */
-    private void history() {
+     private void history() {
         int row = table.getSelectedRow();
         if (row == -1) {
             JOptionPane.showMessageDialog(this,
@@ -298,9 +250,6 @@ public class TableCar extends JDialog implements StyleEditRemoveHistory, StyleTw
         refreshTable();
     }
 
-    /**
-     * Refreshes the table data by re-applying current search filters.
-     */
     private void refreshTable() {
         performSearch();
     }

@@ -8,25 +8,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 
-/**
- * A management dialog for the Client Database.
- * <p>
- * This class provides a comprehensive view of all registered clients.
- * Key features include:
- * <ul>
- * <li><b>Search Panel:</b> Allows filtering clients by Name, Surname, AFM (Tax ID), Phone, or Email.</li>
- * <li><b>Data Table:</b> Displays client contact details in a tabular format.</li>
- * <li><b>Action Buttons:</b> Provides options to <b>Edit</b>, <b>Remove</b>, or view the rental <b>History</b> of a selected client.</li>
- * </ul>
- * </p>
- * Implements {@link StyleEditRemoveHistory} for action buttons and {@link StyleTwoOptions} for search buttons.
- */
 public class TableClient extends JDialog implements StyleEditRemoveHistory, StyleTwoOptions {
 
-    /**
-     * Reference to the backend service.
-     */
-    private final ManagementService service;
+     private final ManagementService service;
 
     // UI Components
     private final JTable table;
@@ -35,14 +19,6 @@ public class TableClient extends JDialog implements StyleEditRemoveHistory, Styl
     // Search Filter Components
     private final JTextField nameField, surnameField, afmField, phoneField, emailField;
 
-    /**
-     * Constructs the Client Management Table Dialog.
-     * Initializes the window, builds the search filter panel, sets up the JTable,
-     * and configures the action buttons.
-     *
-     * @param parent  The parent JFrame (MainFrame).
-     * @param service The ManagementService instance for data operations.
-     */
     public TableClient(JFrame parent, ManagementService service) {
         super(parent, "Διαχείριση Πελατών", true); // true = modal
         this.service = service;
@@ -154,14 +130,7 @@ public class TableClient extends JDialog implements StyleEditRemoveHistory, Styl
         refreshTable();
     }
 
-    /**
-     * Executes the search query based on the filters in the search panel.
-     * <p>
-     * Collects text from all fields, calls {@link API.ClientManager#search},
-     * and updates the table model with the results.
-     * </p>
-     */
-    private void performSearch() {
+   private void performSearch() {
         String name = isEmpty(nameField) ? null : nameField.getText().trim();
         String surname = isEmpty(surnameField) ? null : surnameField.getText().trim();
         String afm = isEmpty(afmField) ? null : afmField.getText().trim();
@@ -187,21 +156,11 @@ public class TableClient extends JDialog implements StyleEditRemoveHistory, Styl
         }
     }
 
-    /**
-     * Helper method to check if a text field is empty.
-     */
     private boolean isEmpty(JTextField field) {
         return field.getText().trim().isEmpty();
     }
 
-    /**
-     * Opens the {@link EditClientDialog} for the selected client.
-     * <p>
-     * Retrieves the AFM from the selected table row, finds the Client object,
-     * and passes it to the edit dialog.
-     * </p>
-     */
-    private void edit() {
+     private void edit() {
         int row = table.getSelectedRow();
         if (row == -1) {
             JOptionPane.showMessageDialog(this,
@@ -221,14 +180,7 @@ public class TableClient extends JDialog implements StyleEditRemoveHistory, Styl
         }
     }
 
-    /**
-     * Removes the selected client from the system.
-     * <p>
-     * Prompts the user for confirmation before deleting. Displays a success or error
-     * message based on the operation result.
-     * </p>
-     */
-    private void remove() {
+  private void remove() {
         int row = table.getSelectedRow();
         if (row == -1) {
             JOptionPane.showMessageDialog(this,
@@ -265,10 +217,7 @@ public class TableClient extends JDialog implements StyleEditRemoveHistory, Styl
         }
     }
 
-    /**
-     * Opens the {@link HistoryClientDialog} to show the rental history of the selected client.
-     */
-    private void history() {
+  private void history() {
         int row = table.getSelectedRow();
         if (row == -1) {
             JOptionPane.showMessageDialog(this,
@@ -286,9 +235,6 @@ public class TableClient extends JDialog implements StyleEditRemoveHistory, Styl
         refreshTable();
     }
 
-    /**
-     * Refreshes the table data by re-applying current search filters.
-     */
     private void refreshTable() {
         performSearch();
     }

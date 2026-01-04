@@ -10,10 +10,6 @@ import java.awt.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-/**
- * A Dialog window that displays the history of rentals.
- * Allows the user to search/filter rentals, edit dates, and process car returns.
- */
 public class TableRental extends JDialog implements StyleEditRemoveHistory, StyleTwoOptions {
     private final ManagementService service;
     private final JTable table;
@@ -126,10 +122,7 @@ public class TableRental extends JDialog implements StyleEditRemoveHistory, Styl
         refreshTable();
     }
 
-    /**
-     * Filters the table based on the input fields.
-     */
-    private void performSearch() {
+ private void performSearch() {
         // Parse inputs (handle empty strings)
         int code = isEmpty(codeField) ? -1 : Integer.parseInt(codeField.getText().trim());
         String plate = isEmpty(plateField) ? null : plateField.getText().trim();
@@ -170,9 +163,6 @@ public class TableRental extends JDialog implements StyleEditRemoveHistory, Styl
         return field.getText().trim().isEmpty();
     }
 
-    /**
-     * Opens the Edit Dialog for the selected rental.
-     */
     private void edit() {
         int row = table.getSelectedRow();
         if (row == -1) {
@@ -193,9 +183,6 @@ public class TableRental extends JDialog implements StyleEditRemoveHistory, Styl
         }
     }
 
-    /**
-     * Handles the logic for returning a vehicle.
-     */
     private void returnCar() {
         int row = table.getSelectedRow();
         if (row == -1) {
@@ -230,11 +217,7 @@ public class TableRental extends JDialog implements StyleEditRemoveHistory, Styl
             JOptionPane.showMessageDialog(this, "Σφάλμα κατά την επιστροφή", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
-    /**
-     * Reloads all data from the service into the table.
-     */
-    private void refreshTable() {
+ private void refreshTable() {
         model.setRowCount(0);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
         ArrayList<Rental> list = service.getRentalManager().getList();

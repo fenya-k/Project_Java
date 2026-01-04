@@ -12,29 +12,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
-/**
- * A modal dialog window for editing the details of an existing rental transaction.
- * <p>
- * This class pre-fills form fields with the current data of the selected {@link Rental}.
- * It allows the user to modify the <b>Client</b> and the <b>Rental Dates</b>.
- * <br>
- * <b>Note:</b> The Car (License Plate) and the Employee (Username) fields are set to
- * read-only mode. Logic dictates that the car and the employee who authorized the
- * original transaction should not be changed during a simple edit.
- * </p>
- * Implements {@link StyleAddCancel} for consistent UI styling.
- */
+
 public class EditRentalDialog extends JDialog implements StyleAddCancel {
 
-    /**
-     * Reference to the backend service.
-     */
-    private final ManagementService service;
-
-    /**
-     * The specific rental object being edited.
-     */
-    private final Rental rental;
+     private final ManagementService service;
+     private final Rental rental;
 
     // UI Components
     private final JTextField plateField;
@@ -43,16 +25,7 @@ public class EditRentalDialog extends JDialog implements StyleAddCancel {
     private final JTextField endField;
     private final JTextField usernameField;
 
-    /**
-     * Constructs the Edit Rental Dialog.
-     * Initializes the UI, populates the client dropdown, pre-fills date fields with
-     * current values, locks the Car and Employee fields, and sets up action listeners.
-     *
-     * @param parent  The parent dialog (usually TableRental) from which this dialog was opened.
-     * @param service The ManagementService instance for data operations.
-     * @param rental  The Rental object containing the data to be edited.
-     */
-    public EditRentalDialog(JDialog parent, ManagementService service, Rental rental) {
+   public EditRentalDialog(JDialog parent, ManagementService service, Rental rental) {
         super(parent, "Επεξεργασία Ενοικίασης", true);
         this.service = service;
         this.rental = rental;
@@ -140,14 +113,7 @@ public class EditRentalDialog extends JDialog implements StyleAddCancel {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    /**
-     * Populates the Client dropdown menu with all existing clients.
-     * <p>
-     * It formats the items as "AFM - Name Surname" and automatically selects
-     * the client currently associated with this rental to ensure smooth editing.
-     * </p>
-     */
-    private void populateClients() {
+      private void populateClients() {
         ArrayList<Client> clients = service.getClientManager().getList();
         String currentAfm = rental.getClient().getAFM();
 
@@ -162,20 +128,7 @@ public class EditRentalDialog extends JDialog implements StyleAddCancel {
 
     }
 
-    /**
-     * Collects modified data, validates it, and updates the rental record.
-     * <p>
-     * Validation steps:
-     * 1. Ensures a client is selected.
-     * 2. Parses start and end dates (format YYYY-MM-DD).
-     * 3. Checks that the end date is not before the start date.
-     * * If validation passes, calls {@link ManagementService#editExistingRental}
-     * to persist the changes.
-     * </p>
-     *
-     * @param code The unique identifier (RentCode) of the rental being edited.
-     */
-    private void saveRental(int code) {
+ private void saveRental(int code) {
 
         String start = startField.getText().trim();
         String end = endField.getText().trim();

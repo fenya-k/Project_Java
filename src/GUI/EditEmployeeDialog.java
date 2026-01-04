@@ -6,26 +6,9 @@ import API.ManagementService;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * A modal dialog window for editing the details of an existing employee.
- * <p>
- * This class pre-fills the form fields with the current data of the selected {@link Employee}.
- * It allows the administrator to modify personal details like Name, Surname, and Email.
- * <b>Note:</b> The Username field is set to read-only mode as it serves as the unique
- * login identifier for the system.
- * </p>
- * Implements {@link StyleAddCancel} for consistent UI styling.
- */
 public class EditEmployeeDialog extends JDialog implements StyleAddCancel {
 
-    /**
-     * Reference to the backend service.
-     */
     private final ManagementService service;
-
-    /**
-     * The specific employee object being edited.
-     */
     private final Employee employee;
 
     // UI Input Fields
@@ -34,16 +17,7 @@ public class EditEmployeeDialog extends JDialog implements StyleAddCancel {
     private final JTextField usernameField;
     private final JTextField emailField;
 
-    /**
-     * Constructs the Edit Employee Dialog.
-     * Initializes the UI, populates fields with existing employee data, locks the Username field,
-     * and sets up action listeners for saving changes.
-     *
-     * @param parent   The parent dialog (usually TableEmployee) from which this dialog was opened.
-     * @param service  The ManagementService instance for data operations.
-     * @param employee The Employee object containing the data to be edited.
-     */
-    public EditEmployeeDialog(JDialog parent, ManagementService service, Employee employee) {
+     public EditEmployeeDialog(JDialog parent, ManagementService service, Employee employee) {
         super(parent, "Επεξεργασία Υπαλλήλου", true);
         this.service = service;
         this.employee = employee;
@@ -112,18 +86,7 @@ public class EditEmployeeDialog extends JDialog implements StyleAddCancel {
 
         add(buttonPanel, BorderLayout.SOUTH);
     }
-
-    /**
-     * Collects the modified data and saves the changes.
-     * <p>
-     * Retrieves text from the editable fields and calls
-     * {@link ManagementService#editExistingEmployee(String, String, String, String)}.
-     * Displays a success message if the update is successful, or an error message otherwise.
-     * </p>
-     *
-     * @param username The unique username of the employee (used as the key for the update operation).
-     */
-    private void saveEmployee(String username) {
+   private void saveEmployee(String username) {
 
         String name = nameField.getText().trim();
         String surname = surnameField.getText().trim();

@@ -6,27 +6,10 @@ import API.ManagementService;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * A modal dialog window for editing the details of an existing client.
- * <p>
- * This class pre-fills the form fields with the current data of the selected {@link Client}.
- * It allows the user to modify contact details like Name, Surname, Phone, and Email.
- * <b>Note:</b> The Tax ID (AFM) field is set to read-only mode as it serves as the
- * unique identifier for the client.
- * </p>
- * Implements {@link StyleAddCancel} for consistent UI styling.
- */
 public class EditClientDialog extends JDialog implements StyleAddCancel {
 
-    /**
-     * Reference to the backend service.
-     */
-    private final ManagementService service;
-
-    /**
-     * The specific client object being edited.
-     */
-    private final Client client;
+   private final ManagementService service;
+   private final Client client;
 
     // UI Input Fields
     private final JTextField nameField;
@@ -35,15 +18,6 @@ public class EditClientDialog extends JDialog implements StyleAddCancel {
     private final JTextField phoneField;
     private final JTextField emailField;
 
-    /**
-     * Constructs the Edit Client Dialog.
-     * Initializes the UI, populates fields with existing client data, locks the AFM field,
-     * and sets up action listeners for saving changes.
-     *
-     * @param parent  The parent dialog (usually TableClient) from which this dialog was opened.
-     * @param service The ManagementService instance for data operations.
-     * @param client  The Client object containing the data to be edited.
-     */
     public EditClientDialog(JDialog parent, ManagementService service, Client client) {
         super(parent, "Επεξεργασία Πελάτη", true);
         this.service = service;
@@ -120,16 +94,6 @@ public class EditClientDialog extends JDialog implements StyleAddCancel {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    /**
-     * Collects the modified data and saves the changes.
-     * <p>
-     * Retrieves text from the editable fields and calls
-     * {@link ManagementService#editExistingClient(String, String, String, String, String)}.
-     * Displays a success message if the update is successful, or an error message otherwise.
-     * </p>
-     *
-     * @param afm The Tax ID of the client (used as the key for the update operation).
-     */
     private void saveClient(String afm) {
 
         String name = nameField.getText().trim();

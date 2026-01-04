@@ -6,19 +6,8 @@ import API.ManagementService;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * A modal dialog window for registering a new employee (user) in the system.
- * <p>
- * Allows the administrator to create a new user account by providing personal details
- * and login credentials (username, password). It includes validation to ensure
- * all fields are filled and the username is unique.
- * </p>
- */
 public class AddEmployeeDialog extends JDialog implements StyleAddCancel {
 
-    /**
-     * Reference to the backend service for data handling.
-     */
     private final ManagementService service;
 
     // UI Input Fields
@@ -28,14 +17,6 @@ public class AddEmployeeDialog extends JDialog implements StyleAddCancel {
     private final JTextField emailField;
     private final JPasswordField passwordField;
 
-
-    /**
-     * Constructs the Add Employee Dialog.
-     * Sets up the input form for employee details and credentials.
-     *
-     * @param parent  The parent JFrame.
-     * @param service The ManagementService instance for data operations.
-     */
     public AddEmployeeDialog(JFrame parent, ManagementService service) {
         super(parent, "Προσθήκη Υπαλλήλου", true);
         this.service = service;
@@ -103,14 +84,6 @@ public class AddEmployeeDialog extends JDialog implements StyleAddCancel {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    /**
-     * Validates input and creates a new Employee account.
-     * <p>
-     * Checks if any fields are empty and if the username already exists.
-     * If validation passes, creates a new {@link Employee} object and adds it
-     * to the system via the EmployeeManager.
-     * </p>
-     */
     private void save() {
 
         String name = nameField.getText().trim();

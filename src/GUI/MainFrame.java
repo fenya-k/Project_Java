@@ -6,40 +6,13 @@ import API.ManagementService;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * The main window of the Car Rental System application.
- * Serves as the central hub for navigation, providing access to:
- * - Vehicle Management (Cars)
- * - Client Management
- * - Rental Management
- * - Employee Management
- * Handles the user session and ensures data persistence upon exit.
- */
 public class MainFrame extends JFrame {
+ private final String iconPath = "Database/Images/login icon.png";
 
-    /**
-     * Path to the application icon image.
-     */
-    private final String iconPath = "Database/Images/login icon.png";
-
-    /**
-     * Reference to the backend service handling data logic.
-     */
     private final ManagementService service;
-
-    /**
-     * The employee currently logged into the system.
-     */
     private final Employee currentUser;
 
-    /**
-     * Constructs the Main Frame and initializes the GUI components.
-     * Sets up the menu bar, welcome panel, and event listeners.
-     *
-     * @param service The instance of ManagementService for data access.
-     * @param user    The Employee object representing the currently logged-in user.
-     */
-    public MainFrame(ManagementService service, Employee user) {
+   public MainFrame(ManagementService service, Employee user) {
         this.service = service;
         this.currentUser = user;
 
@@ -203,12 +176,7 @@ public class MainFrame extends JFrame {
         setVisible(true);
     }
 
-    /**
-     * Saves all system data (Cars, Clients, Rentals, Employees) to CSV files.
-     * This method is triggered during logout or application exit to ensure
-     * data persistence.
-     */
-    void saveOnExit() {
+   void saveOnExit() {
         System.out.println("Saving...");
         service.writeAllCSV();
         System.out.println("Saved. Bye!");

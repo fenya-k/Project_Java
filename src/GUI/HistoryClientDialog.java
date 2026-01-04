@@ -7,41 +7,16 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 
-/**
- * A modal dialog window that displays the rental history of a specific client.
- * <p>
- * This class presents a table view of all past and current rentals associated with
- * the selected {@link Client}. It allows the user to select a specific transaction
- * and view detailed information about the <b>Car</b> that was rented or the
- * <b>Employee</b> who processed the rental.
- * </p>
- * Implements {@link StyleEditRemoveHistory} and {@link StyleTwoOptions} for interface consistency.
- */
+
 public class HistoryClientDialog extends JDialog implements StyleEditRemoveHistory, StyleTwoOptions {
 
-    /**
-     * Reference to the backend service.
-     */
     private final ManagementService service;
-
-    /**
-     * The specific client whose history is being displayed.
-     */
     private Client client;
 
     // UI Components
     private JTable table;
     private DefaultTableModel model;
 
-    /**
-     * Constructs the History Client Dialog.
-     * Sets up the JTable to display rental data (Code, Car Plate, Brand, Dates, Employee)
-     * and initializes buttons for viewing related entity details.
-     *
-     * @param parent  The parent dialog (usually TableClient).
-     * @param service The ManagementService instance for data retrieval.
-     * @param client  The specific Client object whose history is being requested.
-     */
     public HistoryClientDialog(JDialog parent, ManagementService service, Client client) {
         super(parent, "Ιστορικό πελάτη", true); // true = modal
         this.service = service;
@@ -97,14 +72,7 @@ public class HistoryClientDialog extends JDialog implements StyleEditRemoveHisto
         refreshTable();
     }
 
-    /**
-     * Displays detailed information about the Car involved in the selected rental.
-     * <p>
-     * Retrieves the License Plate from the selected table row, searches for the Car via
-     * the service, and displays a popup with its full details (Brand, Model, Type, Color, etc.).
-     * </p>
-     */
-    private void showCar() {
+     private void showCar() {
         int row = table.getSelectedRow();
         if (row == -1) {
             JOptionPane.showMessageDialog(this,
@@ -133,13 +101,6 @@ public class HistoryClientDialog extends JDialog implements StyleEditRemoveHisto
         }
     }
 
-    /**
-     * Displays detailed information about the Employee who processed the selected rental.
-     * <p>
-     * Retrieves the Username from the selected table row, searches for the Employee via
-     * the service, and displays a popup with their details.
-     * </p>
-     */
     private void showEmployee() {
         int row = table.getSelectedRow();
         if (row == -1) {
@@ -165,13 +126,6 @@ public class HistoryClientDialog extends JDialog implements StyleEditRemoveHisto
         }
     }
 
-    /**
-     * Populates the table with the rental history list specific to this client.
-     * <p>
-     * It calls {@link Client#returnList()} to get the past rentals associated with
-     * this client and adds them as rows to the table model.
-     * </p>
-     */
     private void refreshTable() {
 
         model.setRowCount(0);
