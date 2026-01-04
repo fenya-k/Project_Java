@@ -6,11 +6,29 @@ import API.ManagementService;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * A modal dialog window for editing the details of an existing vehicle.
+ * <p>
+ * This class pre-fills the form fields with the current data of the selected {@link Car}.
+ * It allows the user to modify attributes like Brand, Type, Model, Year, and Color.
+ * <b>Note:</b> The License Plate field is set to read-only mode to preserve the
+ * vehicle's unique identity.
+ * </p>
+ * Implements {@link StyleAddCancel} for consistent UI styling.
+ */
 public class EditCarDialog extends JDialog implements StyleAddCancel {
 
+    /**
+     * Reference to the backend service for data handling.
+     */
     private final ManagementService service;
+
+    /**
+     * The specific car object being edited.
+     */
     private Car car;
 
+    // UI Input Fields
     private JTextField plateField;
     private JTextField brandField;
     private JTextField typeField;
@@ -18,6 +36,15 @@ public class EditCarDialog extends JDialog implements StyleAddCancel {
     private JTextField yearField;
     private JTextField colorField;
 
+    /**
+     * Constructs the Edit Car Dialog.
+     * Initializes the UI, populates fields with existing car data, locks the plate field,
+     * and sets up action listeners.
+     *
+     * @param parent  The parent window (TableCar) from which this dialog was opened.
+     * @param service The ManagementService instance for data operations.
+     * @param car     The Car object containing the data to be edited.
+     */
     public EditCarDialog(TableCar parent, ManagementService service, Car car) {
         super(parent, "Επεξεργασία Οχήματος", true);
         this.service = service;
@@ -31,38 +58,41 @@ public class EditCarDialog extends JDialog implements StyleAddCancel {
         JPanel addCarPanel = new JPanel(new GridLayout(0, 2, 7, 16));
         addCarPanel.setBorder(BorderFactory.createEmptyBorder(40, 70, 40, 70));
 
-        addCarPanel.add(new JLabel("Πινακίδα"));
+        //read-only
+        addCarPanel.add(new JLabel("Πινακίδα"));  //Plate
         plateField = new JTextField();
         plateField.setText(car.getPlate());
         plateField.setEditable(false);
         plateField.setBackground(new Color(204, 204, 204));
         addCarPanel.add(plateField);
 
-        addCarPanel.add(new JLabel("Μάρκα"));
+        addCarPanel.add(new JLabel("Μάρκα"));  //Brand
         brandField = new JTextField();
         brandField.setText(car.getBrand());
         addCarPanel.add(brandField);
 
-        addCarPanel.add(new JLabel("Τύπος"));
+        addCarPanel.add(new JLabel("Τύπος"));  //Type
         typeField = new JTextField();
         typeField.setText(car.getType());
         addCarPanel.add(typeField);
 
-        addCarPanel.add(new JLabel("Μοντέλο"));
+        addCarPanel.add(new JLabel("Μοντέλο"));  //Model
         modelField = new JTextField();
         modelField.setText(car.getModel());
         addCarPanel.add(modelField);
 
-        addCarPanel.add(new JLabel("Χρονολογία"));
+        addCarPanel.add(new JLabel("Χρονολογία"));  //Year
         yearField = new JTextField();
         yearField.setText(String.valueOf(car.getYear()));
         addCarPanel.add(yearField);
 
-        addCarPanel.add(new JLabel("Χρώμα"));
+        addCarPanel.add(new JLabel("Χρώμα"));  //Color
         colorField = new JTextField();
         colorField.setText(car.getColor());
         addCarPanel.add(colorField);
 
+
+        //STYLING
         for (Component c : addCarPanel.getComponents()) {
             if (c instanceof JLabel) {
                 c.setFont(boldFont);
@@ -95,6 +125,14 @@ public class EditCarDialog extends JDialog implements StyleAddCancel {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Collects the modified data and saves the changes.
+     * <p>
+     * Retrieves text from the editable fields and calls
+     * {@link ManagementService#editExistingCar(String, String, String, String, String, String)}.
+     * Displays a success message if the update is successful, or an error message otherwise.
+     * </p>
+     */
     private void saveCar() {
 
         String plate = plateField.getText().trim();
@@ -104,6 +142,7 @@ public class EditCarDialog extends JDialog implements StyleAddCancel {
         String year = yearField.getText().trim();
         String colour = colorField.getText().trim();
 
+        // Pass updated data to service
         String check = service.editExistingCar(plate, brand, type, model, year, colour);
 
         if (check.equals("Επιτυχής καταχώρηση.")) {

@@ -4,14 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="35b9289b-614b-4ad3-ae10-3e9c21368406" name="Changes" comment="μικρη αλλαγη, τωρα τρεχει κανονικα">
+    <list default="true" id="35b9289b-614b-4ad3-ae10-3e9c21368406" name="Changes" comment="Comments for GUI: mainframe, 4 adddialog classes and adminmenuframre">
       <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/AddCarDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/AddCarDialog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/AddClientDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/AddClientDialog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/AddEmployeeDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/AddEmployeeDialog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/AddRentalDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/AddRentalDialog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/MainFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/EditCarDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/EditCarDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/EditClientDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/EditClientDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/EditEmployeeDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/EditEmployeeDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/EditRentalDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/EditRentalDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/HistoryCarDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/HistoryCarDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/HistoryClientDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/HistoryClientDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/StyleAddCancel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/StyleAddCancel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/StyleEditRemoveHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/StyleEditRemoveHistory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/StyleTwoOptions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/StyleTwoOptions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/TableCar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/TableCar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/TableClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/TableClient.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -194,7 +200,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767474033254</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Comments for GUI: mainframe, 4 adddialog classes and adminmenuframre">
+      <option name="closed" value="true" />
+      <created>1767479398148</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1767479398148</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -220,6 +234,28 @@
     <MESSAGE value="Finalize Rental UI: Auto-employee, smart filtering, and Login flow" />
     <MESSAGE value="edit rental αλλαγες" />
     <MESSAGE value="μικρη αλλαγη, τωρα τρεχει κανονικα" />
-    <option name="LAST_COMMIT_MESSAGE" value="μικρη αλλαγη, τωρα τρεχει κανονικα" />
+    <MESSAGE value="Comments for GUI: mainframe, 4 adddialog classes and adminmenuframre" />
+    <option name="LAST_COMMIT_MESSAGE" value="Comments for GUI: mainframe, 4 adddialog classes and adminmenuframre" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/GUI/AddCarDialog.java</url>
+          <line>88</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/GUI/EditClientDialog.java</url>
+          <line>86</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/GUI/EditRentalDialog.java</url>
+          <line>204</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
