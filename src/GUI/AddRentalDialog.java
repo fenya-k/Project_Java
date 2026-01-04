@@ -57,7 +57,7 @@ public class AddRentalDialog extends JDialog implements StyleAddCancel {
 
         // PANEL
         JPanel addRentalPanel = new JPanel(new GridLayout(0, 2, 7, 16));
-        addRentalPanel.setBorder(BorderFactory.createEmptyBorder(40, 70, 40, 70));
+        addRentalPanel.setBorder(BorderFactory.createEmptyBorder(40, 60, 40, 60));
 
         //CAR SELECTION
         addRentalPanel.add(new JLabel("Επιλογή Οχήματος (Διαθέσιμα):"));

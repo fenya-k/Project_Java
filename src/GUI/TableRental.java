@@ -239,8 +239,6 @@ public class TableRental extends JDialog implements StyleEditRemoveHistory, Styl
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
         ArrayList<Rental> list = service.getRentalManager().getList();
 
-        System.out.println("GUI DEBUG: Το παράθυρο βλέπει " + list.size() + " ενοικιάσεις.");
-
         for (Rental rental : list) {
             try {
                 // 1. Έλεγχος αν λείπουν βασικά αντικείμενα (για να μην σκάσει)
