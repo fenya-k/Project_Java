@@ -3,121 +3,160 @@ package API;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * This is the manager of all vehicles in the rental system.
+ * Implementing the interface {@link Manager}.
+ * Handles validation, adding, editing, removing, searching and file reading/writing.
+ */
 public class CarManager implements Manager<Car> {
+    /**
+     * The ArrayList of all the vehicles in the system.
+     */
     private final ArrayList<Car> cars;
-    static boolean flag1 = false, flag2 = false, flag3 = false, flag4 = false;
 
+    /**
+     * Constructor for a new manager. Initializes the ArrayList.
+     */
     public CarManager() {
         cars = new ArrayList<>();
     }
 
+    /**
+     * Validation method to check if all the necessary fields have been given before add/edit.
+     * Checks for null/empty values and the year of manufacturing.
+     *
+     * @param plate Vehicle plate
+     * @param brand Vehicle brand
+     * @param type  Vehicle type
+     * @param model Vehicle model
+     * @param year  Manufacturing year (as String to check format)
+     * @param color Vehicle color
+     * @return "Τα στοιχεία είναι πλήρη." if valid, otherwise an error message
+     */
     public String isValidCar(String plate, String brand, String type, String model, String year, String color) {
-        String fullString = "";
+        StringBuilder fullString = new StringBuilder();
 
-        if (plate == null || plate.isEmpty()) {
-            fullString += "Παρακαλώ καταχωρήστε τον αριθμό πινακίδας.\n";
-        }
-        if (brand == null || brand.isEmpty()) {
-            fullString += "Παρακαλώ καταχωρήστε τη μάρκα.\n";
-        }
-        if (type == null || type.isEmpty()) {
-            fullString += "Παρακαλώ καταχωρήστε τον τύπο.\n";
-        }
-        if (model == null || model.isEmpty()) {
-            fullString += "Παρακαλώ καταχωρήστε το μοντέλο.\n";
-        }
+        if (plate == null || plate.isEmpty()) fullString.append("Παρακαλώ καταχωρήστε τον αριθμό πινακίδας.\n");
+        if (brand == null || brand.isEmpty()) fullString.append("Παρακαλώ καταχωρήστε τη μάρκα.\n");
+        if (type == null || type.isEmpty()) fullString.append("Παρακαλώ καταχωρήστε τον τύπο.\n");
+        if (model == null || model.isEmpty()) fullString.append("Παρακαλώ καταχωρήστε το μοντέλο.\n");
+        if (color == null || color.isEmpty()) fullString.append("Παρακαλώ καταχωρήστε το χρώμα.\n");
+
         if (year == null || year.isEmpty()) {
-            fullString += "Παρακαλώ καταχωρήστε το έτος κυκλοφορίας.\n";
+            fullString.append("Παρακαλώ καταχωρήστε το έτος κυκλοφορίας.\n");
         } else {
             try {
                 int yearInt = Integer.parseInt(year);
                 if (yearInt <= 0) {
-                    fullString += "Το έτος κυκλοφορίας πρέπει να είναι θετικός αριθμός.\n";
-                    flag2 = true;
-                    if (flag1 && flag2 && flag3 && flag4) {
-                        fullString += "Bruh!";
-                    }
+                    fullString.append("Το έτος κυκλοφορίας πρέπει να είναι θετικός αριθμός.\n");
                 } else if (yearInt < 1886) {
-                    fullString += "Το πρώτο αυτοκίνητο κατασκευάστηκε το 1886.\n Στο έτος που δόθηκε δεν υπήρχαν αυτοκίνητα.\n";
-                    flag3 = true;
-                    if (flag1 && flag2 && flag3 && flag4) {
-                        fullString += "Bruh!";
-                    }
+                    fullString.append("Το πρώτο αυτοκίνητο κατασκευάστηκε το 1886.\n Στο έτος που δόθηκε δεν υπήρχαν αυτοκίνητα.\n");
                 } else if (yearInt > 2025) {
-                    fullString += "Το αυτοκίνητο δεν μπορεί να έχει κατασκευαστεί στο μέλλον.\n";
-                    flag4 = true;
-                    if (flag1 && flag2 && flag3 && flag4) {
-                        fullString += "Bruh!";
-                    }
+                    fullString.append("Το αυτοκίνητο δεν μπορεί να έχει κατασκευαστεί στο μέλλον.\n");
                 }
             } catch (NumberFormatException e) {
-                fullString += "Το έτος κυκλοφορίας πρέπει να είναι αριθμός.";
-                flag1 = true;
-                if (flag1 && flag2 && flag3 && flag4) {
-                    fullString += "\n Bruh!";
-                }
+                fullString.append("Το έτος κυκλοφορίας πρέπει να είναι αριθμός.\n");
             }
         }
-        if (color == null || color.isEmpty()) {
-            fullString += "Παρακαλώ καταχωρήστε το χρώμα.\n";
-        }
+
         if (fullString.isEmpty()) {
             return "Τα στοιχεία είναι πλήρη.";
         } else {
-            return fullString;
+            return fullString.toString();
         }
     }
 
+    /**
+     * Adds a new vehicle to the system after checking for duplicate license plates.
+     *
+     * @param car The vehicle to be added
+     * @return true if added successfully, false if a car with the same plate exists
+     */
     @Override
     public boolean add(Car car) {
         for (Car c : cars) {
             if (c.getPlate().equalsIgnoreCase(car.getPlate())) {
-                System.out.println("Υπάρχει ήδη αυτοκίνητο με την πινακίδα " + car.getPlate());
+                System.out.println("There is already a car with plate: " + car.getPlate());
                 return false;
             }
         }
         cars.add(car);
-        System.out.println("Το αυτοκίνητο προστέθηκε");
+        System.out.println("The car has been added.");
         return true;
     }
 
+    /**
+     * Edits the characteristics of an existing vehicle.
+     * The plate is used to find the car and cannot be changed.
+     *
+     * @param plate The plate
+     * @param brand New brand
+     * @param type  New type
+     * @param model New model
+     * @param year  New year
+     * @param color New color
+     * @return true if found and edited, false otherwise
+     */
     public boolean edit(String plate, String brand, String type, String model, String year, String color) {
         Car editedCar = findByPlate(plate);
-        editedCar.setBrand(brand);
-        editedCar.setType(type);
-        editedCar.setModel(model);
-        editedCar.setYear(year);
-        editedCar.setColor(color);
-        return true;
-    }
-
-    @Override
-    public boolean remove(Car car) {
-        int carsSize = cars.size();
-        //η μεταβλητή carsSize χρησιμοποιείται για να μην υπολογίζεται επανειλημμένα στη for (int i = 0; i < cars.size(); i++)
-        //από τη στιγμή που γίνεται return μετά τη διαγραφή δε θα εμφανίσει IndexOutOfBoundsException
-        //σε περίπτωση που θέλαμε να διαγράψουμε πολλαπλά αυτοκίνητα με την ίδια πινακίδα θα ήταν λάθος
-        for (int i = 0; i < carsSize; i++) { //χρήση αυτής της for για αποθήκευση της θέσης στο i
-            if (cars.get(i).getPlate().equalsIgnoreCase(car.getPlate())) {
-                cars.remove(i);
-                System.out.println("Το αυτοκίνητο διαγράφηκε");
-                return true;
-            }
+        // Safety Check
+        if (editedCar != null) {
+            editedCar.setBrand(brand);
+            editedCar.setType(type);
+            editedCar.setModel(model);
+            editedCar.setYear(year);
+            editedCar.setColor(color);
+            return true;
         }
-        System.out.println("Δεν βρέθηκε κάποιο αυτοκίνητο με την πινακίδα " + car.getPlate());
         return false;
     }
 
+    /**
+     * Removes a vehicle from the system.
+     *
+     * @param car The vehicle to remove
+     * @return true if removed, false if not found
+     */
     @Override
-    public ArrayList<Car> getList() {
-        return cars; //encapsulation - defensive copying
+    public boolean remove(Car car) {
+        int carsSize = cars.size();
+        // We store the size to avoid recalculating it in the loop,
+        // although since we return immediately after removal, standard iteration is also safe no (IndexOutOfBoundsException)
+        for (int i = 0; i < carsSize; i++) {
+            if (cars.get(i).getPlate().equalsIgnoreCase(car.getPlate())) {
+                cars.remove(i);
+                System.out.println("The car has been removed.");
+                return true;
+            }
+        }
+        System.out.println("Cannot find a car with plate: " + car.getPlate());
+        return false;
     }
 
+    /**
+     * Retrieves the list of all the vehicles.
+     *
+     * @return An ArrayList of the vehicles
+     */
+    @Override
+    public ArrayList<Car> getList() {
+        return cars;
+    }
+
+    /**
+     * Retrieves the number of vehicles in the list.
+     *
+     * @return The size of the list
+     */
     @Override
     public int getSize() {
         return cars.size();
     }
 
+    /**
+     * Prints the details of all vehicles in the list.
+     * Used for debugging
+     */
     @Override
     public void print() {
         if (cars.isEmpty()) {
@@ -129,21 +168,72 @@ public class CarManager implements Manager<Car> {
         }
     }
 
-    public void printAvailableCars() {
-        System.out.println("Available cars");
-        boolean carFound = false;
 
-        for (Car car : cars) {
-            if (car.isAvailable()) {
-                System.out.println(car);
-                carFound = true;
+    /**
+     * Searches for vehicles matching the provided parameters.
+     * If a parameter is null, is ignored.
+     *
+     * @param plate     Filter by plate
+     * @param brand     Filter by brand
+     * @param type      Filter by type
+     * @param model     Filter by model
+     * @param color     Filter by color
+     * @param available Filter by availability status
+     * @return A list of cars matching all non-null criteria
+     */
+    public ArrayList<Car> search(String plate, String brand, String type, String model, String color, Boolean available) {
+        ArrayList<Car> foundCars = new ArrayList<>();
+        /* Logic explanation:
+         * Iterate through the cars with for loop. For each car, we check a series of filters (if statements).
+         * 1. If a search parameter is NOT provided (null/empty), skip the check and move to the next 'if'.
+         * 2. If a search parameter IS provided, compare it with the car's value.
+         * - If they match: Proceed to the next filter check.
+         * - If they do NOT match: Enter the 'if' body, execute 'continue', and skip to the next car immediately.
+         */
+        for (Car car : cars) { //null proofing (protection from NullPointerExceptions)
+            if (plate != null && !plate.isEmpty() && !car.getPlate().equalsIgnoreCase(plate)) {
+                continue;
+            } //the plate comes first so if its different no more checks are needed
+            if (brand != null && !brand.isEmpty() && !car.getBrand().equalsIgnoreCase(brand)) {
+                continue;
             }
+            if (type != null && !type.isEmpty() && !car.getType().equalsIgnoreCase(type)) {
+                continue;
+            }
+            if (model != null && !model.isEmpty() && !car.getModel().equalsIgnoreCase(model)) {
+                continue;
+            }
+            if (color != null && !color.isEmpty() && !car.getColor().equalsIgnoreCase(color)) {
+                continue;
+            }
+            if (available != null && car.isAvailable() != available) {
+                continue;
+            }
+            foundCars.add(car);
         }
-        if (!carFound) {
-            System.out.println("There are no available cars currently");
-        }
+        return foundCars;
     }
 
+    /**
+     * Finds a vehicle using its plate.
+     *
+     * @param plate The plate to search for
+     * @return The Car object if found, null otherwise
+     */
+    public Car findByPlate(String plate) {
+        for (Car c : cars) {
+            if (c.getPlate().equalsIgnoreCase(plate)) return c;
+        }
+        return null;
+    }
+
+    // --- READ - WRITE ---
+
+    /**
+     * Reads vehicles from a CSV file and populates the list.
+     *
+     * @param filename The path to the CSV file
+     */
     public void readCSV(String filename) {
         String line;
         String delimiter = ",";
@@ -152,25 +242,7 @@ public class CarManager implements Manager<Car> {
             in.readLine(); //skips the first line because it's a header
 
             while ((line = in.readLine()) != null) {
-                String[] data = line.split(delimiter);
-
-                int id = Integer.parseInt(data[0].trim());
-                String plate = data[1].trim();
-                String brand = data[2].trim();
-                String type = data[3].trim();
-                String model = data[4].trim();
-                String year = data[5].trim();
-                String color = data[6].trim();
-                String statusGreek = data[7].trim();
-
-                CarStatus status;
-                if (statusGreek.equalsIgnoreCase("Διαθέσιμο")) {
-                    status = CarStatus.AVAILABLE;
-                } else {
-                    status = CarStatus.RENTED;
-                }
-
-                Car car = new Car(id, plate, brand, type, model, year, color, status);
+                Car car = getCar(line, delimiter);
                 cars.add(car);
             }
         } catch (FileNotFoundException e) {
@@ -180,6 +252,41 @@ public class CarManager implements Manager<Car> {
         }
     }
 
+    /**
+     * Helper method to parse a vehicle from a CSV.
+     *
+     * @param line      The CSV line string
+     * @param delimiter The delimiter used in the CSV
+     * @return A new Car object, or null if the data is incomplete
+     */
+    private static Car getCar(String line, String delimiter) {
+        String[] data = line.split(delimiter);
+
+        int id = Integer.parseInt(data[0].trim());
+        String plate = data[1].trim();
+        String brand = data[2].trim();
+        String type = data[3].trim();
+        String model = data[4].trim();
+        String year = data[5].trim();
+        String color = data[6].trim();
+        String statusGreek = data[7].trim();
+
+        CarStatus status;
+        if (statusGreek.equalsIgnoreCase("Διαθέσιμο")) {
+            status = CarStatus.AVAILABLE;
+        } else {
+            status = CarStatus.RENTED;
+        }
+
+        return new Car(id, plate, brand, type, model, year, color, status);
+    }
+
+    /**
+     * Writes the list of vehicles to a CSV file.
+     * Overwrites the file.
+     *
+     * @param filename The path to the CSV file
+     */
     public void writeCSV(String filename) {
 
         try (BufferedWriter out = new BufferedWriter(new FileWriter(filename))) {
@@ -208,45 +315,5 @@ public class CarManager implements Manager<Car> {
         } catch (IOException e) {
             System.out.println("Error: File not read!");
         }
-    }
-
-
-    public ArrayList<Car> search(String plate, String brand, String type, String model, String color, Boolean available) {
-        ArrayList<Car> foundCars = new ArrayList<>();
-        /* Τα αυτοκίνητα μπαίνουν στη for με τη σειρά, έπειτα γίνεται έλεγχος σε κάθε if αν έχει δοθεί τιμή για σύγκριση
-         αν δεν έχει δοθεί τιμή (null) τότε προχωράει στην επόμενη if χωρίς να μπει στο σώμα της
-         αν έχει δοθεί τιμή τότε τη συγκρίνει με αυτή του εκάστοτε αυτοκινήτου και
-         -αν είναι ίση τότε προχωράει στην επόμενη if χωρίς να μπει στο σώμα της
-         -αν δεν είναι ίση τότε μπαίνει στο σώμα της, κάνει continue και έρχεται το επόμενο αυτοκίνητο */
-
-        for (Car car : cars) { //null proofing (protection from NullPointerExceptions)
-            if (plate != null && !plate.isEmpty() && !car.getPlate().equalsIgnoreCase(plate)) {
-                continue;
-            } //η πινακίδα έρχεται πρώτη ώστε αν είναι διαφορετική δε χρειάζονται οι υπόλοιποι έλεγχοι
-            if (brand != null && !brand.isEmpty() && !car.getBrand().equalsIgnoreCase(brand)) {
-                continue;
-            }
-            if (type != null && !type.isEmpty() && !car.getType().equalsIgnoreCase(type)) {
-                continue;
-            }
-            if (model != null && !model.isEmpty() && !car.getModel().equalsIgnoreCase(model)) {
-                continue;
-            }
-            if (color != null && !color.isEmpty() && !car.getColor().equalsIgnoreCase(color)) {
-                continue;
-            }
-            if (available != null && car.isAvailable() != available) {
-                continue;
-            }
-            foundCars.add(car);
-        }
-        return foundCars;
-    }
-
-    public Car findByPlate(String plate) {
-        for (Car c : cars) {
-            if (c.getPlate().equalsIgnoreCase(plate)) return c;
-        }
-        return null;
     }
 }
